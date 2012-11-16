@@ -4,95 +4,59 @@
   <dict>
     <key>uuid</key>
     <string>f0c5f4ad-3e8a-4add-9ebf-2ce1d5e5262f</string>
-    <key>foldingStartMarker</key>
-    <string>(?x)/\*\*(?!\*)|^(?![^{]*?//|[^{]*?/\*(?!.*?\*/.*?\{)).*?\{\s*($|//|/\*(?!.*?\*/.*\S))</string>
-    <key>scopeName</key>
-    <string>source.pike</string>
-    <key>foldingStopMarker</key>
-    <string>(?&lt;!\*)\n\*\*/|^\s*\}</string>
-    <key>fileTypes</key>
-    <array>
-      <string>pike</string>
-      <string>pmod</string>
-    </array>
-    <key>name</key>
-    <string>Pike</string>
     <key>keyEquivalent</key>
     <string>^~C</string>
-    <key>repository</key>
-    <dict>
-      <key>comments</key>
-      <dict>
-        <key>patterns</key>
-        <array>
-          <dict>
-            <key>end</key>
-            <string>\*/n?</string>
-            <key>begin</key>
-            <string>/\*</string>
-            <key>name</key>
-            <string>comment.block.source.pike</string>
-            <key>captures</key>
-            <dict>
-              <key>0</key>
-              <dict>
-                <key>name</key>
-                <string>punctuation.definition.comment.source.pike</string>
-              </dict>
-            </dict>
-          </dict>
-          <dict>
-            <key>match</key>
-            <string>(//).*$\n?</string>
-            <key>name</key>
-            <string>comment.line.double-slash.source.pike</string>
-            <key>captures</key>
-            <dict>
-              <key>1</key>
-              <dict>
-                <key>name</key>
-                <string>punctuation.definition.comment.source.pike</string>
-              </dict>
-            </dict>
-          </dict>
-        </array>
-      </dict>
-      <key>builtinTypes</key>
-      <dict>
-        <key>patterns</key>
-        <array>
-          <dict>
-            <key>name</key>
-            <string>storage.type.source.pike</string>
-            <key>match</key>
-            <string>(?x)\b(float|int|object|mixed|class|mapping|function|void|enum|multiset|array|string)\b</string>
-          </dict>
-        </array>
-      </dict>
-    </dict>
+    <key>name</key>
+    <string>Pike</string>
     <key>patterns</key>
     <array>
+      <dict>
+        <key>include</key>
+        <string>#preprocessor-rule-enabled</string>
+      </dict>
+      <dict>
+        <key>include</key>
+        <string>#preprocessor-rule-disabled</string>
+      </dict>
+      <dict>
+        <key>include</key>
+        <string>#preprocessor-rule-other</string>
+      </dict>
+      <dict>
+        <key>include</key>
+        <string>#comments</string>
+      </dict>
       <dict>
         <key>comment</key>
         <string>Control flow keywords</string>
         <key>name</key>
-        <string>keyword.control.source.pike</string>
+        <string>keyword.control.pike</string>
         <key>match</key>
-        <string>\b(if|else|while|for|foreach|do|return|continue|break|switch|case|default|goto|catch)\b</string>
+        <string>\b(if|else|while|for|foreach|do|return|continue|break|switch|case|default|goto|catch|lambda|gauge)\b</string>
+      </dict>
+      <dict>
+        <key>name</key>
+        <string>storage.type.pike</string>
+        <key>match</key>
+        <string>\b(enum|float|int|typedef|void|object|class|mapping|string|array|multiset|mixed|function)\b</string>
       </dict>
       <dict>
         <key>comment</key>
         <string>Modifiers</string>
         <key>name</key>
-        <string>storage.modifier.source.pike</string>
+        <string>storage.modifier.pike</string>
         <key>match</key>
         <string>\b(public|protected|private|static|constant)\b</string>
+      </dict>
+      <dict>
+        <key>include</key>
+        <string>#sizeof</string>
       </dict>
       <dict>
         <key>comment</key>
         <string>Numeric values</string>
         <key>name</key>
-        <string>constant.numeric.source.pike</string>
+        <string>constant.numeric.pike</string>
         <key>match</key>
         <string>\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)\b</string>
       </dict>
@@ -220,7 +184,18 @@
           </dict>
         </dict>
         <key>begin</key>
-        <string>(?x)^\s*\#\s*(define)\s+((?&lt;id&gt;[a-zA-Z_][a-zA-Z0-9_]*))(?:(\()(\s* \g&lt;id&gt; \s*((,) \s* \g&lt;id&gt; \s*)*(?:\.\.\.)?)(\)))?</string>
+        <string>(?x)
+                 ^\s*\#\s*(define)\s+               # define
+                 ((?&lt;id&gt;[a-zA-Z_][a-zA-Z0-9_]*))    # macro name
+                 (?:                                # and optionally:
+                   (\()                             # an open parenthesis
+                     (
+                       \s* \g&lt;id&gt; \s*               # first argument
+                       ((,) \s* \g&lt;id&gt; \s*)*        # additional arguments
+                       (?:\.\.\.)?                  # varargs ellipsis?
+                     )
+                   (\))                             # a close parenthesis
+                 )?</string>
         <key>name</key>
         <string>meta.preprocessor.macro.pike</string>
       </dict>
@@ -348,16 +323,71 @@
         <string>^\s*#\s*(define|defined|elif|else|if|ifdef|ifndef|line|pragma|undef|endif)\b</string>
       </dict>
       <dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#comments</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#parens</string>
+          </dict>
+          <dict>
+            <key>name</key>
+            <string>storage.modifier.pike</string>
+            <key>match</key>
+            <string>\bconstant\b</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#block</string>
+          </dict>
+        </array>
+        <key>end</key>
+        <string>(?&lt;=\})|(?=#)|(;)</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>4</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.definition.parameters.pike</string>
+          </dict>
+          <key>3</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.function.pike</string>
+          </dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.whitespace.function.leading.pike</string>
+          </dict>
+        </dict>
+        <key>begin</key>
+        <string>(?x)
+    		(?:  ^                                 # begin-of-line
+    		  |
+    		     (?: (?= \s )           (?&lt;!else|return) (?&lt;=\w)      #  or word + space before name
+    		       | (?= \s*[A-Za-z_] ) (?&lt;!&amp;&amp;)       (?&lt;=[*&amp;&gt;])   #  or type modifier before name
+    		     )
+    		)
+    		(\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|object|int|float|function|mapping|array|multiset)\s*\()
+    		(
+    			(?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++ |                  # actual name
+    			(?: (?&lt;=operator) (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )  # if it is a C++ operator
+    		)
+    		 \s*(?=\()</string>
+        <key>name</key>
+        <string>meta.function.pike</string>
+      </dict>
+      <dict>
+        <key>include</key>
+        <string>#block</string>
+      </dict>
+      <dict>
         <key>include</key>
         <string>#pragma.mark</string>
-      </dict>
-      <dict>
-        <key>include</key>
-        <string>#comments</string>
-      </dict>
-      <dict>
-        <key>include</key>
-        <string>#sizeof</string>
       </dict>
       <dict>
         <key>include</key>
@@ -375,18 +405,73 @@
         <key>include</key>
         <string>#singleQuotedString</string>
       </dict>
-      <dict>
-        <key>include</key>
-        <string>#preprocessor-rule-enabled</string>
-      </dict>
-      <dict>
-        <key>include</key>
-        <string>#preprocessor-rule-disabled</string>
-      </dict>
-      <dict>
-        <key>include</key>
-        <string>#preprocessor-rule-other</string>
-      </dict>
     </array>
+    <key>foldingStartMarker</key>
+    <string>(?x)
+		 /\*\*(?!\*)
+		|^(?![^{]*?//|[^{]*?/\*(?!.*?\*/.*?\{)).*?
+		\{\s*($|//|/\*(?!.*?\*/.*\S))</string>
+    <key>fileTypes</key>
+    <array>
+      <string>pike</string>
+      <string>pmod</string>
+    </array>
+    <key>repository</key>
+    <dict>
+      <key>comments</key>
+      <dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>end</key>
+            <string>\*/n?</string>
+            <key>begin</key>
+            <string>/\*</string>
+            <key>name</key>
+            <string>comment.block.source.pike</string>
+            <key>captures</key>
+            <dict>
+              <key>0</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.definition.comment.source.pike</string>
+              </dict>
+            </dict>
+          </dict>
+          <dict>
+            <key>match</key>
+            <string>(//).*$\n?</string>
+            <key>name</key>
+            <string>comment.line.double-slash.source.pike</string>
+            <key>captures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.definition.comment.source.pike</string>
+              </dict>
+            </dict>
+          </dict>
+        </array>
+      </dict>
+      <key>builtinTypes</key>
+      <dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>name</key>
+            <string>storage.type.source.pike</string>
+            <key>match</key>
+            <string>(?x)\b(float|int|object|mixed|class|mapping|function|void|enum|multiset|array|string)\b</string>
+          </dict>
+        </array>
+      </dict>
+    </dict>
+    <key>firstLineMatch</key>
+    <string>-[*]-( Mode:)? Pike -[*]-</string>
+    <key>foldingStopMarker</key>
+    <string>(?&lt;!\*)\n\*\*/|^\s*\}</string>
+    <key>scopeName</key>
+    <string>source.pike</string>
   </dict>
 </plist>

@@ -1,28 +1,28 @@
 #!/usr/bin/env pike
 //! This program converts a JSON file to a Sublime language definition file.
-//! 
+//!
 //! run like:
 //!
 //! user@computer:~$ to-tmlanguage /path/to/json-file
 //!
 //! The resulting file will be placed in the same directory as the original
-//! file. NOTE! The resulting file will be named like 
+//! file. NOTE! The resulting file will be named like
 //! [first-part-of-orgiginal-file.tmLanguage]. So if the input file is named
 //! Lang.json the resulting file will be named Lang.tmLanguage.
 //!
 //! * To generate a UUID give the "key" uuid in the property list file the value
 //!   #uuid. The #uuid part will be replaced with a real UUID.
 //!
-//! * $scopeName in the JSON file will be expanded to the value of the 
+//! * $scopeName in the JSON file will be expanded to the value of the
 //!   "scopeName" key.
 //!
 //! { "name" : "Lang",
 //!   "scopeName" : "source.lang",
 //!   "uuid" : "#uuid",
-//"   "test" : "some.stuff.$scopeName" 
+//"   "test" : "some.stuff.$scopeName"
 //! }
-//! 
-//! Will result in 
+//!
+//! Will result in
 //!
 //! <dict>
 //!   <key>name</key>
@@ -43,15 +43,15 @@ string config_path = "/home/poppa/.config/sublime-text-2/Packages/User";
 
 String.Buffer buffer;
 function add;
-int level = 1;
+int level = 1; // Indentation level of the XML file
 
-// Replace < > and with XML entities
-#define rep(X) replace((string)(X), ([ "<" : "&lt;", ">" : "&gt;" ]))
+// Replace < and > with XML entities
+#define rep(X) replace((string)(X), ([ "&" : "&amp;", "<" : "&lt;", ">" : "&gt;" ]))
 
-// Add opening tag to buffer
+// Create an opening tag
 #define tag1(X) "\n" + ("  " * level) + "<" + X + ">"
 
-// Add closing tag to buffer
+// Create a closing tag
 #define tag2(X) "</" + X  + ">"
 
 // Add tag to buffer
@@ -61,7 +61,8 @@ int level = 1;
 #define end() ("\n" + ("  " * level))
 
 // Regexp for removing our own comments in the JSON file
-Regexp.PCRE comment_re = Regexp.PCRE("^[ \t]*//-.*$", Regexp.PCRE.OPTION.MULTILINE);
+Regexp.PCRE comment_re = Regexp.PCRE("^[ \t]*//-.*$", 
+                                     Regexp.PCRE.OPTION.MULTILINE);
 
 int main(int argc, array(string) argv)
 {
@@ -87,44 +88,16 @@ int main(int argc, array(string) argv)
 
   string file_content = Stdio.read_file(file);
 
-  // Remove our special comments  
+  // Remove our special comments
   file_content = comment_re->replace(file_content, "");
+  file_content = fix_multiline(file_content);
 
-  array(string) fcarr = file_content/"\n";
-  array(string) newarr = ({});
-  array(string) tmparr = ({});
+#ifdef DEBUG
+  werror("%s\n", file_content);
+  return 0;
+#endif
 
-  // Kindly we can have strings over multiple lines. Lets concatenate those
-  // strings here so the JSON parser won't get upset.
-  foreach (fcarr, string ln) {
-    if (!sizeof(ln))
-      continue;
-
-    if (ln[-1] == '\\') {
-      // Remove the trailing backslash
-      ln = String.trim_all_whites( ln[0..sizeof(ln)-2] );
-      // Remove the trailing quote
-      ln = ln[0..sizeof(ln)-2];
-
-      if (sizeof(tmparr) > 0)
-        // Remove the beginning quote
-        ln = ln[1..];
-      
-      tmparr += ({ ln });
-    }
-    else {
-      if (sizeof(tmparr)) {
-        ln = String.trim_all_whites(ln);
-        tmparr += ({ ln[1..] });
-        newarr += ({ tmparr*"" });
-        tmparr = ({});
-      }
-      else
-        newarr += ({ ln }); 
-    }
-  }
-
-  mixed json = Standards.JSON.decode(newarr*"");
+  mixed json = Standards.JSON.decode(file_content);
 
   if (json->uuid && json->uuid == "#uuid") {
     json->uuid = (string) Standards.UUID.make_version4();
@@ -142,7 +115,7 @@ int main(int argc, array(string) argv)
     if (stringp(v))
       data = replace(data, "$" + key, v);
   }
-  
+
   string ofname, fname, path;
   path = dirname(file);
   ofname = fname = basename(file);
@@ -157,16 +130,66 @@ int main(int argc, array(string) argv)
            "rename the input file!\n");
     return 1;
   }
-  
+
   path = combine_path(path, fname);
 
   Stdio.write_file(path, data);
-  
+
 #ifdef DEVMODE
   Stdio.write_file(combine_path(config_path, fname), data);
 #endif
 
   return 0;
+}
+
+string fix_multiline(string s)
+{
+  int len = sizeof(s);
+  int pos = 0;
+  int(0..1) in_str = 0;
+  string ns = "";
+
+  // Pad so that we don't peek beyond the end
+  s += "\0";
+
+  do {
+    if (s[pos] == '\\' && s[pos+1] == '\n') {
+      // Remove beginning whitespace on next line
+      sscanf (reverse(ns), "%*[ \t]%s", ns);
+      ns = reverse( ns[1..] );
+      pos += 2;
+
+      // Skip whitespaces
+      while (s[pos++] == ' ' || s[pos] == '\t')
+        ;
+
+      ns += s[pos..pos];
+
+      continue;
+    }
+
+    // Check for a multiline string: #"
+    if (!in_str && s[pos] == '#' && s[pos+1] == '"') {
+      in_str = 1;
+      ns += "\"";
+      pos++;
+      continue;
+    }
+    // If in a string and a " if found with no \ before we're at the string end 
+    else if (in_str && s[pos] == '"' && s[pos-1] != '\\')
+      in_str = 0;
+
+    // If in a string and a newline, remove and replace it with mumbojumbo 
+    // that will make the JSON parser happy. Mumbojumbo will be replaced with
+    // a real newline in the end result.
+    if (in_str && s[pos] == '\n')
+      ns += "\0\1";
+    else
+      ns += s[pos..pos];
+
+  } while (pos++ < len);
+
+  return ns;
 }
 
 string type_to_string(mixed x)
@@ -177,7 +200,7 @@ string type_to_string(mixed x)
   if (stringp(x)) return "string";
   if (mappingp(x)) return "dict";
 
-  error("Unhandled Pike type: %O\n", x); 
+  error("Unhandled Pike type: %O\n", x);
 }
 
 mixed encode_xml(mixed in)
@@ -216,6 +239,7 @@ mixed encode_xml(mixed in)
       break;
 
     case "string":
+      in = replace(in, "\0\1", "\n");
     case "float":
     case "int":
 

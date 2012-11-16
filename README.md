@@ -19,7 +19,9 @@ JSON addition
 	
   * **Multiline strings**: Some regexp are seriously long which makes them
     difficult to read. A string can be split by ending the line with a 
-    backslash. NOTE! Each line must be quoted though!
+    backslash. NOTE! Each line must be quoted though! Or you can write a real
+    multiline string in the same manner as you write a regular Pike multiline
+    string.
 
 Example
 ---------------
@@ -34,6 +36,13 @@ Example
               "is allowed after the backslash",
       "john" : "doe" }
       
+    { "key" : "value",
+      "lng" : #"This is a real multiline string
+               which will preserve the 
+               whitespace as well in the resulting
+               XML file",
+      "john" : "doe" }
+
 Todo
 ----------------
 

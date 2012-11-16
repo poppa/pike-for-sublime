@@ -3,46 +3,73 @@
 //- NOTE! This JSON file has a special syntax that allows for comments like
 //- this one.
 //-
-//- It also allows for multiline strings which JSON doesn't. The strings must
-//- be quoted but a \ at the end of the line will concatenate the next line
-//- with the previous one.
+//- It also allows for multiline strings which JSON doesn't.
+//- There are two ways to write multiline strings:
+//- 
+//- 1. A \ at the end of the line will concatenate the next line
+//-    with the previous one.
 //-
-//- { "key" : "This is a multi "        \
-//-           "line string that spans " \
-//-           "over three lines"        \
-//-           "or more" }
+//-    { "key" : "This is a multi "        \
+//-              "line string that spans " \
+//-              "over three lines "       \
+//-              "or more" }
+//-
+//-    The end result of this will be on one line.
+//-
+//- 2. A string like #"The string" can span over multiple lines without each
+//-    line being ended or begun.
+//-
+//-    { "key" : #"This is a multi
+//-               line string that spans
+//-               over three lines
+//-               or more" }
+//-
+//-    Whitespaces will be kept in the end result.
 
 { "name": "Pike",
-  "scopeName": "source.pike",
-  "fileTypes": ["pike", "pmod"],
-  "foldingStartMarker": "(?x)" \
-                        "/\*\*(?!\*)|^(?![^{]*?//|[^{]*?/\*(?!.*?\*/.*?\{))" \
-                        ".*?\{\s*($|//|/\*(?!.*?\*/.*\S))",
-  "foldingStopMarker": "(?<!\*)\n" \
-                       "\*\*/|^\s*\}",
-  "keyEquivalent": "^~C",
-  "patterns": [
+  "scopeName" : "source.pike",
+  "fileTypes" : ["pike", "pmod"],
+  "firstLineMatch" : "-[*]-( Mode:)? Pike -[*]-", 
+  "foldingStartMarker" : #"(?x)
+		 /\*\*(?!\*)
+		|^(?![^{]*?//|[^{]*?/\*(?!.*?\*/.*?\{)).*?
+		\{\s*($|//|/\*(?!.*?\*/.*\S))",
+  "foldingStopMarker" : "(?<!\*)\n\*\*/|^\s*\}",
+  "keyEquivalent" : "^~C",
+  "patterns" : [
 
+    { "include" : "#preprocessor-rule-enabled" },
+    { "include" : "#preprocessor-rule-disabled" },
+    { "include" : "#preprocessor-rule-other" },
+    { "include" : "#comments" },
+    
     //- Control flow
 
-    { "match": "\b(if|else|while|for|foreach|do|return|continue|break|" \
-               "switch|case|default|goto|catch)\b",
-      "name": "keyword.control.$scopeName",
-      "comment": "Control flow keywords"
+    { "match" : "\b(if|else|while|for|foreach|do|return|continue|break|" \
+                "switch|case|default|goto|catch|lambda|gauge)\b",
+      "name" : "keyword.control.pike",
+      "comment" : "Control flow keywords"
+    },
+    
+    { "match" : "\b(enum|float|int|typedef|void|object|class|mapping|string" \
+                "|array|multiset|mixed|function)\b",
+      "name" : "storage.type.pike"
     },
 
     //- Modifiers
 
     { "match" : "\b(public|protected|private|static|constant)\b",
-      "name" : "storage.modifier.$scopeName",
+      "name" : "storage.modifier.pike",
       "comment" : "Modifiers"
     },
 
+    { "include" : "#sizeof" },
+    
     //- Numeric
 
     { "match" : "\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))" \
                 "((e|E)(\+|-)?[0-9]+)?)\b",
-      "name" : "constant.numeric.$scopeName",
+      "name" : "constant.numeric.pike",
       "comment" : "Numeric values"
     },
 
@@ -97,18 +124,18 @@
     //- Capture macros
 
     { "name" : "meta.preprocessor.macro.pike",
-      "begin" : "(?x)"                            \
-                "^\s*\#\s*(define)\s+"            \
-                "((?<id>[a-zA-Z_][a-zA-Z0-9_]*))" \
-                  "(?:"                           \
-                    "(\()"                        \
-                      "("                         \
-                        "\s* \g<id> \s*"          \
-                        "((,) \s* \g<id> \s*)*"   \
-                        "(?:\.\.\.)?"             \
-                      ")"                         \
-                    "(\))"                        \
-                  ")?",
+      "begin" : #"(?x)
+                 ^\s*\#\s*(define)\s+               # define
+                 ((?<id>[a-zA-Z_][a-zA-Z0-9_]*))    # macro name
+                 (?:                                # and optionally:
+                   (\()                             # an open parenthesis
+                     (
+                       \s* \g<id> \s*               # first argument
+                       ((,) \s* \g<id> \s*)*        # additional arguments
+                       (?:\.\.\.)?                  # varargs ellipsis?
+                     )
+                   (\))                             # a close parenthesis
+                 )?",
       "beginCaptures" : {
         "1" : {
           "name" : "keyword.control.import.define.pike"
@@ -199,7 +226,7 @@
         }
       ]
     },
-    
+
     { "begin" : "^\s*#\s*(define|defined|elif|else|if|ifdef|ifndef|" \
                 "line|pragma|undef|endif)\b",
       "captures" :  {
@@ -216,19 +243,50 @@
       ]
     },
 
+    { "name" : "meta.function.pike",
+      "begin" : #"(?x)
+    		(?:  ^                                 # begin-of-line
+    		  |
+    		     (?: (?= \s )           (?<!else|return) (?<=\w)      #  or word + space before name
+    		       | (?= \s*[A-Za-z_] ) (?<!&&)       (?<=[*&>])   #  or type modifier before name
+    		     )
+    		)
+    		(\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|object|int|float|function|mapping|array|multiset)\s*\()
+    		(
+    			(?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++ |                  # actual name
+    			(?: (?<=operator) (?: [-*&<>=+!]+ | \(\) | \[\] ) )  # if it is a C++ operator
+    		)
+    		 \s*(?=\()",
+      "beginCaptures" : {
+        "1" : {
+          "name" : "punctuation.whitespace.function.leading.pike"
+        },
+        "3" : {
+          "name" : "entity.name.function.pike"
+        },
+        "4" : {
+          "name" : "punctuation.definition.parameters.pike"
+        }
+      },
+      "end" : "(?<=\})|(?=#)|(;)",
+      "patterns" : [
+        { "include" : "#comments" },
+        { "include" : "#parens" },
+        { "match" : "\bconstant\b",
+          "name" : "storage.modifier.pike"
+        },
+        { "include" : "#block" },
+      ]
+    }
 
     //- Includes
 
+    { "include" : "#block" },
     { "include" : "#pragma.mark" },
-    { "include" : "#comments" },
-    { "include" : "#sizeof" },
     { "include" : "#builtinTypes" },
     { "include" : "#doubleQuotedStringLiteral" },
     { "include" : "#doubleQuotedString" },
-    { "include" : "#singleQuotedString" },
-    { "include" : "#preprocessor-rule-enabled" },
-    { "include" : "#preprocessor-rule-disabled" },
-    { "include" : "#preprocessor-rule-other" }
+    { "include" : "#singleQuotedString" }
   ],
 
   "repository" : {
