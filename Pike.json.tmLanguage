@@ -23,21 +23,8 @@
   "keyEquivalent": "^~C",
   "patterns": [
 
-    //- Preprocessors
-
-    { "match": "^(#)\s*\b(if|ifdef|ifndef|elif|else|endif|include|pike|" \
-               "define|warning|error)\b",
-      "name": "meta.preprocessor.$scopeName",
-      "comment": "Macro definitions",
-      "captures": {
-        "2": {
-          "name": "keyword.control.import.$scopeName"
-        }
-      }
-    },
-
     //- Control flow
-    
+
     { "match": "\b(if|else|while|for|foreach|do|return|continue|break|" \
                "switch|case|default|goto|catch)\b",
       "name": "keyword.control.$scopeName",
@@ -45,7 +32,7 @@
     },
 
     //- Modifiers
-    
+
     { "match" : "\b(public|protected|private|static|constant)\b",
       "name" : "storage.modifier.$scopeName",
       "comment" : "Modifiers"
@@ -74,19 +61,19 @@
         { "include" : "#string_placeholder" }
       ],
       "begin" : "\"",
-      "beginCapture" : {
+      "beginCaptures" : {
         "0" : {
           "name" : "punctuation.definition.string.begin.pike"
         }
       },
       "end" : "\"",
-      "endCapture" : {
+      "endCaptures" : {
         "0" : {
           "name" : "punctuation.definition.string.end.pike"
         }
       }
     },
-    
+
     //- Signle quoted strings
 
     { "name" : "string.quoted.single.pike",
@@ -94,22 +81,147 @@
         { "include" : "#string_escaped_char" }
       ],
       "begin" : "'",
-      "beginCapture" : {
+      "beginCaptures" : {
         "0" : {
           "name" : "punctuation.definition.string.begin.pike"
         }
       },
       "end" : "'",
-      "endCapture" : {
+      "endCaptures" : {
         "0" : {
           "name" : "punctuation.definition.string.end.pike"
         }
       }
     },
+
+    //- Capture macros
+
+    { "name" : "meta.preprocessor.macro.pike",
+      "begin" : "(?x)"                            \
+                "^\s*\#\s*(define)\s+"            \
+                "((?<id>[a-zA-Z_][a-zA-Z0-9_]*))" \
+                  "(?:"                           \
+                    "(\()"                        \
+                      "("                         \
+                        "\s* \g<id> \s*"          \
+                        "((,) \s* \g<id> \s*)*"   \
+                        "(?:\.\.\.)?"             \
+                      ")"                         \
+                    "(\))"                        \
+                  ")?",
+      "beginCaptures" : {
+        "1" : {
+          "name" : "keyword.control.import.define.pike"
+        },
+        "2" : {
+          "name" : "entity.name.function.preprocessor.pike"
+        },
+        "4" : {
+          "name" : "punctuation.definition.parameters.pike"
+        },
+        "5" : {
+          "name" : "variable.parameter.preprocessor.pike"
+        },
+        "7" : {
+          "name" : "punctuation.separator.parameters.pike"
+        },
+        "8" : {
+          "name" : "punctuation.definition.parameters.pike"
+        }
+      },
+      "end" : "(?=(?://|/\*))|$",
+      "patterns" : [
+        { "match" : "(?>\\\s*\n)",
+          "name" : "punctuation.separator.continuation.pike"
+        },
+        { "include" : "$base" }
+      ]
+    },
+
+    //- error, warning macro
+
+    { "name" : "meta.preprocessor.diagnostic.pike",
+      "begin" : "^\s*#\s*(error|warning)\b",
+      "captures" : {
+        "1" : {
+          "name" : "keyword.control.import.error.pike"
+        }
+      },
+      "end" : "$",
+      "patterns" : [
+        { "match" : "(?>\\\s*\n)",
+          "name" : "punctuation.separator.continuation.pike"
+        }
+      ]
+    },
+
+    //- include
+
+    { "name" : "meta.preprocessor.pike.include",
+      "begin" : "^\s*#\s*(include)\b",
+      "captures" : {
+        "1" : {
+          "name" : "keyword.control.import.include.pike"
+        }
+      },
+      "end" : "(?=(?://|/\*))|$",
+      "patterns" : [
+        { "match" : "(?>\\\s*\n)",
+          "name" : "punctuation.separator.continuation.pike"
+        },
+        { "name" : "string.quoted.double.include.pike",
+          "begin" : "\"",
+          "beginCaptures" : {
+            "0" : {
+              "name" : "punctuation.definition.string.begin.pike"
+            }
+          },
+          "end" : "\"",
+          "endCaptures" : {
+            "0" : {
+              "name" : "punctuation.definition.string.end.pike"
+            }
+          }
+        },
+        { "name" : "string.quoted.other.lt-gt.include.pike",
+          "begin" : "<",
+          "beginCaptures" : {
+            "0" : {
+              "name" : "punctuation.definition.string.begin.pike"
+            }
+          },
+          "end" : ">",
+          "endCaptures" : {
+            "0" : {
+              "name" : "punctuation.definition.string.end.pike"
+            }
+          }
+        }
+      ]
+    },
     
+    { "begin" : "^\s*#\s*(define|defined|elif|else|if|ifdef|ifndef|" \
+                "line|pragma|undef|endif)\b",
+      "captures" :  {
+        "1" : {
+          "name" : "keyword.control.import.pike"
+        }
+      },
+      "end" : "(?=(?://|/\*))|$",
+      "name" : "meta.preprocessor.pike",
+      "patterns" : [
+        { "match" : "(?>\\\s*\n)",
+          "name" : "punctuation.separator.continuation.pike"
+        }
+      ]
+    },
+
+
     //- Includes
-    
+
+    { "include" : "#pragma.mark" },
     { "include" : "#comments" },
+    { "include" : "#sizeof" },
     { "include" : "#builtinTypes" },
     { "include" : "#doubleQuotedStringLiteral" },
     { "include" : "#doubleQuotedString" },
