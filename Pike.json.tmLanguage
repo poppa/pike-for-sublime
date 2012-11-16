@@ -1,0 +1,157 @@
+//- This is a synatax file for Pike for the programming editor Sublime.
+//-
+//- NOTE! This JSON file has a special syntax that allows for comments like
+//- this one.
+//-
+//- It also allows for multiline strings which JSON doesn't. The strings must
+//- be quoted but a \ at the end of the line will concatenate the next line
+//- with the previous one.
+//-
+//- { "key" : "This is a multi "        \
+//-           "line string that spans " \
+//-           "over three lines"        \
+//-           "or more" }
+
+{ "name": "Pike",
+  "scopeName": "source.pike",
+  "fileTypes": ["pike", "pmod"],
+  "foldingStartMarker": "(?x)" \
+                        "/\*\*(?!\*)|^(?![^{]*?//|[^{]*?/\*(?!.*?\*/.*?\{))" \
+                        ".*?\{\s*($|//|/\*(?!.*?\*/.*\S))",
+  "foldingStopMarker": "(?<!\*)\n" \
+                       "\*\*/|^\s*\}",
+  "keyEquivalent": "^~C",
+  "patterns": [
+
+    //- Preprocessors
+
+    { "match": "^(#)\s*\b(if|ifdef|ifndef|elif|else|endif|include|pike|" \
+               "define|warning|error)\b",
+      "name": "meta.preprocessor.$scopeName",
+      "comment": "Macro definitions",
+      "captures": {
+        "2": {
+          "name": "keyword.control.import.$scopeName"
+        }
+      }
+    },
+
+    //- Control flow
+    
+    { "match": "\b(if|else|while|for|foreach|do|return|continue|break|" \
+               "switch|case|default|goto|catch)\b",
+      "name": "keyword.control.$scopeName",
+      "comment": "Control flow keywords"
+    },
+
+    //- Modifiers
+    
+    { "match" : "\b(public|protected|private|static|constant)\b",
+      "name" : "storage.modifier.$scopeName",
+      "comment" : "Modifiers"
+    },
+
+    //- Numeric
+
+    { "match" : "\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))" \
+                "((e|E)(\+|-)?[0-9]+)?)\b",
+      "name" : "constant.numeric.$scopeName",
+      "comment" : "Numeric values"
+    },
+
+    //- Language constants
+
+    { "match" : "\b(UNDEFINED|__LINE__|__FILE__)\b",
+      "name"  : "constant.language.pike",
+      "comment" : "Language constants"
+    },
+
+    //- Double quoted strings
+
+    { "name" : "string.quoted.double.pike",
+      "patterns" : [
+        { "include" : "#string_escaped_char" },
+        { "include" : "#string_placeholder" }
+      ],
+      "begin" : "\"",
+      "beginCapture" : {
+        "0" : {
+          "name" : "punctuation.definition.string.begin.pike"
+        }
+      },
+      "end" : "\"",
+      "endCapture" : {
+        "0" : {
+          "name" : "punctuation.definition.string.end.pike"
+        }
+      }
+    },
+    
+    //- Signle quoted strings
+
+    { "name" : "string.quoted.single.pike",
+      "patterns" : [
+        { "include" : "#string_escaped_char" }
+      ],
+      "begin" : "'",
+      "beginCapture" : {
+        "0" : {
+          "name" : "punctuation.definition.string.begin.pike"
+        }
+      },
+      "end" : "'",
+      "endCapture" : {
+        "0" : {
+          "name" : "punctuation.definition.string.end.pike"
+        }
+      }
+    },
+    
+    //- Includes
+    
+    { "include" : "#comments" },
+    { "include" : "#builtinTypes" },
+    { "include" : "#doubleQuotedStringLiteral" },
+    { "include" : "#doubleQuotedString" },
+    { "include" : "#singleQuotedString" },
+    { "include" : "#preprocessor-rule-enabled" },
+    { "include" : "#preprocessor-rule-disabled" },
+    { "include" : "#preprocessor-rule-other" }
+  ],
+
+  "repository" : {
+
+    "builtinTypes" : {
+      "patterns" : [
+        { "match" : "(?x)\b(float|int|object|mixed|class|mapping|function|" \
+                    "void|enum|multiset|array|string)\b",
+          "name" : "storage.type.$scopeName"
+        }
+      ]
+    },
+
+    "comments" : {
+      "patterns" : [
+        { "captures" : {
+            "0" : {
+              "name" : "punctuation.definition.comment.$scopeName"
+            }
+          },
+          "name" : "comment.block.$scopeName",
+          "begin" : "/\*",
+          "end" : "\*/n?"
+        },
+
+        { "captures" : {
+            "1" : {
+              "name" : "punctuation.definition.comment.$scopeName"
+            }
+          },
+          "name" : "comment.line.double-slash.$scopeName",
+          "match" : "(//).*$\n?"
+        }
+      ]
+    }
+  },
+  "uuid": "f0c5f4ad-3e8a-4add-9ebf-2ce1d5e5262f"
+}

@@ -1,0 +1,6 @@
+//- Test comment
+
+{ "one" : "two",
+  "thre" : "one long sentence \n"            \
+           "that stretches over multiple \n" \
+           "lines so to speak" }
