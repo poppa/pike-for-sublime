@@ -29,7 +29,7 @@
 { "name": "Pike",
   "scopeName" : "source.pike",
   "fileTypes" : ["pike", "pmod"],
-  "firstLineMatch" : "-[*]-( Mode:)? Pike -[*]-", 
+  "firstLineMatch" : "(-[*]-( [Mm]ode:)? [Pp]ike -[*]-|^#!/.*\\bpike\\b)",
   "foldingStartMarker" : #"(?x)
 		 /\\*\\*(?!\\*)
 		|^(?![^{]*?//|[^{]*?/\\*(?!.*?\\*/.*?\\{)).*?

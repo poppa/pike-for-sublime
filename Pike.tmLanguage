@@ -8,7 +8,7 @@
       <string>pmod</string>
     </array>
     <key>firstLineMatch</key>
-    <string>-[*]-( Mode:)? Pike -[*]-</string>
+    <string>(-[*]-( [Mm]ode:)? [Pp]ike -[*]-|^#!/.*\bpike\b)</string>
     <key>foldingStartMarker</key>
     <string>(?x)
 		 /\*\*(?!\*)
