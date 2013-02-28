@@ -309,7 +309,7 @@
           },
           "name" : "comment.block.$scopeName",
           "begin" : "/\\*",
-          "end" : "\\*/n?"
+          "end" : "\\*/?"
         },
 
         { "captures" : {
