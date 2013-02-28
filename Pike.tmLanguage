@@ -2,6 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>fileTypes</key>
+    <array>
+      <string>pike</string>
+      <string>pmod</string>
+    </array>
+    <key>firstLineMatch</key>
+    <string>-[*]-( Mode:)? Pike -[*]-</string>
+    <key>foldingStartMarker</key>
+    <string>(?x)
+		 /\*\*(?!\*)
+		|^(?![^{]*?//|[^{]*?/\*(?!.*?\*/.*?\{)).*?
+		\{\s*($|//|/\*(?!.*?\*/.*\S))</string>
+    <key>foldingStopMarker</key>
+    <string>(?&lt;!\*)\n\*\*/|^\s*\}</string>
+    <key>keyEquivalent</key>
+    <string>^~C</string>
+    <key>name</key>
+    <string>Pike</string>
     <key>patterns</key>
     <array>
       <dict>
@@ -23,24 +41,24 @@
       <dict>
         <key>comment</key>
         <string>Control flow keywords</string>
-        <key>name</key>
-        <string>keyword.control.pike</string>
         <key>match</key>
         <string>\b(if|else|while|for|foreach|do|return|continue|break|switch|case|default|goto|catch|lambda|gauge)\b</string>
+        <key>name</key>
+        <string>keyword.control.pike</string>
       </dict>
       <dict>
-        <key>name</key>
-        <string>storage.type.pike</string>
         <key>match</key>
         <string>\b(enum|float|int|typedef|void|object|class|mapping|string|array|multiset|mixed|function)\b</string>
+        <key>name</key>
+        <string>storage.type.pike</string>
       </dict>
       <dict>
         <key>comment</key>
         <string>Modifiers</string>
-        <key>name</key>
-        <string>storage.modifier.pike</string>
         <key>match</key>
         <string>\b(public|protected|private|static|constant)\b</string>
+        <key>name</key>
+        <string>storage.modifier.pike</string>
       </dict>
       <dict>
         <key>include</key>
@@ -49,21 +67,31 @@
       <dict>
         <key>comment</key>
         <string>Numeric values</string>
-        <key>name</key>
-        <string>constant.numeric.pike</string>
         <key>match</key>
         <string>\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)\b</string>
+        <key>name</key>
+        <string>constant.numeric.pike</string>
       </dict>
       <dict>
         <key>comment</key>
         <string>Language constants</string>
-        <key>name</key>
-        <string>constant.language.pike</string>
         <key>match</key>
         <string>\b(UNDEFINED|__LINE__|__FILE__)\b</string>
+        <key>name</key>
+        <string>constant.language.pike</string>
       </dict>
       <dict>
         <key>begin</key>
+        <string>\"</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>0</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.definition.string.begin.pike</string>
+          </dict>
+        </dict>
+        <key>end</key>
         <string>\"</string>
         <key>endCaptures</key>
         <dict>
@@ -73,6 +101,8 @@
             <string>punctuation.definition.string.end.pike</string>
           </dict>
         </dict>
+        <key>name</key>
+        <string>string.quoted.double.pike</string>
         <key>patterns</key>
         <array>
           <dict>
@@ -84,10 +114,10 @@
             <string>#string_placeholder</string>
           </dict>
         </array>
-        <key>end</key>
-        <string>\"</string>
-        <key>name</key>
-        <string>string.quoted.double.pike</string>
+      </dict>
+      <dict>
+        <key>begin</key>
+        <string>'</string>
         <key>beginCaptures</key>
         <dict>
           <key>0</key>
@@ -96,9 +126,7 @@
             <string>punctuation.definition.string.begin.pike</string>
           </dict>
         </dict>
-      </dict>
-      <dict>
-        <key>begin</key>
+        <key>end</key>
         <string>'</string>
         <key>endCaptures</key>
         <dict>
@@ -108,6 +136,8 @@
             <string>punctuation.definition.string.end.pike</string>
           </dict>
         </dict>
+        <key>name</key>
+        <string>string.quoted.single.pike</string>
         <key>patterns</key>
         <array>
           <dict>
@@ -115,68 +145,8 @@
             <string>#string_escaped_char</string>
           </dict>
         </array>
-        <key>end</key>
-        <string>'</string>
-        <key>name</key>
-        <string>string.quoted.single.pike</string>
-        <key>beginCaptures</key>
-        <dict>
-          <key>0</key>
-          <dict>
-            <key>name</key>
-            <string>punctuation.definition.string.begin.pike</string>
-          </dict>
-        </dict>
       </dict>
       <dict>
-        <key>patterns</key>
-        <array>
-          <dict>
-            <key>name</key>
-            <string>punctuation.separator.continuation.pike</string>
-            <key>match</key>
-            <string>(?&gt;\\\s*\n)</string>
-          </dict>
-          <dict>
-            <key>include</key>
-            <string>$base</string>
-          </dict>
-        </array>
-        <key>end</key>
-        <string>(?=(?://|/\*))|$</string>
-        <key>beginCaptures</key>
-        <dict>
-          <key>1</key>
-          <dict>
-            <key>name</key>
-            <string>keyword.control.import.define.pike</string>
-          </dict>
-          <key>5</key>
-          <dict>
-            <key>name</key>
-            <string>variable.parameter.preprocessor.pike</string>
-          </dict>
-          <key>4</key>
-          <dict>
-            <key>name</key>
-            <string>punctuation.definition.parameters.pike</string>
-          </dict>
-          <key>8</key>
-          <dict>
-            <key>name</key>
-            <string>punctuation.definition.parameters.pike</string>
-          </dict>
-          <key>7</key>
-          <dict>
-            <key>name</key>
-            <string>punctuation.separator.parameters.pike</string>
-          </dict>
-          <key>2</key>
-          <dict>
-            <key>name</key>
-            <string>entity.name.function.preprocessor.pike</string>
-          </dict>
-        </dict>
         <key>begin</key>
         <string>(?x)
                  ^\s*\#\s*(define)\s+           # define
@@ -190,21 +160,60 @@
                      )
                    (\))                             # a close parenthesis
                  )?</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>keyword.control.import.define.pike</string>
+          </dict>
+          <key>2</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.function.preprocessor.pike</string>
+          </dict>
+          <key>4</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.definition.parameters.pike</string>
+          </dict>
+          <key>5</key>
+          <dict>
+            <key>name</key>
+            <string>variable.parameter.preprocessor.pike</string>
+          </dict>
+          <key>7</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.separator.parameters.pike</string>
+          </dict>
+          <key>8</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.definition.parameters.pike</string>
+          </dict>
+        </dict>
+        <key>end</key>
+        <string>(?=(?://|/\*))|$</string>
         <key>name</key>
         <string>meta.preprocessor.macro.pike</string>
-      </dict>
-      <dict>
         <key>patterns</key>
         <array>
           <dict>
-            <key>name</key>
-            <string>punctuation.separator.continuation.pike</string>
             <key>match</key>
             <string>(?&gt;\\\s*\n)</string>
+            <key>name</key>
+            <string>punctuation.separator.continuation.pike</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>$base</string>
           </dict>
         </array>
-        <key>end</key>
-        <string>$</string>
+      </dict>
+      <dict>
+        <key>begin</key>
+        <string>^\s*#\s*(error|warning)\b</string>
         <key>captures</key>
         <dict>
           <key>1</key>
@@ -213,71 +222,23 @@
             <string>keyword.control.import.error.pike</string>
           </dict>
         </dict>
-        <key>begin</key>
-        <string>^\s*#\s*(error|warning)\b</string>
+        <key>end</key>
+        <string>$</string>
         <key>name</key>
         <string>meta.preprocessor.diagnostic.pike</string>
-      </dict>
-      <dict>
         <key>patterns</key>
         <array>
           <dict>
-            <key>name</key>
-            <string>punctuation.separator.continuation.pike</string>
             <key>match</key>
             <string>(?&gt;\\\s*\n)</string>
-          </dict>
-          <dict>
-            <key>endCaptures</key>
-            <dict>
-              <key>0</key>
-              <dict>
-                <key>name</key>
-                <string>punctuation.definition.string.end.pike</string>
-              </dict>
-            </dict>
-            <key>end</key>
-            <string>\"</string>
-            <key>beginCaptures</key>
-            <dict>
-              <key>0</key>
-              <dict>
-                <key>name</key>
-                <string>punctuation.definition.string.begin.pike</string>
-              </dict>
-            </dict>
-            <key>begin</key>
-            <string>\"</string>
             <key>name</key>
-            <string>string.quoted.double.include.pike</string>
-          </dict>
-          <dict>
-            <key>endCaptures</key>
-            <dict>
-              <key>0</key>
-              <dict>
-                <key>name</key>
-                <string>punctuation.definition.string.end.pike</string>
-              </dict>
-            </dict>
-            <key>end</key>
-            <string>&gt;</string>
-            <key>beginCaptures</key>
-            <dict>
-              <key>0</key>
-              <dict>
-                <key>name</key>
-                <string>punctuation.definition.string.begin.pike</string>
-              </dict>
-            </dict>
-            <key>begin</key>
-            <string>&lt;</string>
-            <key>name</key>
-            <string>string.quoted.other.lt-gt.include.pike</string>
+            <string>punctuation.separator.continuation.pike</string>
           </dict>
         </array>
-        <key>end</key>
-        <string>(?=(?://|/\*))|$</string>
+      </dict>
+      <dict>
+        <key>begin</key>
+        <string>^\s*#\s*(include)\b</string>
         <key>captures</key>
         <dict>
           <key>1</key>
@@ -286,25 +247,71 @@
             <string>keyword.control.import.include.pike</string>
           </dict>
         </dict>
-        <key>begin</key>
-        <string>^\s*#\s*(include)\b</string>
+        <key>end</key>
+        <string>(?=(?://|/\*))|$</string>
         <key>name</key>
         <string>meta.preprocessor.pike.include</string>
-      </dict>
-      <dict>
         <key>patterns</key>
         <array>
           <dict>
-            <key>name</key>
-            <string>punctuation.separator.continuation.pike</string>
             <key>match</key>
             <string>(?&gt;\\\s*\n)</string>
+            <key>name</key>
+            <string>punctuation.separator.continuation.pike</string>
+          </dict>
+          <dict>
+            <key>begin</key>
+            <string>\"</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>0</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.definition.string.begin.pike</string>
+              </dict>
+            </dict>
+            <key>end</key>
+            <string>\"</string>
+            <key>endCaptures</key>
+            <dict>
+              <key>0</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.definition.string.end.pike</string>
+              </dict>
+            </dict>
+            <key>name</key>
+            <string>string.quoted.double.include.pike</string>
+          </dict>
+          <dict>
+            <key>begin</key>
+            <string>&lt;</string>
+            <key>beginCaptures</key>
+            <dict>
+              <key>0</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.definition.string.begin.pike</string>
+              </dict>
+            </dict>
+            <key>end</key>
+            <string>&gt;</string>
+            <key>endCaptures</key>
+            <dict>
+              <key>0</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.definition.string.end.pike</string>
+              </dict>
+            </dict>
+            <key>name</key>
+            <string>string.quoted.other.lt-gt.include.pike</string>
           </dict>
         </array>
-        <key>name</key>
-        <string>meta.preprocessor.pike</string>
-        <key>end</key>
-        <string>(?=(?://|/\*))|$</string>
+      </dict>
+      <dict>
+        <key>begin</key>
+        <string>^\s*#\s*(define|defined|elif|else|if|ifdef|ifndef|line|pragma|undef|endif)\b</string>
         <key>captures</key>
         <dict>
           <key>1</key>
@@ -313,51 +320,21 @@
             <string>keyword.control.import.pike</string>
           </dict>
         </dict>
-        <key>begin</key>
-        <string>^\s*#\s*(define|defined|elif|else|if|ifdef|ifndef|line|pragma|undef|endif)\b</string>
-      </dict>
-      <dict>
+        <key>end</key>
+        <string>(?=(?://|/\*))|$</string>
+        <key>name</key>
+        <string>meta.preprocessor.pike</string>
         <key>patterns</key>
         <array>
           <dict>
-            <key>include</key>
-            <string>#comments</string>
-          </dict>
-          <dict>
-            <key>include</key>
-            <string>#parens</string>
-          </dict>
-          <dict>
-            <key>name</key>
-            <string>storage.modifier.pike</string>
             <key>match</key>
-            <string>\bconstant\b</string>
-          </dict>
-          <dict>
-            <key>include</key>
-            <string>#block</string>
+            <string>(?&gt;\\\s*\n)</string>
+            <key>name</key>
+            <string>punctuation.separator.continuation.pike</string>
           </dict>
         </array>
-        <key>end</key>
-        <string>(?&lt;=\})|(?=#)|(;)</string>
-        <key>beginCaptures</key>
-        <dict>
-          <key>4</key>
-          <dict>
-            <key>name</key>
-            <string>punctuation.definition.parameters.pike</string>
-          </dict>
-          <key>3</key>
-          <dict>
-            <key>name</key>
-            <string>entity.name.function.pike</string>
-          </dict>
-          <key>1</key>
-          <dict>
-            <key>name</key>
-            <string>punctuation.whitespace.function.leading.pike</string>
-          </dict>
-        </dict>
+      </dict>
+      <dict>
         <key>begin</key>
         <string>(?x)
         (?:  ^                                 # begin-of-line
@@ -372,8 +349,49 @@
           (?: (?&lt;=operator) (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )  # if it is a C++ operator
         )
          \s*(?=\()</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.whitespace.function.leading.pike</string>
+          </dict>
+          <key>3</key>
+          <dict>
+            <key>name</key>
+            <string>entity.name.function.pike</string>
+          </dict>
+          <key>4</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.definition.parameters.pike</string>
+          </dict>
+        </dict>
+        <key>end</key>
+        <string>(?&lt;=\})|(?=#)|(;)</string>
         <key>name</key>
         <string>meta.function.pike</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#comments</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#parens</string>
+          </dict>
+          <dict>
+            <key>match</key>
+            <string>\bconstant\b</string>
+            <key>name</key>
+            <string>storage.modifier.pike</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#block</string>
+          </dict>
+        </array>
       </dict>
       <dict>
         <key>include</key>
@@ -400,39 +418,27 @@
         <string>#singleQuotedString</string>
       </dict>
     </array>
-    <key>foldingStartMarker</key>
-    <string>(?x)
-		 /\*\*(?!\*)
-		|^(?![^{]*?//|[^{]*?/\*(?!.*?\*/.*?\{)).*?
-		\{\s*($|//|/\*(?!.*?\*/.*\S))</string>
-    <key>fileTypes</key>
-    <array>
-      <string>pike</string>
-      <string>pmod</string>
-    </array>
-    <key>scopeName</key>
-    <string>source.pike</string>
-    <key>name</key>
-    <string>Pike</string>
-    <key>uuid</key>
-    <string>f0c5f4ad-3e8a-4add-9ebf-2ce1d5e5262f</string>
-    <key>keyEquivalent</key>
-    <string>^~C</string>
-    <key>foldingStopMarker</key>
-    <string>(?&lt;!\*)\n\*\*/|^\s*\}</string>
     <key>repository</key>
     <dict>
+      <key>builtinTypes</key>
+      <dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>match</key>
+            <string>(?x)\b(float|int|object|mixed|class|mapping|function|void|enum|multiset|array|string)\b</string>
+            <key>name</key>
+            <string>storage.type.source.pike</string>
+          </dict>
+        </array>
+      </dict>
       <key>comments</key>
       <dict>
         <key>patterns</key>
         <array>
           <dict>
-            <key>end</key>
-            <string>\*/n?</string>
             <key>begin</key>
             <string>/\*</string>
-            <key>name</key>
-            <string>comment.block.source.pike</string>
             <key>captures</key>
             <dict>
               <key>0</key>
@@ -441,12 +447,12 @@
                 <string>punctuation.definition.comment.source.pike</string>
               </dict>
             </dict>
+            <key>end</key>
+            <string>\*/?</string>
+            <key>name</key>
+            <string>comment.block.source.pike</string>
           </dict>
           <dict>
-            <key>match</key>
-            <string>(//).*$\n?</string>
-            <key>name</key>
-            <string>comment.line.double-slash.source.pike</string>
             <key>captures</key>
             <dict>
               <key>1</key>
@@ -455,23 +461,17 @@
                 <string>punctuation.definition.comment.source.pike</string>
               </dict>
             </dict>
-          </dict>
-        </array>
-      </dict>
-      <key>builtinTypes</key>
-      <dict>
-        <key>patterns</key>
-        <array>
-          <dict>
-            <key>name</key>
-            <string>storage.type.source.pike</string>
             <key>match</key>
-            <string>(?x)\b(float|int|object|mixed|class|mapping|function|void|enum|multiset|array|string)\b</string>
+            <string>(//).*$\n?</string>
+            <key>name</key>
+            <string>comment.line.double-slash.source.pike</string>
           </dict>
         </array>
       </dict>
     </dict>
-    <key>firstLineMatch</key>
-    <string>-[*]-( Mode:)? Pike -[*]-</string>
+    <key>scopeName</key>
+    <string>source.pike</string>
+    <key>uuid</key>
+    <string>f0c5f4ad-3e8a-4add-9ebf-2ce1d5e5262f</string>
   </dict>
 </plist>
