@@ -223,7 +223,8 @@ mixed encode_xml(mixed in)
 
       add(tag1(type));
 
-      foreach (in; string key; mixed value) {
+      foreach (sort(indices(in)), string key) {
+        mixed value = in[key];
         level++;
         tag("key", key);
         encode_xml(value);
