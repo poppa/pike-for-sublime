@@ -93,7 +93,7 @@
           "name" : "punctuation.definition.string.begin.pike"
         }
       },
-      "end" : "\\\"",
+      "end" : "(?<!\\\\)\\\"",
       "endCaptures" : {
         "0" : {
           "name" : "punctuation.definition.string.end.pike"
@@ -309,7 +309,7 @@
           },
           "name" : "comment.block.$scopeName",
           "begin" : "/\\*",
-          "end" : "\\*/?"
+          "end" : "\\*/"
         },
 
         { "captures" : {

@@ -92,7 +92,7 @@
           </dict>
         </dict>
         <key>end</key>
-        <string>\"</string>
+        <string>(?&lt;!\\)\"</string>
         <key>endCaptures</key>
         <dict>
           <key>0</key>
@@ -448,7 +448,7 @@
               </dict>
             </dict>
             <key>end</key>
-            <string>\*/?</string>
+            <string>\*/</string>
             <key>name</key>
             <string>comment.block.source.pike</string>
           </dict>
