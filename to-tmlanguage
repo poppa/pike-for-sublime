@@ -64,6 +64,10 @@ int level = 1; // Indentation level of the XML file
 Regexp.PCRE comment_re = Regexp.PCRE("^[ \t]*//-.*$", 
                                      Regexp.PCRE.OPTION.MULTILINE);
 
+// Replace the most common control characters to make the JSON parser happy
+#define newline_marker "__NEWLINE_MARKER__"
+#define tab_marker "__TAB_MARKER__"
+
 int main(int argc, array(string) argv)
 {
   if (argc < 2) {
@@ -94,6 +98,7 @@ int main(int argc, array(string) argv)
 
 #ifdef DEBUG
   werror("%s\n", file_content);
+  Stdio.write_file(file+".debug", file_content);
   return 0;
 #endif
 
@@ -183,11 +188,16 @@ string fix_multiline(string s)
     // that will make the JSON parser happy. Mumbojumbo will be replaced with
     // a real newline in the end result.
     if (in_str && s[pos] == '\n')
-      ns += "\0\1";
+      ns += newline_marker;
+    else if (in_str && s[pos] == '\t')
+      ns += tab_marker;
     else
       ns += s[pos..pos];
 
   } while (pos++ < len);
+
+  // Remove null padding
+  ns = ns[..sizeof(ns)-2];
 
   return ns;
 }
@@ -239,7 +249,7 @@ mixed encode_xml(mixed in)
       break;
 
     case "string":
-      in = replace(in, "\0\1", "\n");
+      in = replace(in, ({ newline_marker, tab_marker }), ({ "\n", "\t" }));
     case "float":
     case "int":
 
