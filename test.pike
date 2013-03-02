@@ -13,11 +13,14 @@ multi2";
 #error
 #endif
 
+some_prototype(multiset m,         mapping m2,             array a, string s, float f, int i);
+another_prototype(multiset(int) m, mapping(string:int) m2, array a, string s, float f, int i);
+
 void main(int argc, array(string) argv) {
 	string bar = "bar";
 	string foo ="foo";
 
-	function_call("string", other("string"), "string", 1); // Missing function-call something.
+	function_call("string", other("string"), "string", 1);
 
 	for (int i=0; i < 10; i++) {
 		write("i: %d" + i);
@@ -27,6 +30,11 @@ void main(int argc, array(string) argv) {
 
 	foreach ( ({}) ) {
 		break;
+	}
+
+	function f = lambda(int i, string s) {
+		string bar = "";
+		return;
 	}
 
 	string fnutt = "string\"foo'bar\n";

@@ -243,6 +243,8 @@
       ]
     },
 
+    { "include" : "#block" },
+
     //- Function declaration and body
 
     { "name" : "meta.function.pike",
@@ -282,24 +284,15 @@
 
     //- Includes
 
-    { "include" : "#block" },
-    { "include" : "#pragma.mark" },
-    { "include" : "#builtinTypes" },
-    { "include" : "#doubleQuotedStringLiteral" },
-    { "include" : "#doubleQuotedString" },
-    { "include" : "#singleQuotedString" }
+//-    { "include" : "#block" },
+//-    { "include" : "#pragma.mark" },
+//-    { "include" : "#builtinTypes" },
+//-    { "include" : "#doubleQuotedStringLiteral" },
+//-    { "include" : "#doubleQuotedString" },
+//-    { "include" : "#singleQuotedString" }
   ],
 
   "repository" : {
-
-    "builtinTypes" : {
-      "patterns" : [
-        { "match" : "(?x)\\b(float|int|object|mixed|class|mapping|function|" \
-                    "void|enum|multiset|array|string)\\b",
-          "name" : "storage.type.$scopeName"
-        }
-      ]
-    },
 
     "comments" : {
       "patterns" : [
@@ -338,6 +331,32 @@
       "begin" : "\\{",
       "end" : "\\}",
       "patterns" : [
+        { "include" : "#block_innards" }
+      ]
+    },
+    "block_innards" : {
+      "patterns" : [
+        {
+          "name" : "meta.function-call.$scopeName",
+          "match" : #"(?x)
+                     (?: (?= \\s )  (?:(?<=else|new|return) | (?<!\\w)) (\\s+))?
+                     (\\b
+                      (?!(while|for|do|if|else|switch|catch|enumerate|return)\\s*\\()(?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\\b | :: )++    # actual name
+                     )
+                     \\s*(\\()",
+          "captures" : {
+            "1" : {
+              "name" : "punctuation.whitespace.function-call.leading.$scopeName"
+            },
+            "2" : {
+              "name" : "support.function.any-method.$scopeName"
+            },
+            "3" : {
+              "name" : "punctuation.definition.parameters.$scopeName"
+            }
+          }
+        },
+        { "include" : "#block" },
         { "include" : "$base" }
       ]
     }

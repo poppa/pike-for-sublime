@@ -335,6 +335,10 @@
         </array>
       </dict>
       <dict>
+        <key>include</key>
+        <string>#block</string>
+      </dict>
+      <dict>
         <key>begin</key>
         <string>(?x)
         (?:  ^                                 # begin-of-line
@@ -392,30 +396,6 @@
           </dict>
         </array>
       </dict>
-      <dict>
-        <key>include</key>
-        <string>#block</string>
-      </dict>
-      <dict>
-        <key>include</key>
-        <string>#pragma.mark</string>
-      </dict>
-      <dict>
-        <key>include</key>
-        <string>#builtinTypes</string>
-      </dict>
-      <dict>
-        <key>include</key>
-        <string>#doubleQuotedStringLiteral</string>
-      </dict>
-      <dict>
-        <key>include</key>
-        <string>#doubleQuotedString</string>
-      </dict>
-      <dict>
-        <key>include</key>
-        <string>#singleQuotedString</string>
-      </dict>
     </array>
     <key>repository</key>
     <dict>
@@ -431,19 +411,50 @@
         <array>
           <dict>
             <key>include</key>
-            <string>$base</string>
+            <string>#block_innards</string>
           </dict>
         </array>
       </dict>
-      <key>builtinTypes</key>
+      <key>block_innards</key>
       <dict>
         <key>patterns</key>
         <array>
           <dict>
+            <key>captures</key>
+            <dict>
+              <key>1</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.whitespace.function-call.leading.source.pike</string>
+              </dict>
+              <key>2</key>
+              <dict>
+                <key>name</key>
+                <string>support.function.any-method.source.pike</string>
+              </dict>
+              <key>3</key>
+              <dict>
+                <key>name</key>
+                <string>punctuation.definition.parameters.source.pike</string>
+              </dict>
+            </dict>
             <key>match</key>
-            <string>(?x)\b(float|int|object|mixed|class|mapping|function|void|enum|multiset|array|string)\b</string>
+            <string>(?x)
+                     (?: (?= \s )  (?:(?&lt;=else|new|return) | (?&lt;!\w)) (\s+))?
+                     (\b
+                      (?!(while|for|do|if|else|switch|catch|enumerate|return)\s*\()(?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\b | :: )++    # actual name
+                     )
+                     \s*(\()</string>
             <key>name</key>
-            <string>storage.type.source.pike</string>
+            <string>meta.function-call.source.pike</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#block</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>$base</string>
           </dict>
         </array>
       </dict>
