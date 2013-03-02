@@ -14,10 +14,10 @@ multi2";
 #endif
 
 void main(int argc, array(string) argv) {
-	string bar = "bar"; // No colors here
+	string bar = "bar";
 	string foo ="foo";
 
-	function_foo("string");
+	function_call("string", other("string"), "string", 1); // Missing function-call something.
 
 	for (int i=0; i < 10; i++) {
 		write("i: %d" + i);

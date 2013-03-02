@@ -345,8 +345,7 @@
         )
         (\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|object|int|float|function|mapping|array|multiset)\s*\()
         (
-          (?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++ |                  # actual name
-          (?: (?&lt;=operator) (?: [-*&amp;&lt;&gt;=+!]+ | \(\) | \[\] ) )  # if it is a C++ operator
+          (?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++                    # actual name
         )
          \s*(?=\()</string>
         <key>beginCaptures</key>
@@ -420,6 +419,22 @@
     </array>
     <key>repository</key>
     <dict>
+      <key>block</key>
+      <dict>
+        <key>begin</key>
+        <string>\{</string>
+        <key>end</key>
+        <string>\}</string>
+        <key>name</key>
+        <string>meta.block.source.pike</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>$base</string>
+          </dict>
+        </array>
+      </dict>
       <key>builtinTypes</key>
       <dict>
         <key>patterns</key>
@@ -465,6 +480,22 @@
             <string>(//).*$\n?</string>
             <key>name</key>
             <string>comment.line.double-slash.source.pike</string>
+          </dict>
+        </array>
+      </dict>
+      <key>parens</key>
+      <dict>
+        <key>begin</key>
+        <string>\(</string>
+        <key>end</key>
+        <string>\)</string>
+        <key>name</key>
+        <string>meta.parens.source.pike</string>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>$base</string>
           </dict>
         </array>
       </dict>

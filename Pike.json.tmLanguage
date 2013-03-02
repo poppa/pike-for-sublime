@@ -243,6 +243,8 @@
       ]
     },
 
+    //- Function declaration and body
+
     { "name" : "meta.function.pike",
       "begin" : #"(?x)
         (?:  ^                                 # begin-of-line
@@ -253,8 +255,7 @@
         )
         (\\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|object|int|float|function|mapping|array|multiset)\\s*\\()
         (
-          (?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++ |                  # actual name
-          (?: (?<=operator) (?: [-*&<>=+!]+ | \\(\\) | \\[\\] ) )  # if it is a C++ operator
+          (?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++                    # actual name
         )
          \\s*(?=\\()",
       "beginCaptures" : {
@@ -320,6 +321,24 @@
           "name" : "comment.line.double-slash.$scopeName",
           "match" : "(//).*$\\n?"
         }
+      ]
+    },
+
+    "parens" : {
+      "name" : "meta.parens.$scopeName",
+      "begin" : "\\(",
+      "end" : "\\)",
+      "patterns" : [
+        { "include" : "$base" }
+      ]
+    },
+
+    "block" : {
+      "name" : "meta.block.$scopeName",
+      "begin" : "\\{",
+      "end" : "\\}",
+      "patterns" : [
+        { "include" : "$base" }
       ]
     }
   },
