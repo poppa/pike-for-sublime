@@ -43,5 +43,7 @@ void main(int argc, array(string) argv) {
 	string hash = "foo#"+ 2 + #"newline
 	in this string";
 
+  string slash = "\\"; // FIXME
+
 	return;
 }
