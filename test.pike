@@ -13,6 +13,8 @@ multi2";
 #error
 #endif
 
+#define roxen roxenp()
+
 some_prototype(multiset m,         mapping m2,             array a, string s, float f, int i);
 another_prototype(multiset(int) m, mapping(string:int) m2, array a, string s, float f, int i);
 
