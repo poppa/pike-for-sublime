@@ -46,6 +46,7 @@ void main(int argc, array(string) argv) {
 	in this string";
 
 	string slash = "\\back\\"\"\\";
+	string back_and_fnutt = "\\\"string";
 
 	return;
 }
