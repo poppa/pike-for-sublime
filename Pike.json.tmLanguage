@@ -29,12 +29,12 @@
 { "name": "Pike",
   "scopeName" : "source.pike",
   "fileTypes" : ["pike", "pmod"],
-  "firstLineMatch" : "-[*]-( Mode:)? Pike -[*]-", 
+  "firstLineMatch" : "(-[*]-( [Mm]ode:)? [Pp]ike -[*]-|^#!/.*\\bpike\\b)",
   "foldingStartMarker" : #"(?x)
-		 /\*\*(?!\*)
-		|^(?![^{]*?//|[^{]*?/\*(?!.*?\*/.*?\{)).*?
-		\{\s*($|//|/\*(?!.*?\*/.*\S))",
-  "foldingStopMarker" : "(?<!\*)\n\*\*/|^\s*\}",
+		 /\\*\\*(?!\\*)
+		|^(?![^{]*?//|[^{]*?/\\*(?!.*?\\*/.*?\\{)).*?
+		\\{\\s*($|//|/\\*(?!.*?\\*/.*\\S))",
+  "foldingStopMarker" : "(?<!\\*)\\n\\*\\*/|^\\s*\\}",
   "keyEquivalent" : "^~C",
   "patterns" : [
 
@@ -45,20 +45,20 @@
     
     //- Control flow
 
-    { "match" : "\b(if|else|while|for|foreach|do|return|continue|break|" \
-                "switch|case|default|goto|catch|lambda|gauge)\b",
+    { "match" : "\\b(if|else|while|for|foreach|do|return|continue|break|" \
+                "switch|case|default|goto|catch|lambda|gauge)\\b",
       "name" : "keyword.control.pike",
       "comment" : "Control flow keywords"
     },
     
-    { "match" : "\b(enum|float|int|typedef|void|object|class|mapping|string" \
-                "|array|multiset|mixed|function)\b",
+    { "match" : "\\b(enum|float|int|typedef|void|object|class|mapping|string" \
+                "|array|multiset|mixed|function)\\b",
       "name" : "storage.type.pike"
     },
 
     //- Modifiers
 
-    { "match" : "\b(public|protected|private|static|constant)\b",
+    { "match" : "\\b(public|protected|private|static|constant)\\b",
       "name" : "storage.modifier.pike",
       "comment" : "Modifiers"
     },
@@ -67,15 +67,15 @@
     
     //- Numeric
 
-    { "match" : "\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))" \
-                "((e|E)(\+|-)?[0-9]+)?)\b",
+    { "match" : "\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))" \
+                "((e|E)(\\+|-)?[0-9]+)?)\\b",
       "name" : "constant.numeric.pike",
       "comment" : "Numeric values"
     },
 
     //- Language constants
 
-    { "match" : "\b(UNDEFINED|__LINE__|__FILE__)\b",
+    { "match" : "\\b(UNDEFINED|__LINE__|__FILE__)\\b",
       "name"  : "constant.language.pike",
       "comment" : "Language constants"
     },
@@ -87,13 +87,13 @@
         { "include" : "#string_escaped_char" },
         { "include" : "#string_placeholder" }
       ],
-      "begin" : "\"",
+      "begin" : "\\\"",
       "beginCaptures" : {
         "0" : {
           "name" : "punctuation.definition.string.begin.pike"
         }
       },
-      "end" : "\"",
+      "end" : "(?:(?<=\\\\\\\\)|(?<!\\\\))\\\"",
       "endCaptures" : {
         "0" : {
           "name" : "punctuation.definition.string.end.pike"
@@ -125,16 +125,16 @@
 
     { "name" : "meta.preprocessor.macro.pike",
       "begin" : #"(?x)
-                 ^\s*\#\s*(define)\s+               # define
+                 ^\\s*\\#\\s*(define)\\s+           # define
                  ((?<id>[a-zA-Z_][a-zA-Z0-9_]*))    # macro name
                  (?:                                # and optionally:
-                   (\()                             # an open parenthesis
+                   (\\()                            # an open parenthesis
                      (
-                       \s* \g<id> \s*               # first argument
-                       ((,) \s* \g<id> \s*)*        # additional arguments
-                       (?:\.\.\.)?                  # varargs ellipsis?
+                       \\s* \\g<id> \\s*            # first argument
+                       ((,) \\s* \\g<id> \\s*)*     # additional arguments
+                       (?:\\.\\.\\.)?               # varargs ellipsis?
                      )
-                   (\))                             # a close parenthesis
+                   (\\))                             # a close parenthesis
                  )?",
       "beginCaptures" : {
         "1" : {
@@ -156,9 +156,9 @@
           "name" : "punctuation.definition.parameters.pike"
         }
       },
-      "end" : "(?=(?://|/\*))|$",
+      "end" : "(?=(?://|/\\*))|$",
       "patterns" : [
-        { "match" : "(?>\\\s*\n)",
+        { "match" : "(?>\\\\\\s*\\n)",
           "name" : "punctuation.separator.continuation.pike"
         },
         { "include" : "$base" }
@@ -168,7 +168,7 @@
     //- error, warning macro
 
     { "name" : "meta.preprocessor.diagnostic.pike",
-      "begin" : "^\s*#\s*(error|warning)\b",
+      "begin" : "^\\s*#\\s*(error|warning)\\b",
       "captures" : {
         "1" : {
           "name" : "keyword.control.import.error.pike"
@@ -176,7 +176,7 @@
       },
       "end" : "$",
       "patterns" : [
-        { "match" : "(?>\\\s*\n)",
+        { "match" : "(?>\\\\\\s*\\n)",
           "name" : "punctuation.separator.continuation.pike"
         }
       ]
@@ -185,25 +185,25 @@
     //- include
 
     { "name" : "meta.preprocessor.pike.include",
-      "begin" : "^\s*#\s*(include)\b",
+      "begin" : "^\\s*#\\s*(include)\\b",
       "captures" : {
         "1" : {
           "name" : "keyword.control.import.include.pike"
         }
       },
-      "end" : "(?=(?://|/\*))|$",
+      "end" : "(?=(?://|/\\*))|$",
       "patterns" : [
-        { "match" : "(?>\\\s*\n)",
+        { "match" : "(?>\\\\\\s*\\n)",
           "name" : "punctuation.separator.continuation.pike"
         },
         { "name" : "string.quoted.double.include.pike",
-          "begin" : "\"",
+          "begin" : "\\\"",
           "beginCaptures" : {
             "0" : {
               "name" : "punctuation.definition.string.begin.pike"
             }
           },
-          "end" : "\"",
+          "end" : "\\\"",
           "endCaptures" : {
             "0" : {
               "name" : "punctuation.definition.string.end.pike"
@@ -227,36 +227,39 @@
       ]
     },
 
-    { "begin" : "^\s*#\s*(define|defined|elif|else|if|ifdef|ifndef|" \
-                "line|pragma|undef|endif)\b",
+    { "begin" : "^\\s*#\\s*(define|defined|elif|else|if|ifdef|ifndef|" \
+                "line|pragma|undef|endif)\\b",
       "captures" :  {
         "1" : {
           "name" : "keyword.control.import.pike"
         }
       },
-      "end" : "(?=(?://|/\*))|$",
+      "end" : "(?=(?://|/\\*))|$",
       "name" : "meta.preprocessor.pike",
       "patterns" : [
-        { "match" : "(?>\\\s*\n)",
+        { "match" : "(?>\\\\\\s*\\n)",
           "name" : "punctuation.separator.continuation.pike"
         }
       ]
     },
 
+    { "include" : "#block" },
+
+    //- Function declaration and body
+
     { "name" : "meta.function.pike",
       "begin" : #"(?x)
-    		(?:  ^                                 # begin-of-line
-    		  |
-    		     (?: (?= \s )           (?<!else|return) (?<=\w)      #  or word + space before name
-    		       | (?= \s*[A-Za-z_] ) (?<!&&)       (?<=[*&>])   #  or type modifier before name
-    		     )
-    		)
-    		(\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|object|int|float|function|mapping|array|multiset)\s*\()
-    		(
-    			(?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++ |                  # actual name
-    			(?: (?<=operator) (?: [-*&<>=+!]+ | \(\) | \[\] ) )  # if it is a C++ operator
-    		)
-    		 \s*(?=\()",
+        (?:  ^                                 # begin-of-line
+            |
+             (?: (?= \\s )           (?<!else|return) (?<=\\w)    #  or word + space before name
+               | (?= \\s*[A-Za-z_] ) (?<!&&)       (?<=[*&>])     #  or type modifier before name
+             )
+        )
+        (\\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|object|int|float|function|mapping|array|multiset)\\s*\\()
+        (
+          (?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++                    # actual name
+        )
+         \\s*(?=\\()",
       "beginCaptures" : {
         "1" : {
           "name" : "punctuation.whitespace.function.leading.pike"
@@ -268,37 +271,28 @@
           "name" : "punctuation.definition.parameters.pike"
         }
       },
-      "end" : "(?<=\})|(?=#)|(;)",
+      "end" : "(?<=\\})|(?=#)|(;)",
       "patterns" : [
         { "include" : "#comments" },
         { "include" : "#parens" },
-        { "match" : "\bconstant\b",
+        { "match" : "\\bconstant\\b",
           "name" : "storage.modifier.pike"
         },
         { "include" : "#block" },
       ]
-    }
+    },
 
     //- Includes
 
-    { "include" : "#block" },
-    { "include" : "#pragma.mark" },
-    { "include" : "#builtinTypes" },
-    { "include" : "#doubleQuotedStringLiteral" },
-    { "include" : "#doubleQuotedString" },
-    { "include" : "#singleQuotedString" }
+//-    { "include" : "#block" },
+//-    { "include" : "#pragma.mark" },
+//-    { "include" : "#builtinTypes" },
+//-    { "include" : "#doubleQuotedStringLiteral" },
+//-    { "include" : "#doubleQuotedString" },
+//-    { "include" : "#singleQuotedString" }
   ],
 
   "repository" : {
-
-    "builtinTypes" : {
-      "patterns" : [
-        { "match" : "(?x)\b(float|int|object|mixed|class|mapping|function|" \
-                    "void|enum|multiset|array|string)\b",
-          "name" : "storage.type.$scopeName"
-        }
-      ]
-    },
 
     "comments" : {
       "patterns" : [
@@ -308,8 +302,8 @@
             }
           },
           "name" : "comment.block.$scopeName",
-          "begin" : "/\*",
-          "end" : "\*/n?"
+          "begin" : "/\\*",
+          "end" : "\\*/"
         },
 
         { "captures" : {
@@ -318,8 +312,52 @@
             }
           },
           "name" : "comment.line.double-slash.$scopeName",
-          "match" : "(//).*$\n?"
+          "match" : "(//).*$\\n?"
         }
+      ]
+    },
+
+    "parens" : {
+      "name" : "meta.parens.$scopeName",
+      "begin" : "\\(",
+      "end" : "\\)",
+      "patterns" : [
+        { "include" : "$base" }
+      ]
+    },
+
+    "block" : {
+      "name" : "meta.block.$scopeName",
+      "begin" : "\\{",
+      "end" : "\\}",
+      "patterns" : [
+        { "include" : "#block_innards" }
+      ]
+    },
+    "block_innards" : {
+      "patterns" : [
+        {
+          "name" : "meta.function-call.$scopeName",
+          "match" : #"(?x)
+                     (?: (?= \\s )  (?:(?<=else|new|return) | (?<!\\w)) (\\s+))?
+                     (\\b
+                      (?!(while|for|do|if|else|switch|catch|enumerate|return)\\s*\\()(?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\\b | :: )++    # actual name
+                     )
+                     \\s*(\\()",
+          "captures" : {
+            "1" : {
+              "name" : "punctuation.whitespace.function-call.leading.$scopeName"
+            },
+            "2" : {
+              "name" : "support.function.any-method.$scopeName"
+            },
+            "3" : {
+              "name" : "punctuation.definition.parameters.$scopeName"
+            }
+          }
+        },
+        { "include" : "#block" },
+        { "include" : "$base" }
       ]
     }
   },
