@@ -42,7 +42,7 @@
         <key>comment</key>
         <string>Control flow keywords</string>
         <key>match</key>
-        <string>\b(if|else|while|for|foreach|do|return|continue|break|switch|case|default|goto|catch|lambda|gauge)\b</string>
+        <string>\b(if|else|while|for|foreach|do|return|continue|break|switch|case|default|goto|catch|lambda|gauge|inherit)\b</string>
         <key>name</key>
         <string>keyword.control.pike</string>
       </dict>
@@ -76,7 +76,7 @@
         <key>comment</key>
         <string>Language constants</string>
         <key>match</key>
-        <string>\b(UNDEFINED|__LINE__|__FILE__)\b</string>
+        <string>\b(UNDEFINED|__LINE__|__FILE__|true|false)\b</string>
         <key>name</key>
         <string>constant.language.pike</string>
       </dict>
@@ -349,7 +349,7 @@
         )
         (\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|
                    object|int|float|function|mapping|array|multiset|
-                   lambda)\s*\()
+                   lambda|program|mixed|class)\s*\()
         (
           (?: [A-Za-z_`][A-Za-z0-9_]*+ | :: )++                    # actual name
         )
@@ -445,7 +445,9 @@
                      (?: (?= \s )  (?:(?&lt;=else|new|return) | (?&lt;!\w)) (\s+))?
                      (\b
                       (?!(while|for|do|if|else|foreach|lambda|switch|
-                          catch|enumerate|return)\s*\()
+                          catch|enumerate|return|
+                          mapping|multiset|mixed|int|float|class|function|
+                          string|program|object)\s*\()
                         (?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\b | :: )++    # actual name
                      )
                      \s*(\()</string>
