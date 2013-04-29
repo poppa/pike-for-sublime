@@ -11,9 +11,9 @@
     <string>(-[*]-( [Mm]ode:)? [Pp]ike -[*]-|^#!/.*\bpike\b)</string>
     <key>foldingStartMarker</key>
     <string>(?x)
-		 /\*\*(?!\*)
-		|^(?![^{]*?//|[^{]*?/\*(?!.*?\*/.*?\{)).*?
-		\{\s*($|//|/\*(?!.*?\*/.*\S))</string>
+     /\*\*(?!\*)
+    |^(?![^{]*?//|[^{]*?/\*(?!.*?\*/.*?\{)).*?
+    \{\s*($|//|/\*(?!.*?\*/.*\S))</string>
     <key>foldingStopMarker</key>
     <string>(?&lt;!\*)\n\*\*/|^\s*\}</string>
     <key>keyEquivalent</key>
@@ -311,7 +311,7 @@
       </dict>
       <dict>
         <key>begin</key>
-        <string>^\s*#\s*(define|defined|elif|else|if|ifdef|ifndef|line|pragma|undef|endif)\b</string>
+        <string>^\s*#\s*(define|defined|elif|else|if|ifdef|ifndef|line|pragma|undef|endif|charset)\b</string>
         <key>captures</key>
         <dict>
           <key>1</key>
@@ -347,9 +347,11 @@
                | (?= \s*[A-Za-z_] ) (?&lt;!&amp;&amp;)       (?&lt;=[*&amp;&gt;])     #  or type modifier before name
              )
         )
-        (\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|object|int|float|function|mapping|array|multiset)\s*\()
+        (\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|
+                   object|int|float|function|mapping|array|multiset|
+                   lambda)\s*\()
         (
-          (?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++                    # actual name
+          (?: [A-Za-z_`][A-Za-z0-9_]*+ | :: )++                    # actual name
         )
          \s*(?=\()</string>
         <key>beginCaptures</key>
@@ -442,7 +444,9 @@
             <string>(?x)
                      (?: (?= \s )  (?:(?&lt;=else|new|return) | (?&lt;!\w)) (\s+))?
                      (\b
-                      (?!(while|for|do|if|else|switch|catch|enumerate|return)\s*\()(?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\b | :: )++    # actual name
+                      (?!(while|for|do|if|else|foreach|lambda|switch|
+                          catch|enumerate|return)\s*\()
+                        (?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\b | :: )++    # actual name
                      )
                      \s*(\()</string>
             <key>name</key>

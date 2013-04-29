@@ -1,0 +1,11 @@
+<snippet>
+  <content><![CDATA[
+for (${1:int i}; ${2:i} < ${3}; i++) {
+  ${4}
+}
+]]></content>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <tabTrigger>for</tabTrigger>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <scope>source.pike</scope>
+</snippet>

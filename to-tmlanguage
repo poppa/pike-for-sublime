@@ -46,7 +46,7 @@ function add;
 int level = 1; // Indentation level of the XML file
 
 // Replace < and > with XML entities
-#define rep(X) replace((string)(X), ([ "&" : "&amp;", "<" : "&lt;", ">" : "&gt;" ]))
+#define rep(X) replace((string)(X), ([ "&":"&amp;", "<":"&lt;", ">":"&gt;" ]))
 
 // Create an opening tag
 #define tag1(X) "\n" + ("  " * level) + "<" + X + ">"
@@ -71,7 +71,7 @@ Regexp.PCRE comment_re = Regexp.PCRE("^[ \t]*//-.*$",
 int main(int argc, array(string) argv)
 {
   if (argc < 2) {
-    werror("Missing sublime Syntax file as argument\n");
+    werror("Missing Sublime Syntax file as argument\n");
     return 1;
   }
 
@@ -158,6 +158,19 @@ string fix_multiline(string s)
   s += "\0";
 
   do {
+    // Remove multiline comments like /* ... */
+    if (s[pos] == '/' && s[pos+1] == '*') {
+      pos++;
+
+      while (pos++ < len) {
+        if (s[pos] == '*' && s[pos+1] == '/')
+          break;
+      }
+
+      pos++;
+      continue;
+    }
+
     if (s[pos] == '\\' && s[pos+1] == '\n') {
       // Remove beginning whitespace on next line
       sscanf (reverse(ns), "%*[ \t]%s", ns);
@@ -260,3 +273,7 @@ mixed encode_xml(mixed in)
   }
 }
 
+void|int(0..1) create (mixed one)
+{
+
+}

@@ -31,9 +31,9 @@
   "fileTypes" : ["pike", "pmod"],
   "firstLineMatch" : "(-[*]-( [Mm]ode:)? [Pp]ike -[*]-|^#!/.*\\bpike\\b)",
   "foldingStartMarker" : #"(?x)
-		 /\\*\\*(?!\\*)
-		|^(?![^{]*?//|[^{]*?/\\*(?!.*?\\*/.*?\\{)).*?
-		\\{\\s*($|//|/\\*(?!.*?\\*/.*\\S))",
+     /\\*\\*(?!\\*)
+    |^(?![^{]*?//|[^{]*?/\\*(?!.*?\\*/.*?\\{)).*?
+    \\{\\s*($|//|/\\*(?!.*?\\*/.*\\S))",
   "foldingStopMarker" : "(?<!\\*)\\n\\*\\*/|^\\s*\\}",
   "keyEquivalent" : "^~C",
   "patterns" : [
@@ -228,7 +228,7 @@
     },
 
     { "begin" : "^\\s*#\\s*(define|defined|elif|else|if|ifdef|ifndef|" \
-                "line|pragma|undef|endif)\\b",
+                "line|pragma|undef|endif|charset)\\b",
       "captures" :  {
         "1" : {
           "name" : "keyword.control.import.pike"
@@ -255,9 +255,11 @@
                | (?= \\s*[A-Za-z_] ) (?<!&&)       (?<=[*&>])     #  or type modifier before name
              )
         )
-        (\\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|object|int|float|function|mapping|array|multiset)\\s*\\()
+        (\\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|
+                   object|int|float|function|mapping|array|multiset|
+                   lambda)\\s*\\()
         (
-          (?: [A-Za-z_][A-Za-z0-9_]*+ | :: )++                    # actual name
+          (?: [A-Za-z_`][A-Za-z0-9_]*+ | :: )++                    # actual name
         )
          \\s*(?=\\()",
       "beginCaptures" : {
@@ -341,7 +343,9 @@
           "match" : #"(?x)
                      (?: (?= \\s )  (?:(?<=else|new|return) | (?<!\\w)) (\\s+))?
                      (\\b
-                      (?!(while|for|do|if|else|switch|catch|enumerate|return)\\s*\\()(?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\\b | :: )++    # actual name
+                      (?!(while|for|do|if|else|foreach|lambda|switch|
+                          catch|enumerate|return)\\s*\\()
+                        (?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\\b | :: )++    # actual name
                      )
                      \\s*(\\()",
           "captures" : {
