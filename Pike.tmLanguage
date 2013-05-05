@@ -48,7 +48,7 @@
       </dict>
       <dict>
         <key>match</key>
-        <string>\b(enum|float|int|typedef|void|object|class|mapping|string|array|multiset|mixed|function)\b</string>
+        <string>\b(enum|float|int|typedef|void|object|class|mapping|string|array|multiset|mixed|function|program)\b</string>
         <key>name</key>
         <string>storage.type.pike</string>
       </dict>
@@ -68,7 +68,7 @@
         <key>comment</key>
         <string>Numeric values</string>
         <key>match</key>
-        <string>\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)\b</string>
+        <string>(?:\b|(?&lt;!\.)(?=\.))((0(x|X)[0-9a-fA-F]*)|(0(b|B)[01]+)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)\b</string>
         <key>name</key>
         <string>constant.numeric.pike</string>
       </dict>

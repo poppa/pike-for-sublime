@@ -52,7 +52,7 @@
     },
     
     { "match" : "\\b(enum|float|int|typedef|void|object|class|mapping|string" \
-                "|array|multiset|mixed|function)\\b",
+                "|array|multiset|mixed|function|program)\\b",
       "name" : "storage.type.pike"
     },
 
@@ -67,8 +67,9 @@
     
     //- Numeric
 
-    { "match" : "\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))" \
-                "((e|E)(\\+|-)?[0-9]+)?)\\b",
+    { "match" : "(?:\\b|(?<!\\.)(?=\\.))" \
+                "((0(x|X)[0-9a-fA-F]*)|(0(b|B)[01]+)|" \
+                "(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)\\b",
       "name" : "constant.numeric.pike",
       "comment" : "Numeric values"
     },
