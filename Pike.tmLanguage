@@ -48,7 +48,7 @@
       </dict>
       <dict>
         <key>match</key>
-        <string>\b(enum|float|int|typedef|void|object|class|mapping|string|array|multiset|mixed|function)\b</string>
+        <string>\b(enum|float|int|typedef|void|object|class|mapping|string|array|multiset|mixed|function|program)\b</string>
         <key>name</key>
         <string>storage.type.pike</string>
       </dict>
@@ -56,7 +56,7 @@
         <key>comment</key>
         <string>Modifiers</string>
         <key>match</key>
-        <string>\b(public|protected|private|static|constant)\b</string>
+        <string>\b(public|protected|private|static|constant|local|final)\b</string>
         <key>name</key>
         <string>storage.modifier.pike</string>
       </dict>
@@ -68,7 +68,7 @@
         <key>comment</key>
         <string>Numeric values</string>
         <key>match</key>
-        <string>\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)\b</string>
+        <string>(?:\b|(?&lt;!\.)(?=\.))((0(x|X)[0-9a-fA-F]*)|(0(b|B)[01]+)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)\b</string>
         <key>name</key>
         <string>constant.numeric.pike</string>
       </dict>
@@ -76,7 +76,7 @@
         <key>comment</key>
         <string>Language constants</string>
         <key>match</key>
-        <string>\b(UNDEFINED|__LINE__|__FILE__|true|false)\b</string>
+        <string>\b(UNDEFINED|__LINE__|__FILE__|__DIR__|__VERSION__|__MAJOR__|__MINOR__|__BUILD__|__REAL_VERSION__|__REAL_MAJOR__|__REAL_MINOR__|__REAL_BUILD__|__DATE__|__TIME__|__AUTO_BIGNUM__|__NT__|__PIKE__|__amigaos__|true|false|this|this_program)\b</string>
         <key>name</key>
         <string>constant.language.pike</string>
       </dict>
@@ -311,7 +311,7 @@
       </dict>
       <dict>
         <key>begin</key>
-        <string>^\s*#\s*(define|defined|elif|else|if|ifdef|ifndef|line|pragma|undef|endif|charset)\b</string>
+        <string>^\s*#\s*(define|defined|elif|elseif|else|if|ifdef|ifndef|(line|[0-9]+)|pragma|undef|undefine|endif|charset|pike)\b</string>
         <key>captures</key>
         <dict>
           <key>1</key>
@@ -446,7 +446,7 @@
                      (\b
                       (?!(while|for|do|if|else|foreach|lambda|switch|
                           catch|enumerate|return|
-                          mapping|multiset|mixed|int|float|class|function|
+                          mapping|multiset|mixed|int|float|class|function|array|
                           string|program|object)\s*\()
                         (?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\b | :: )++    # actual name
                      )
