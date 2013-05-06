@@ -52,13 +52,13 @@
     },
     
     { "match" : "\\b(enum|float|int|typedef|void|object|class|mapping|string" \
-                "|array|multiset|mixed|function)\\b",
+                "|array|multiset|mixed|function|program)\\b",
       "name" : "storage.type.pike"
     },
 
     //- Modifiers
 
-    { "match" : "\\b(public|protected|private|static|constant)\\b",
+    { "match" : "\\b(public|protected|private|static|constant|local|final)\\b",
       "name" : "storage.modifier.pike",
       "comment" : "Modifiers"
     },
@@ -67,15 +67,21 @@
     
     //- Numeric
 
-    { "match" : "\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))" \
-                "((e|E)(\\+|-)?[0-9]+)?)\\b",
+    { "match" : "(?:\\b|(?<!\\.)(?=\\.))" \
+                "((0(x|X)[0-9a-fA-F]*)|(0(b|B)[01]+)|" \
+                "(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)\\b",
       "name" : "constant.numeric.pike",
       "comment" : "Numeric values"
     },
 
     //- Language constants
 
-    { "match" : "\\b(UNDEFINED|__LINE__|__FILE__|true|false)\\b",
+    { "match" : "\\b(UNDEFINED|__LINE__|__FILE__|__DIR__|" \
+                "__VERSION__|__MAJOR__|__MINOR__|__BUILD__|" \
+                "__REAL_VERSION__|__REAL_MAJOR__|__REAL_MINOR__|__REAL_BUILD__|" \
+                "__DATE__|__TIME__|" \
+                "__AUTO_BIGNUM__|__NT__|__PIKE__|__amigaos__|" \
+                "true|false|this|this_program)\\b",
       "name"  : "constant.language.pike",
       "comment" : "Language constants"
     },
@@ -227,8 +233,8 @@
       ]
     },
 
-    { "begin" : "^\\s*#\\s*(define|defined|elif|else|if|ifdef|ifndef|" \
-                "line|pragma|undef|endif|charset)\\b",
+    { "begin" : "^\\s*#\\s*(define|defined|elif|elseif|else|if|ifdef|ifndef|" \
+                "(line|[0-9]+)|pragma|undef|undefine|endif|charset|pike)\\b",
       "captures" :  {
         "1" : {
           "name" : "keyword.control.import.pike"
@@ -345,7 +351,7 @@
                      (\\b
                       (?!(while|for|do|if|else|foreach|lambda|switch|
                           catch|enumerate|return|
-                          mapping|multiset|mixed|int|float|class|function|
+                          mapping|multiset|mixed|int|float|class|function|array|
                           string|program|object)\\s*\\()
                         (?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\\b | :: )++    # actual name
                      )
