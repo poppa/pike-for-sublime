@@ -5,7 +5,7 @@
 //-
 //- It also allows for multiline strings which JSON doesn't.
 //- There are two ways to write multiline strings:
-//- 
+//-
 //- 1. A \ at the end of the line will concatenate the next line
 //-    with the previous one.
 //-
@@ -42,7 +42,7 @@
     { "include" : "#preprocessor-rule-disabled" },
     { "include" : "#preprocessor-rule-other" },
     { "include" : "#comments" },
-    
+
     //- Control flow
 
     { "match" : "\\b(if|else|while|for|foreach|do|return|continue|break|" \
@@ -50,7 +50,7 @@
       "name" : "keyword.control.pike",
       "comment" : "Control flow keywords"
     },
-    
+
     { "match" : "\\b(enum|float|int|typedef|void|object|class|mapping|string" \
                 "|array|multiset|mixed|function|program)\\b",
       "name" : "storage.type.pike"
@@ -64,7 +64,7 @@
     },
 
     { "include" : "#sizeof" },
-    
+
     //- Numeric
 
     { "match" : "(?:\\b|(?<!\\.)(?=\\.))" \
@@ -258,14 +258,14 @@
         (?:  ^                                 # begin-of-line
             |
              (?: (?= \\s )           (?<!else|return) (?<=\\w)    #  or word + space before name
-               | (?= \\s*[A-Za-z_] ) (?<!&&)       (?<=[*&>])     #  or type modifier before name
+               | (?= \\s*[A-Za-z_.] ) (?<!&&)       (?<=[\\(\\)])     #  or type modifier before name
              )
         )
         (\\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|
                    object|int|float|function|mapping|array|multiset|
                    lambda|program|mixed|class)\\s*\\()
         (
-          (?: [A-Za-z_`][A-Za-z0-9_]*+ | :: )++                    # actual name
+          (?: [[:alnum:]_`][[:alnum:]_]*+ | :: )++                    # actual name
         )
          \\s*(?=\\()",
       "beginCaptures" : {

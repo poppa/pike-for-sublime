@@ -49,7 +49,7 @@ int level = 1; // Indentation level of the XML file
 #define rep(X) replace((string)(X), ([ "&":"&amp;", "<":"&lt;", ">":"&gt;" ]))
 
 // Create an opening tag
-#define tag1(X) "\n" + ("  " * level) + "<" + X + ">"
+#define tag1(X) "\n" + ("\t" * level) + "<" + X + ">"
 
 // Create a closing tag
 #define tag2(X) "</" + X  + ">"
@@ -61,7 +61,7 @@ int level = 1; // Indentation level of the XML file
 #define end() ("\n" + ("  " * level))
 
 // Regexp for removing our own comments in the JSON file
-Regexp.PCRE comment_re = Regexp.PCRE("^[ \t]*//-.*$", 
+Regexp.PCRE comment_re = Regexp.PCRE("^[ \t]*//-.*$",
                                      Regexp.PCRE.OPTION.MULTILINE);
 
 // Replace the most common control characters to make the JSON parser happy
@@ -193,11 +193,11 @@ string fix_multiline(string s)
       pos++;
       continue;
     }
-    // If in a string and a " if found with no \ before we're at the string end 
+    // If in a string and a " if found with no \ before we're at the string end
     else if (in_str && s[pos] == '"' && s[pos-1] != '\\')
       in_str = 0;
 
-    // If in a string and a newline, remove and replace it with mumbojumbo 
+    // If in a string and a newline, remove and replace it with mumbojumbo
     // that will make the JSON parser happy. Mumbojumbo will be replaced with
     // a real newline in the end result.
     if (in_str && s[pos] == '\n')

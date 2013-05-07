@@ -24,11 +24,27 @@ constant compile_time = __DATE__ "T" __TIME__;
 #error
 #endif
 
+enum MyStuff {
+	ONE = 1,
+	TWO,
+	THREE,
+	N_STUFF
+}
+
 #define roxen roxenp() // Missing semicolon affecting next statement
 void some_prototype(multiset m,         mapping m2,             array a, string s, float f, int i);
 
 void another_prototype(multiset(int) m, mapping(string:int) m2, array a, string s, float f, int i);
 array(array(int)) diff_compare_table(array a, array b);
+
+void löksoppa (multiset lök, int soppa);
+
+class SöndagsStek {}
+
+array(SöndagsStek) get_roast ()
+{
+
+}
 
 class classFoo {
 	inherit classBar;
@@ -45,7 +61,7 @@ class classFoo {
 	}
 
 	int(0..1) odd(mixed in) {
-		return in % 2;
+		catch { return in % 2; };
 	}
 
 	string|int one() { return "1"||1; };
@@ -57,6 +73,17 @@ class classFoo {
 
 constant animal = (program)"animal.pike";
 
+//! Lets add a docblock here and see if we eventually will
+//! parse doc comments
+//!
+//! @param argc
+//!  Number of arguments passed to the method
+//!
+//! @param argv
+//!  Array of actual arguments
+//!
+//! @returns
+//!  Absoluteley nothing
 void main(int argc, array(string) argv) {
 
 
