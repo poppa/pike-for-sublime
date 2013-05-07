@@ -191,7 +191,7 @@
     //- include
 
     { "name" : "meta.preprocessor.pike.include",
-      "begin" : "^\\s*#\\s*(include)\\b",
+      "begin" : "^\\s*#\\s*(include|string)\\b",
       "captures" : {
         "1" : {
           "name" : "keyword.control.import.include.pike"
@@ -234,7 +234,7 @@
     },
 
     { "begin" : "^\\s*#\\s*(define|defined|elif|elseif|else|if|ifdef|ifndef|" \
-                "(line|[0-9]+)|pragma|undef|undefine|endif|charset|pike)\\b",
+                "(line|[0-9]+)|pragma|undef|undefine|endif|charset|pike|string)\\b",
       "captures" :  {
         "1" : {
           "name" : "keyword.control.import.pike"
