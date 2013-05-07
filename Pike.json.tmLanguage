@@ -93,13 +93,14 @@
         { "include" : "#string_escaped_char" },
         { "include" : "#string_placeholder" }
       ],
-      "begin" : "\\\"",
+      "begin" : "\"",
       "beginCaptures" : {
         "0" : {
           "name" : "punctuation.definition.string.begin.pike"
         }
       },
-      "end" : "(?:(?<=\\\\\\\\)|(?<!\\\\))\\\"",
+      /* "end" : "(?:(?<=\\\\\\\\)|(?<!\\\\))\\\"", */
+      "end" : "\"",
       "endCaptures" : {
         "0" : {
           "name" : "punctuation.definition.string.end.pike"
@@ -371,7 +372,40 @@
         { "include" : "#block" },
         { "include" : "$base" }
       ]
+    },
+
+    //- String escape i.e "My \"string\" with newline\n"
+    //-                       ^       ^              ^^
+    "string_escaped_char" : {
+      "patterns" : [{
+        "match" : "\\\\(\\\\|[abefnprtv'\"?]|[0-3]\\d{,2}|[4-7]\\d?|" \
+                  "x[a-fA-F0-9]{,2}|u[a-fA-F0-9]{,4}|U[a-fA-F0-9]{,8})",
+        "name" : "constant.character.escape.pike"
+      },
+      { "match" : "\\\\.",
+        "name" : "invalid.illegal.unknown-escape.pike"
+      }]
+    },
+
+    //- String placeholder i.e sscanf (var, "%4d-%2d-%2d", int y, int m, int d)
+    //-                                      ^^^ ^^^ ^^^
+    "string_placeholder" : {
+      "patterns" : [{
+        "match" : #"(?x)%
+                  (\\d+\\$)?                           # field (argument #)
+                  [#0\\- +']*                          # flags
+                  [,;:_]?                              # separator character (AltiVec)
+                  ((-?\\d+)|\\*(-?\\d+\\$)?)?          # minimum field width
+                  (\\.((-?\\d+)|\\*(-?\\d+\\$)?)?)?    # precision
+                  (hh|h|ll|l|j|t|z|q|L|vh|vl|v|hv|hl)? # length modifier
+                  [diouxXDOUeEfFgGaACcSspn%]           # conversion type",
+        "name" : "constant.other.placeholder.pike"
+      },
+      { "match" : "%",
+        "name" : "invalid.illegal.placeholder.pike"
+      }]
     }
   },
+
   "uuid": "f0c5f4ad-3e8a-4add-9ebf-2ce1d5e5262f"
 }

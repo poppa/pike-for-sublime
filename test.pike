@@ -43,7 +43,7 @@ class SöndagsStek {}
 
 array(SöndagsStek) get_roast ()
 {
-
+	return ({ SöndagsStek() });
 }
 
 class classFoo {
@@ -132,6 +132,7 @@ void main(int argc, array(string) argv) {
 		return;
 	}
 
+	string format_string = sprintf("%d monkeys in a %2s\n", 12, "tree");
 	string fnutt = "string\"foo'bar\n";
 	int char = 'N'; // 78
 
@@ -139,7 +140,7 @@ void main(int argc, array(string) argv) {
 	in this string";
 
 	string slash = "\\back\\"\"\\";
-	string back_and_fnutt = "\\\"string"; // Fail!
+	string back_and_fnutt = "\\\"string"; // Fail! No It's OK now ;)
 
 	return;
 }

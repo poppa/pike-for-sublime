@@ -19,7 +19,7 @@
 //! { "name" : "Lang",
 //!   "scopeName" : "source.lang",
 //!   "uuid" : "#uuid",
-//"   "test" : "some.stuff.$scopeName"
+//!   "test" : "some.stuff.$scopeName"
 //! }
 //!
 //! Will result in
