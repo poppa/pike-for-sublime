@@ -132,7 +132,7 @@ void main(int argc, array(string) argv) {
 		return;
 	}
 
-	string format_string = sprintf("%d monkeys in a %2s\n", 12, "tree");
+	string format_string = sprintf("%d monkeys in a %2s %*s %[0]d\n", 12, "tree");
 	string fnutt = "string\"foo'bar\n";
 	int char = 'N'; // 78
 
