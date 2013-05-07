@@ -24,10 +24,11 @@ constant compile_time = __DATE__ "T" __TIME__;
 #error
 #endif
 
-#define roxen roxenp()
+#define roxen roxenp() // Missing semicolon affecting next statement
+void some_prototype(multiset m,         mapping m2,             array a, string s, float f, int i);
 
-some_prototype(multiset m,         mapping m2,             array a, string s, float f, int i);
-another_prototype(multiset(int) m, mapping(string:int) m2, array a, string s, float f, int i);
+void another_prototype(multiset(int) m, mapping(string:int) m2, array a, string s, float f, int i);
+array(array(int)) diff_compare_table(array a, array b);
 
 class classFoo {
 	inherit classBar;
@@ -42,6 +43,12 @@ class classFoo {
 
 	mixed `()(function fun) {     // Now the parantheses are geting tricky...
 	}
+
+	int(0..1) odd(mixed in) {
+		return in % 2;
+	}
+
+	string|int one() { return "1"||1; };
 
 	object _this = this;
 	program _this_program = this_program;
