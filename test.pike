@@ -113,8 +113,7 @@ void main(int argc, array(string) argv) {
 	              other("string"),
 	              "string",
 	              1,
-	              #string "file.txt"  // This is a preprocessor thingy,
-	                                  // Not in the right color here, but no one ever uses it.
+	              #string "file.txt"  // This is a preprocessor thingy.
 	              );
 
 	for (int i=0; i < 10; i++) {
@@ -139,8 +138,22 @@ void main(int argc, array(string) argv) {
 	string hash = "foo#"+ 2 + #"newline
 	in this string";
 
-	string slash = "\\back\\"\"\\";
-	string back_and_fnutt = "\\\"string"; // Fail! No It's OK now ;)
+	string back_and_fnutt = "\\\"string";
+	string text =
+		"\\back\\"+"\\"
+		"tab:\t"
+		"backspace:\b"
+		"null:\0"
+		"also null:\000"
+		"Hello world"
+		"Hello \x77orld"
+		"Hello \u0077orld"
+		"Hello \U00000077orld"
+		"Hello \167orld"
+		"Hello \d119orld"        // Gotcha :-)
+		"Hello \world"           // Not really invalid, can we have a less intrusive warning?
+		"90% correct %*ö %{%d} " // Only a few functions treat strings as format strings, and they have different features
+		;
 
 	return;
 }
