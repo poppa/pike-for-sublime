@@ -1,0 +1,131 @@
+#!/usr/bin/env pike
+/* -*- Mode: Pike; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
+
+import Parser.XML.Tree;
+
+string out = "";
+int depth = 0;
+
+#define push(X) do { \
+  out += (X); \
+} while (0)
+
+#define indent() out += ("  " * depth)
+
+int main(int argc, array(string) argv)
+{
+  if (argc < 2) {
+    werror ("Missing argument!\n");
+    return 1;
+  }
+
+  string data = Stdio.read_file (argv[1]);
+
+  if (!data) {
+    werror ("Failed reading file: %s\n", argv[1]);
+    return 1;
+  }
+
+  Node n = get_root (parse_input (data));
+
+  parse (n);
+
+  werror ("\n%s\n", out);
+
+  return 0;
+}
+
+void parse (Node n)
+{
+  switch (n->get_tag_name ())
+  {
+    case "dict":
+      if (is_struct_start (n)) {
+        //push ("\n");
+        indent ();
+      }
+
+      depth++;
+
+      push ("{");
+
+      foreach (n->get_children (), Node cn) {
+        if (cn->get_node_type () == XML_ELEMENT)
+          parse (cn);
+      }
+
+      depth--;
+      push ("\n");
+      indent ();
+      push ("}");
+
+      if (!is_struct_end (n)) {
+        push (",");
+      }
+
+      break;
+
+    case "array":
+      depth++;
+      push ("[\n");
+
+      foreach (n->get_children (), Node cn) {
+        if (cn->get_node_type () == XML_ELEMENT)
+          parse (cn);
+      }
+
+      depth--;
+      push ("\n");
+      indent ();
+      push ("]");
+
+      if (!is_struct_end (n))
+        push (",");
+      break;
+
+    case "key":
+      push ("\n");
+      indent ();
+      push ("\"" + n->value_of_node () + "\":");
+      break;
+
+    case "string":
+      push ("\"" + (replace (n->value_of_node (), ([ "\\" : "\\\\" ]))) + "\"");
+      if (!is_struct_end (n))
+        push (",");
+
+      break;
+
+    default:
+
+      break;
+  }
+}
+
+int(0..1) is_struct_end (Node n)
+{
+  array(int) sib = n->get_following_siblings ()->get_node_type ();
+  int size = sizeof (sib);
+  return !size || size == 1 && sib[0] == XML_TEXT;
+}
+
+int(0..1) is_struct_start (Node n)
+{
+  array(int) sib = n->get_preceding_siblings ()->get_node_type ();
+  int size = sib && sizeof (sib);
+  return !size || sib[0] == XML_TEXT;
+}
+
+
+Node get_root (Node n)
+{
+  if (n->get_node_type () == XML_ELEMENT)
+    return n;
+
+  if (n->get_node_type () == XML_ROOT)
+    foreach (n->get_children (), Node nn)
+      if (nn->get_node_type () == XML_ELEMENT)
+        return nn;
+
+  return 0;
+}

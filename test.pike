@@ -1,8 +1,6 @@
 #!/usr/bin/env pike
 // comment
 
-#charset utf-8;
-
 string multi = #"multi1
 multi2";
 
@@ -14,6 +12,16 @@ multi2";
 constant my_line = __LINE__;
 constant compile_time = __DATE__ "T" __TIME__;
 
+#if 0
+string apa = "mixed";
+
+int do_some_stuff ()
+{
+	for (int i; i < 10; i++)
+		write ("i: %d\n", i);
+}
+#endif
+
 #define DEBUG
 /* block comment
  * with a " double "fnutt"
@@ -23,6 +31,19 @@ constant compile_time = __DATE__ "T" __TIME__;
 #if 0
 #error
 #endif
+
+#ifdef TEST
+# ifdef TWO
+  array one = ({ 1 });
+# else
+  array one = ({ 1.0 });
+# endif
+#elif defined(TEST_2)
+array one = ({ "uno"});
+#else
+array one = ({ "ett" });
+#endif
+
 
 enum MyStuff {
 	ONE = 1,
@@ -47,20 +68,20 @@ array(SöndagsStek) get_roast ()
 }
 
 class classFoo {
-	inherit classBar;
+	inherit SöndagsStek;
 
-	static mapping m4 = [];
+	static mapping m4 = ([]);
 
-	local mixed `foo(int i) {}
+	local mixed `foo() { return UNDEFINED; }
 
 	mixed `[](string|int index) { // Some functions have special names (operator function)
-		return m[index];
+		return m4[index];
 	}
 
 	mixed `()(function fun) {     // Now the parantheses are geting tricky...
 	}
 
-	int(0..1) odd(mixed in) {
+	int(0..1) odd(mixed in) { // Hm, doens't work correctly as class method
 		catch { return in % 2; };
 	}
 
@@ -71,7 +92,7 @@ class classFoo {
 }
 
 
-constant animal = (program)"animal.pike";
+constant animal = (program)"to-tmlanguage";
 
 //! Lets add a docblock here and see if we eventually will
 //! parse doc comments
@@ -91,7 +112,7 @@ void main(int argc, array(string) argv) {
 	int one = 1;
 	int minus = -1;
 	int(0..1) bool = true;
-	int hex = 0x4e
+	int hex = 0x4e;
 	int binary = 0b1001110;
 	int octal = 0116;
 	int char = 'N';
@@ -101,45 +122,44 @@ void main(int argc, array(string) argv) {
 	string bar = "bar";
 	string foo ="foo";
 	array(mixed) arr;
-	foo(mixed) invalid; // Spot the function call
-	mixed mix = (< 1, "2", i >);
-	program p = compile_file("hello_world.pike");
+	//foo(mixed) invalid; // Spot the function call
+	mixed mix = (< 1, "2", hex >);
+	program p = compile_string("mixed _inline = \"ok\";");
 
-	function lamb = lambda(int i) {
-		return i;
-	}
+	function function_call = lambda(mixed ... args) {
+		return args;
+	};
 
 	function_call("string",
-	              other("string"),
+	              function_call("string"),
 	              "string",
 	              1,
-	              #string "file.txt"  // This is a preprocessor thingy,
-	                                  // Not in the right color here, but no one ever uses it.
+	              #string "README.md"  // This is a preprocessor thingy
 	              );
 
 	for (int i=0; i < 10; i++) {
-		write("i: %d", i);
+		write("i: %d\n", i);
 	}
 
-	string foo ="string";
+	string foob ="string";
 
-	foreach ( ({}) ) {
+	foreach (({}), mixed a) {
 		break;
 	}
 
 	function f = lambda(int i, string s) {
 		string bar = "";
 		return;
-	}
+	};
 
-	string format_string = sprintf("%d monkeys in a %2s %*s %[0]d\n", 12, "tree");
+	string format_string = sprintf("%d monkeys in a %2s %[0]d\n", 12, "tree");
 	string fnutt = "string\"foo'bar\n";
-	int char = 'N'; // 78
+	int charN = 'N'; // 78
 
 	string hash = "foo#"+ 2 + #"newline
 	in this string";
 
-	string slash = "\\back\\"\"\\";
+	//string slash = "\\back\\"\"\\";
 	string back_and_fnutt = "\\\"string"; // Fail! No It's OK now ;)
 
 	return;
