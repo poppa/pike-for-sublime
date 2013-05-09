@@ -175,9 +175,11 @@ void main(int argc, array(string) argv) {
 		"Hello \u0077orld"
 		"Hello \U00000077orld"
 		"Hello \167orld"
-		"Hello \d119orld"        // Gotcha :-)
-		"Hello \world"           // Not really invalid, can we have a less intrusive warning?
-		"90% correct %*ö %{%d} " // Only a few functions treat strings as format strings, and they have different features
+		"Hello \d119orld"
+		"Hello \world"
+		"90% correct %*ö %{%d%} " // Only a few functions treat strings as format strings, and they have different features
+		"but %*s works"
+		"90%% is %d% so to speak"
 		;
 
 	return;

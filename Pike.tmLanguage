@@ -828,7 +828,7 @@
 				<array>
 					<dict>
 						<key>match</key>
-						<string>\\(\\|[abefnprtv'"?]|[0-3]\d{,2}|[4-7]\d?|x[a-fA-F0-9]{,2}|u[a-fA-F0-9]{,4}|U[a-fA-F0-9]{,8})</string>
+						<string>\\(\\|[0-3]\d{,2}|[4-7]\d?|x[a-fA-F0-9]{,2}|u[a-fA-F0-9]{,4}|U[a-fA-F0-9]{,8}|d[0-9]+|[[:alnum:]'"?])</string>
 						<key>name</key>
 						<string>constant.character.escape.pike</string>
           </dict>
@@ -847,19 +847,21 @@
 					<dict>
 						<key>match</key>
 						<string>(?x)%
+                  (?!\s|%)                            # Not followed by space or %
+                  \*?                                 # May be followed by a *
                   (\d+\$)?                           # field (argument #)
-                  [*#0\- +'\[\]]*                          # flags
+                  [*#0\- +'\[\]]*                   # flags
                   [,;:_]?                              # separator character (AltiVec)
                   ((-?\d+)|\*(-?\d+\$)?)?          # minimum field width
                   (\.((-?\d+)|\*(-?\d+\$)?)?)?    # precision
                   (hh|h|ll|l|j|t|z|q|L|vh|vl|v|hv|hl)? # length modifier
-                  [diouxXDOUeEfFgGaACcSspn%]           # conversion type</string>
+                  [diouxXDOUeEfFgGaACcSspn%{}]         # conversion type</string>
 						<key>name</key>
 						<string>constant.other.placeholder.pike</string>
           </dict>
 					<dict>
 						<key>match</key>
-						<string>%</string>
+						<string>%(?!\s|%)(!&lt;%)</string>
 						<key>name</key>
 						<string>invalid.illegal.placeholder.pike</string>
           </dict>
