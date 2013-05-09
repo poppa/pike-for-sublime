@@ -148,24 +148,12 @@
                    (\\))                             # a close parenthesis
                  )?",
       "beginCaptures" : {
-        "1" : {
-          "name" : "keyword.control.import.define.pike"
-        },
-        "2" : {
-          "name" : "entity.name.function.preprocessor.pike"
-        },
-        "4" : {
-          "name" : "punctuation.definition.parameters.pike"
-        },
-        "5" : {
-          "name" : "variable.parameter.preprocessor.pike"
-        },
-        "7" : {
-          "name" : "punctuation.separator.parameters.pike"
-        },
-        "8" : {
-          "name" : "punctuation.definition.parameters.pike"
-        }
+        "1" : { "name" : "keyword.control.import.define.pike" },
+        "2" : { "name" : "entity.name.function.preprocessor.pike" },
+        "4" : { "name" : "punctuation.definition.parameters.pike" },
+        "5" : { "name" : "variable.parameter.preprocessor.pike" },
+        "7" : { "name" : "punctuation.separator.parameters.pike" },
+        "8" : { "name" : "punctuation.definition.parameters.pike" }
       },
       "end" : "(?=(?://|/\\*))|$",
       "patterns" : [
@@ -181,9 +169,7 @@
     { "name" : "meta.preprocessor.diagnostic.pike",
       "begin" : "^\\s*#\\s*(error|warning)\\b",
       "captures" : {
-        "1" : {
-          "name" : "keyword.control.import.error.pike"
-        }
+        "1" : { "name" : "keyword.control.import.error.pike" }
       },
       "end" : "$",
       "patterns" : [
@@ -198,9 +184,7 @@
     { "name" : "meta.preprocessor.pike.include",
       "begin" : "^\\s*#\\s*(include|string)\\b",
       "captures" : {
-        "1" : {
-          "name" : "keyword.control.import.include.pike"
-        }
+        "1" : { "name" : "keyword.control.import.include.pike" }
       },
       "end" : "(?=(?://|/\\*))|$",
       "patterns" : [
@@ -210,29 +194,21 @@
         { "name" : "string.quoted.double.include.pike",
           "begin" : "\\\"",
           "beginCaptures" : {
-            "0" : {
-              "name" : "punctuation.definition.string.begin.pike"
-            }
+            "0" : { "name" : "punctuation.definition.string.begin.pike" }
           },
           "end" : "\\\"",
           "endCaptures" : {
-            "0" : {
-              "name" : "punctuation.definition.string.end.pike"
-            }
+            "0" : { "name" : "punctuation.definition.string.end.pike" }
           }
         },
         { "name" : "string.quoted.other.lt-gt.include.pike",
           "begin" : "<",
           "beginCaptures" : {
-            "0" : {
-              "name" : "punctuation.definition.string.begin.pike"
-            }
+            "0" : { "name" : "punctuation.definition.string.begin.pike" }
           },
           "end" : ">",
           "endCaptures" : {
-            "0" : {
-              "name" : "punctuation.definition.string.end.pike"
-            }
+            "0" : { "name" : "punctuation.definition.string.end.pike" }
           }
         }
       ]
@@ -241,9 +217,7 @@
     { "begin" : "^\\s*#\\s*(define|defined|elif|elseif|else|if|ifdef|ifndef|" \
                 "(line|[0-9]+)|pragma|undef|undefine|endif|charset|pike|string)\\b",
       "captures" :  {
-        "1" : {
-          "name" : "keyword.control.import.pike"
-        }
+        "1" : { "name" : "keyword.control.import.pike" }
       },
       "end" : "(?=(?://|/\\*))|$",
       "name" : "meta.preprocessor.pike",
@@ -274,15 +248,9 @@
         )
          \\s*(?=\\()",
       "beginCaptures" : {
-        "1" : {
-          "name" : "punctuation.whitespace.function.leading.pike"
-        },
-        "3" : {
-          "name" : "entity.name.function.pike"
-        },
-        "4" : {
-          "name" : "punctuation.definition.parameters.pike"
-        }
+        "1" : { "name" : "punctuation.whitespace.function.leading.pike" },
+        "3" : { "name" : "entity.name.function.pike" },
+        "4" : { "name" : "punctuation.definition.parameters.pike" }
       },
       "end" : "(?<=\\})|(?=#)|(;)",
       "patterns" : [
@@ -306,13 +274,10 @@
   ],
 
   "repository" : {
-
     "comments" : {
       "patterns" : [
         { "captures" : {
-            "0" : {
-              "name" : "punctuation.definition.comment.$scopeName"
-            }
+            "0" : { "name" : "punctuation.definition.comment.$scopeName" }
           },
           "name" : "comment.block.$scopeName",
           "begin" : "/\\*",
@@ -320,9 +285,7 @@
         },
 
         { "captures" : {
-            "1" : {
-              "name" : "punctuation.definition.comment.$scopeName"
-            }
+            "1" : { "name" : "punctuation.definition.comment.$scopeName" }
           },
           "name" : "comment.line.double-slash.$scopeName",
           "match" : "(//).*$\\n?"
@@ -362,20 +325,138 @@
                      )
                      \\s*(\\()",
           "captures" : {
-            "1" : {
-              "name" : "punctuation.whitespace.function-call.leading.$scopeName"
-            },
-            "2" : {
-              "name" : "support.function.any-method.$scopeName"
-            },
-            "3" : {
-              "name" : "punctuation.definition.parameters.$scopeName"
-            }
+            "1" : { "name" : "punctuation.whitespace.function-call.leading.$scopeName" },
+            "2" : { "name" : "support.function.any-method.$scopeName" },
+            "3" : { "name" : "punctuation.definition.parameters.$scopeName" }
           }
         },
         { "include" : "#block" },
         { "include" : "$base" }
       ]
+    },
+
+    "preprocessor-rule-enabled" : {
+      "begin" : "^\\s*(#(if)\\s+(0*1)\\b)",
+      "capture" : {
+        "1" : { "name" : "meta.preprocessor.pike" },
+        "2" : { "name" : "keyword.control.import.if.pike" },
+        "3" : { "name" : "constant.numeric.preprocessor.pike" }
+      },
+      "end" : "^\\s*(#\\s*(endif)\\b)",
+      "patterns" : [{
+        "begin" : "^\\s*(#\\s*(else)\\b).*",
+        "captures" : {
+          "1" : { "name" : "meta.preprocessor.pike" },
+          "2" : { "name" : "keyword.control.import.else.pike" }
+        },
+        "contentName" : "comment.block.preprocessor.else-branch",
+        "end" : "(?=^\\s*#\\s*endif\\b.*$)",
+        "patterns" : [
+          { "include" : "#disabled" },
+          { "include" : "#pragma-mark" }
+        ]
+      }, {
+        "preprocessor-rule-enabled-block" : {
+          "begin" : "^\\s*(#(if)\\s+(0*1)\\b)",
+          "captures" : {
+            "1" : { "name" : "meta.preprocessor.pike" },
+            "2" : { "name" : "keyword.control.import.if.pike" },
+            "3" : { "name" : "constant.numeric.preprocessor.pike" }
+          },
+          "end" : "^\\s*(#\\s*(endif)\\b)",
+          "patterns" : [{
+            "begin" : "^\\s*(#\\s*(else)\\b).*",
+            "captures" : {
+              "1" : { "name" : "meta.preprocessor.pike" },
+              "2" : { "name" : "keyword.control.import.else.pike" }
+            },
+            "contentName" : "comment.block.preprocessor.else-branch.in-block",
+            "end" : "(?=^\\s*#\\s*endif\\b.*$)",
+            "patterns" : [
+              { "include" : "#disabled" },
+              { "include" : "#pragma-mark" }
+            ]
+          },{
+            "begin" : "",
+            "end" : "(?=^\\s*#\\s*(else|endif)\\b.*$)",
+            "patterns" : [{
+              "include" : "#block_innards"
+            }]
+          }]
+        }
+      }]
+    },
+
+    "preprocessor-rule-disabled" : {
+      "begin":"^\\s*(#(if)\\s+(0)\\b).*",
+      "captures": {
+        "1": { "name":"meta.preprocessor.pike" },
+        "2": { "name":"keyword.control.import.if.pike" },
+        "3": { "name":"constant.numeric.preprocessor.pike" }
+      },
+      "end":"^\\s*(#\\s*(endif)\\b)",
+      "patterns":[
+        {
+          "begin":"^\\s*(#\\s*(else)\\b)",
+          "captures": {
+            "1": { "name":"meta.preprocessor.pike" },
+            "2": { "name":"keyword.control.import.else.pike" }
+          },
+          "end":"(?=^\\s*#\\s*endif\\b.*$)",
+          "patterns":[
+            { "include":"$base" }
+          ]
+        },{
+          "begin":"",
+          "end":"(?=^\\s*#\\s*(else|endif)\\b.*$)",
+          "name":"comment.block.preprocessor.if-branch",
+          "patterns":[
+            { "include":"#disabled" },
+            { "include":"#pragma-mark" }
+          ]
+        }
+      ]
+    },
+
+    "preprocessor-rule-disabled-block" : {
+      "begin":"^\\s*(#(if)\\s+(0)\\b).*",
+      "captures": {
+        "1": { "name":"meta.preprocessor.pike" },
+        "2": { "name":"keyword.control.import.if.pike" },
+        "3": { "name":"constant.numeric.preprocessor.pike" }
+      },
+      "end":"^\\s*(#\\s*(endif)\\b)",
+      "patterns":[
+        {
+          "begin":"^\\s*(#\\s*(else)\\b)",
+          "captures": {
+            "1": { "name":"meta.preprocessor.c" },
+            "2": { "name":"keyword.control.import.else.pike" }
+          },
+          "end":"(?=^\\s*#\\s*endif\\b.*$)",
+          "patterns":[
+            { "include":"#block_innards" }
+          ]
+        },{
+          "begin":"",
+          "end":"(?=^\\s*#\\s*(else|endif)\\b.*$)",
+          "name":"comment.block.preprocessor.if-branch.in-block",
+          "patterns":[
+            { "include":"#disabled" },
+            { "include":"#pragma-mark" }
+          ]
+        }
+      ]
+    },
+
+    "pragma-mark" : {
+      "name" : "meta.section",
+      "captures" : {
+        "1" : { "name" : "meta.preprocessor.pike" },
+        "2" : { "name" : "keyword.control.import.pragma.pike" },
+        "3" : { "name" : "meta.toc-list.pragma-mark.pike" }
+      },
+      "match" : "^\\s*(#\\s*(pragma\\s+mark)\\s+(.*))"
     },
 
     //- String escape i.e "My \"string\" with newline\n"
