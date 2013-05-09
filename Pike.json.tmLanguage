@@ -465,7 +465,7 @@
       "patterns" : [{
         "match" : "\\\\(\\\\|[0-3]\\d{,2}|[4-7]\\d?|" \
                   "x[a-fA-F0-9]{,2}|u[a-fA-F0-9]{,4}|U[a-fA-F0-9]{,8}|" \
-                  "d[0-9]+|[[:alnum:]'\"?])", /* I don't know the rule for \d0000 so I just look for digits */
+                  "d[0-9]+|[[:alnum:]'\"?])",
         "name" : "constant.character.escape.pike"
       },
       { "match" : "\\\\.",
