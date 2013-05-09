@@ -32,6 +32,10 @@ int do_some_stuff ()
 #error
 #endif
 
+#if 0
+// hello
+#endif
+
 #ifdef TEST
 # ifdef TWO
   array one = ({ 1 });
