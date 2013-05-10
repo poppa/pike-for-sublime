@@ -147,11 +147,15 @@ class classFoo
 	program _this_program = this_program;
 }
 
-
 constant animal = (program)"to-tmlanguage";
 
 //! Lets add a docblock here and see if we eventually will
-//! parse doc comments
+//! parse doc comments. Ref an argument @[argc] and say that it needs to be
+//! something like @tt{1@}.
+//! 
+//! @decl void main(int argc, array(string) argv)
+//!
+//! @link http://pike.lysator.liu.se
 //!
 //! @param argc
 //!  Number of arguments passed to the method
@@ -161,9 +165,24 @@ constant animal = (program)"to-tmlanguage";
 //!
 //! @returns
 //!  Absoluteley nothing
+//!
+//! @mapping
+//!  @member int "depth" 
+//!  @member mapping "map"
+//! @endmapping
+//!
+//! @note 
+//!  to self! Don't do anything stupid!
+//!
+//! @example
+//!  Yepp!
+//!
+//! @pre{
+//!	 Well, well, not quite there yet
+//!  so to speak!
+//! @}
+}
 void main(int argc, array(string) argv) {
-
-
 	// data types
 	int one = 1;
 	int minus = -1;

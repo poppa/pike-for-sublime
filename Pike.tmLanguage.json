@@ -260,8 +260,7 @@
         { "include" : "#comments" },
         { "include" : "#parens" },
         { "match" : "\\bconstant\\b",
-          "name" : "storage.modifier.pike"
-        },
+          "name" : "storage.modifier.pike" },
         { "include" : "#block" }
       ]
     }
@@ -325,6 +324,17 @@
           "name" : "comment.block.pike",
           "begin" : "/\\*",
           "end" : "\\*/"
+        },
+
+        { "begin":"//!(.*)",
+          "captures": {
+            "0": { "name":"punctuation.definition.comment.pike" }
+          },
+          "end":"^\\s*(?!//!)", /* Line not starting with //! */
+          "name":"comment.block.documentation.pikedoc.pike",
+          "patterns":[
+            { "include":"#pike_doc" }
+          ]
         },
 
         { "captures" : {
@@ -556,6 +566,51 @@
       { "match" : "%(?!\\s|%)(!<%)", /* Not followed by space or % and not preceded by % */
         "name" : "invalid.illegal.placeholder.pike"
       }]
+    },
+
+    //- Pike doc
+    "pike_doc" : {
+      "patterns":[ 
+        { "match":"(@decl)\\s+(.+)$",
+          "captures": {
+            "1": { "name":"keyword.other.pikedoc.pike" },
+            "2": { "name":"meta.function.pike" }
+          },
+          "patterns":[
+            { "include":"$base"}
+          ]
+        },
+        { "captures": {
+            "1": { "name":"keyword.other.pikedoc.pike" }
+          },
+          "match":#"(?x)
+            (@
+              (
+                \\[.*?\\]|              # @[word]
+                [[:alnum:]]+\\{.*@\\}   # @word{something@}
+              )
+            )
+          ",
+          "name":"meta.tag.inline.pikedoc.pike"
+        },
+        { "match":"((https?|s?ftp|ftps|file|smb|afp|nfs|(x-)?man|gopher|txmt)" \
+                  "://|mailto:)[-:@a-zA-Z0-9_.~%+/?=&#]+(?<![.?:])",
+          "name":"markup.underline.link.pike"
+        },
+        { "captures": {
+            "1": { "name":"keyword.other.pikedoc.pike" },
+            "2": { "name":"markup.underline.link.pike" }
+          },
+          "match":"(@link)\\s+(.+)\\s*$"
+        },
+        { "match":#"(?x)
+                   \\@(
+                      param|mapping|endmapping|returns|seealso|item|dl|enddl|
+                      note|module|endmodule|member|example|see
+                   )\\b",
+          "name":"keyword.other.pikedoc.pike"
+        }
+      ]
     }
   },
 

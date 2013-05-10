@@ -490,6 +490,29 @@
 						<string>comment.block.pike</string>
           </dict>
 					<dict>
+						<key>begin</key>
+						<string>//!(.*)</string>
+						<key>captures</key>
+						<dict>
+							<key>0</key>
+							<dict>
+								<key>name</key>
+								<string>punctuation.definition.comment.pike</string>
+              </dict>
+            </dict>
+						<key>end</key>
+						<string>^\s*(?!//!)</string>
+						<key>name</key>
+						<string>comment.block.documentation.pikedoc.pike</string>
+						<key>patterns</key>
+						<array>
+							<dict>
+								<key>include</key>
+								<string>#pike_doc</string>
+              </dict>
+            </array>
+          </dict>
+					<dict>
 						<key>captures</key>
 						<dict>
 							<key>1</key>
@@ -538,6 +561,90 @@
 					<dict>
 						<key>include</key>
 						<string>$base</string>
+          </dict>
+        </array>
+      </dict>
+			<key>pike_doc</key>
+			<dict>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>captures</key>
+						<dict>
+							<key>1</key>
+							<dict>
+								<key>name</key>
+								<string>keyword.other.pikedoc.pike</string>
+              </dict>
+							<key>2</key>
+							<dict>
+								<key>name</key>
+								<string>meta.function.pike</string>
+              </dict>
+            </dict>
+						<key>match</key>
+						<string>(@decl)\s+(.+)$</string>
+						<key>patterns</key>
+						<array>
+							<dict>
+								<key>include</key>
+								<string>$base</string>
+              </dict>
+            </array>
+          </dict>
+					<dict>
+						<key>captures</key>
+						<dict>
+							<key>1</key>
+							<dict>
+								<key>name</key>
+								<string>keyword.other.pikedoc.pike</string>
+              </dict>
+            </dict>
+						<key>match</key>
+						<string>(?x)
+            (@
+              (
+                \[.*?\]|              # @[word]
+                [[:alnum:]]+\{.*@\}   # @word{something@}
+              )
+            )
+          </string>
+						<key>name</key>
+						<string>meta.tag.inline.pikedoc.pike</string>
+          </dict>
+					<dict>
+						<key>match</key>
+						<string>((https?|s?ftp|ftps|file|smb|afp|nfs|(x-)?man|gopher|txmt)://|mailto:)[-:@a-zA-Z0-9_.~%+/?=&amp;#]+(?&lt;![.?:])</string>
+						<key>name</key>
+						<string>markup.underline.link.pike</string>
+          </dict>
+					<dict>
+						<key>captures</key>
+						<dict>
+							<key>1</key>
+							<dict>
+								<key>name</key>
+								<string>keyword.other.pikedoc.pike</string>
+              </dict>
+							<key>2</key>
+							<dict>
+								<key>name</key>
+								<string>markup.underline.link.pike</string>
+              </dict>
+            </dict>
+						<key>match</key>
+						<string>(@link)\s+(.+)\s*$</string>
+          </dict>
+					<dict>
+						<key>match</key>
+						<string>(?x)
+                   \@(
+                      param|mapping|endmapping|returns|seealso|item|dl|enddl|
+                      note|module|endmodule|member|example|see
+                   )\b</string>
+						<key>name</key>
+						<string>keyword.other.pikedoc.pike</string>
           </dict>
         </array>
       </dict>

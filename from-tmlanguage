@@ -28,11 +28,9 @@ int main(int argc, array(string) argv)
 
   Node n = get_root (parse_input (data));
 
-  werror ("Root: %O\n", n);
-
   parse (n);
 
-  werror ("\n%s\n", out);
+  write ("\n%s\n", string_to_utf8(out));
 
   return 0;
 }
@@ -111,7 +109,7 @@ void parse (Node n)
       break;
 
     default:
-
+      /* Do nothing */
       break;
   }
 }
