@@ -32,7 +32,7 @@ int do_some_stuff ()
 #error
 #endif
 
-#if 0
+#if 1
 // hello
 #endif
 

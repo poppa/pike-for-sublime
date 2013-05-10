@@ -1,12 +1,28 @@
-Pike syntax definition for Sublime
-==================================
+Pike syntax bundle for Sublime Text
+===================================
 
-This is an attempt to create a Pike syntax definition for the Sublime
-text editor (http://www.sublimetext.com/).
+This is an attempt to add syntax definition, snipets and some other
+functionality for Pike to [Sublime Text](http://www.sublimetext.com/).
+
+Installation
+------------
+
+Using [Sublime Package Control](http://wbond.net/sublime_packages/package_control) (and get automatic updates):
+- `ctrl+shft+p` then select `Package Control: Add Repository`
+- Supply the web URL for this repository: `https://github.com/poppa/pike-for-sublime`
+- `ctrl+shft+p` then select `Package Control: Install Package`
+- Install `pike-for-sublime`
+
+Alternatively, download or clone the package from [GitHub](https://github.com/poppa/pike-for-sublime)
+into your `Packages/User` folder.
+
+Contributing
+------------
 
 Sublime uses XML files for the syntax defintions but that's rather tiresome
 to write. The Pike syntax definition is written in a JSON (-like) format which
 then is runt through `to-tmlanguage` which creates an XML file.
+(Why use AAAPackageDev when it can be done with Pike ;-)
 
 I've added some stuff to the JSON format just to make the file easier to read.
 The file is then normalized before being passed to the JSON parser.
