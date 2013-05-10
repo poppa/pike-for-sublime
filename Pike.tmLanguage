@@ -42,7 +42,7 @@
 				<key>comment</key>
 				<string>Control flow keywords</string>
 				<key>match</key>
-				<string>\b(if|else|while|for|foreach|do|return|continue|break|switch|case|default|goto|catch|lambda|gauge|inherit)\b</string>
+				<string>\b(if|else|while|for|foreach|do|return|continue|break|switch|case|default|goto|catch|lambda|gauge|inherit|import)\b</string>
 				<key>name</key>
 				<string>keyword.control.pike</string>
       </dict>
@@ -59,10 +59,6 @@
 				<string>\b(public|protected|private|static|constant|local|final)\b</string>
 				<key>name</key>
 				<string>storage.modifier.pike</string>
-      </dict>
-			<dict>
-				<key>include</key>
-				<string>#sizeof</string>
       </dict>
 			<dict>
 				<key>comment</key>
@@ -250,7 +246,7 @@
 				<key>end</key>
 				<string>(?=(?://|/\*))|$</string>
 				<key>name</key>
-				<string>meta.preprocessor.pike.include</string>
+				<string>meta.preprocessor.include.pike</string>
 				<key>patterns</key>
 				<array>
 					<dict>
@@ -344,14 +340,19 @@
         (?:  ^                                 # begin-of-line
             |
              (?: (?= \s )           (?&lt;!else|return) (?&lt;=\w)    #  or word + space before name
-               | (?= \s*[A-Za-z_.] ) (?&lt;!&amp;&amp;)       (?&lt;=[\(\)])     #  or type modifier before name
+               | (?= \s*[[:alnum:]_.] )        (?&lt;=[.|\(\)])     #  or type modifier before name
              )
         )
         (\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|
                    object|int|float|function|mapping|array|multiset|
-                   lambda|program|mixed|class)\s*\()
+                   lambda|program|mixed|class)\s*)
         (
-          (?: [[:alnum:]_`][[:alnum:]_]*+ | :: )++                    # actual name
+          (?: 
+            `\(\)|
+            `[-&lt;.&gt;^|&amp;*~/+%=!\[\]]+|
+            `[[:alpha:]_][[:alnum:]_]*+|
+            [[:alpha:]_][[:alnum:]_]*+
+          )++                    # actual name
         )
          \s*(?=\()</string>
 				<key>beginCaptures</key>
@@ -408,7 +409,7 @@
 				<key>end</key>
 				<string>\}</string>
 				<key>name</key>
-				<string>meta.block.source.pike</string>
+				<string>meta.block.pike</string>
 				<key>patterns</key>
 				<array>
 					<dict>
@@ -427,17 +428,17 @@
 							<key>1</key>
 							<dict>
 								<key>name</key>
-								<string>punctuation.whitespace.function-call.leading.source.pike</string>
+								<string>punctuation.whitespace.function-call.leading.pike</string>
               </dict>
 							<key>2</key>
 							<dict>
 								<key>name</key>
-								<string>support.function.any-method.source.pike</string>
+								<string>support.function.any-method.pike</string>
               </dict>
 							<key>3</key>
 							<dict>
 								<key>name</key>
-								<string>punctuation.definition.parameters.source.pike</string>
+								<string>punctuation.definition.parameters.pike</string>
               </dict>
             </dict>
 						<key>match</key>
@@ -448,11 +449,15 @@
                           catch|enumerate|return|
                           mapping|multiset|mixed|int|float|class|function|array|
                           string|program|object)\s*\()
-                        (?:(?!NS)[A-Za-z_][A-Za-z0-9_]*+\b | :: )++    # actual name
+                        (?: `\(\)|
+                            `[-&lt;.&gt;^|&amp;*~/+%=!\[\]]+|
+                            `[[:alnum:]_]|
+                            [[:alpha:]_][[:alnum:]_]*+\b
+                        )++    # actual name
                      )
                      \s*(\()</string>
 						<key>name</key>
-						<string>meta.function-call.source.pike</string>
+						<string>meta.function-call.pike</string>
           </dict>
 					<dict>
 						<key>include</key>
@@ -476,13 +481,13 @@
 							<key>0</key>
 							<dict>
 								<key>name</key>
-								<string>punctuation.definition.comment.source.pike</string>
+								<string>punctuation.definition.comment.pike</string>
               </dict>
             </dict>
 						<key>end</key>
 						<string>\*/</string>
 						<key>name</key>
-						<string>comment.block.source.pike</string>
+						<string>comment.block.pike</string>
           </dict>
 					<dict>
 						<key>captures</key>
@@ -490,13 +495,33 @@
 							<key>1</key>
 							<dict>
 								<key>name</key>
-								<string>punctuation.definition.comment.source.pike</string>
+								<string>punctuation.definition.comment.pike</string>
               </dict>
             </dict>
 						<key>match</key>
 						<string>(//).*$\n?</string>
 						<key>name</key>
-						<string>comment.line.double-slash.source.pike</string>
+						<string>comment.line.double-slash.pike</string>
+          </dict>
+        </array>
+      </dict>
+			<key>disabled</key>
+			<dict>
+				<key>begin</key>
+				<string>^\s*#\s*if(n?def)?\b.*$</string>
+				<key>comment</key>
+				<string>eat nested preprocessor if(def)s</string>
+				<key>end</key>
+				<string>^\s*#\s*endif\b.*$</string>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>include</key>
+						<string>#disabled</string>
+          </dict>
+					<dict>
+						<key>include</key>
+						<string>#pragma-mark</string>
           </dict>
         </array>
       </dict>
@@ -507,7 +532,7 @@
 				<key>end</key>
 				<string>\)</string>
 				<key>name</key>
-				<string>meta.parens.source.pike</string>
+				<string>meta.parens.pike</string>
 				<key>patterns</key>
 				<array>
 					<dict>
@@ -648,7 +673,7 @@
 							<key>1</key>
 							<dict>
 								<key>name</key>
-								<string>meta.preprocessor.c</string>
+								<string>meta.preprocessor.pike</string>
               </dict>
 							<key>2</key>
 							<dict>
@@ -691,7 +716,7 @@
 			<dict>
 				<key>begin</key>
 				<string>^\s*(#(if)\s+(0*1)\b)</string>
-				<key>capture</key>
+				<key>captures</key>
 				<dict>
 					<key>1</key>
 					<dict>
@@ -746,79 +771,144 @@
             </array>
           </dict>
 					<dict>
-						<key>preprocessor-rule-enabled-block</key>
-						<dict>
-							<key>begin</key>
-							<string>^\s*(#(if)\s+(0*1)\b)</string>
-							<key>captures</key>
+						<key>begin</key>
+						<string></string>
+						<key>end</key>
+						<string>(?=^\s*#\s*(else|endif)\b.*$)</string>
+						<key>patterns</key>
+						<array>
 							<dict>
-								<key>1</key>
-								<dict>
-									<key>name</key>
-									<string>meta.preprocessor.pike</string>
-                </dict>
-								<key>2</key>
-								<dict>
-									<key>name</key>
-									<string>keyword.control.import.if.pike</string>
-                </dict>
-								<key>3</key>
-								<dict>
-									<key>name</key>
-									<string>constant.numeric.preprocessor.pike</string>
-                </dict>
+								<key>include</key>
+								<string>$base</string>
               </dict>
-							<key>end</key>
-							<string>^\s*(#\s*(endif)\b)</string>
-							<key>patterns</key>
-							<array>
-								<dict>
-									<key>begin</key>
-									<string>^\s*(#\s*(else)\b).*</string>
-									<key>captures</key>
-									<dict>
-										<key>1</key>
-										<dict>
-											<key>name</key>
-											<string>meta.preprocessor.pike</string>
-                    </dict>
-										<key>2</key>
-										<dict>
-											<key>name</key>
-											<string>keyword.control.import.else.pike</string>
-                    </dict>
-                  </dict>
-									<key>contentName</key>
-									<string>comment.block.preprocessor.else-branch.in-block</string>
-									<key>end</key>
-									<string>(?=^\s*#\s*endif\b.*$)</string>
-									<key>patterns</key>
-									<array>
-										<dict>
-											<key>include</key>
-											<string>#disabled</string>
-                    </dict>
-										<dict>
-											<key>include</key>
-											<string>#pragma-mark</string>
-                    </dict>
-                  </array>
-                </dict>
-								<dict>
-									<key>begin</key>
-									<string></string>
-									<key>end</key>
-									<string>(?=^\s*#\s*(else|endif)\b.*$)</string>
-									<key>patterns</key>
-									<array>
-										<dict>
-											<key>include</key>
-											<string>#block_innards</string>
-                    </dict>
-                  </array>
-                </dict>
-              </array>
+            </array>
+          </dict>
+        </array>
+      </dict>
+			<key>preprocessor-rule-enabled-block</key>
+			<dict>
+				<key>begin</key>
+				<string>^\s*(#(if)\s+(0*1)\b)</string>
+				<key>captures</key>
+				<dict>
+					<key>1</key>
+					<dict>
+						<key>name</key>
+						<string>meta.preprocessor.pike</string>
+          </dict>
+					<key>2</key>
+					<dict>
+						<key>name</key>
+						<string>keyword.control.import.if.pike</string>
+          </dict>
+					<key>3</key>
+					<dict>
+						<key>name</key>
+						<string>constant.numeric.preprocessor.pike</string>
+          </dict>
+        </dict>
+				<key>end</key>
+				<string>^\s*(#\s*(endif)\b)</string>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>begin</key>
+						<string>^\s*(#\s*(else)\b).*</string>
+						<key>captures</key>
+						<dict>
+							<key>1</key>
+							<dict>
+								<key>name</key>
+								<string>meta.preprocessor.pike</string>
+              </dict>
+							<key>2</key>
+							<dict>
+								<key>name</key>
+								<string>keyword.control.import.else.pike</string>
+              </dict>
             </dict>
+						<key>contentName</key>
+						<string>comment.block.preprocessor.else-branch.in-block</string>
+						<key>end</key>
+						<string>(?=^\s*#\s*endif\b.*$)</string>
+						<key>patterns</key>
+						<array>
+							<dict>
+								<key>include</key>
+								<string>#disabled</string>
+              </dict>
+							<dict>
+								<key>include</key>
+								<string>#pragma-mark</string>
+              </dict>
+            </array>
+          </dict>
+					<dict>
+						<key>begin</key>
+						<string></string>
+						<key>end</key>
+						<string>(?=^\s*#\s*(else|endif)\b.*$)</string>
+						<key>patterns</key>
+						<array>
+							<dict>
+								<key>include</key>
+								<string>#block_innards</string>
+              </dict>
+            </array>
+          </dict>
+        </array>
+      </dict>
+			<key>preprocessor-rule-other</key>
+			<dict>
+				<key>begin</key>
+				<string>^\s*(#\s*(if(n?def)?)\b.*?(?:(?=(?://|/\*))|$))</string>
+				<key>captures</key>
+				<dict>
+					<key>1</key>
+					<dict>
+						<key>name</key>
+						<string>meta.preprocessor.pike</string>
+          </dict>
+					<key>2</key>
+					<dict>
+						<key>name</key>
+						<string>keyword.control.import.pike</string>
+          </dict>
+        </dict>
+				<key>end</key>
+				<string>^\s*(#\s*(endif)\b).*$</string>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>include</key>
+						<string>$base</string>
+          </dict>
+        </array>
+      </dict>
+			<key>preprocessor-rule-other-block</key>
+			<dict>
+				<key>begin</key>
+				<string>^\s*(#\s*(if(n?def)?)\b.*?(?:(?=(?://|/\*))|$))</string>
+				<key>captures</key>
+				<dict>
+					<key>1</key>
+					<dict>
+						<key>name</key>
+						<string>meta.preprocessor.pike</string>
+          </dict>
+					<key>2</key>
+					<dict>
+						<key>name</key>
+						<string>keyword.control.import.pike</string>
+          </dict>
+        </dict>
+				<key>end</key>
+				<string>^\s*(#\s*(endif)\b).*$</string>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>include</key>
+						<string>#block_innards</string>
           </dict>
         </array>
       </dict>

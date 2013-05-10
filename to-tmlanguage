@@ -35,12 +35,6 @@
 //!   <string>some.stuff.source.lang</string>
 //! </dict>
 
-#ifdef DEVMODE
-// If run with: pike -DDEVMODE to-tmlanguage the-file
-// a copy of Pike.tmLanguage will be put here.
-string config_path = "/home/poppa/.config/sublime-text-2/Packages/User";
-#endif
-
 String.Buffer buffer;
 function add;
 int level = 1; // Indentation level of the XML file

@@ -28,6 +28,8 @@ int main(int argc, array(string) argv)
 
   Node n = get_root (parse_input (data));
 
+  werror ("Root: %O\n", n);
+
   parse (n);
 
   werror ("\n%s\n", out);
@@ -39,6 +41,12 @@ void parse (Node n)
 {
   switch (n->get_tag_name ())
   {
+    case "plist":
+      foreach (n->get_children (), Node cn) {
+        parse (cn);
+      }
+      break;
+
     case "dict":
       if (is_struct_start (n)) {
         //push ("\n");
@@ -90,7 +98,13 @@ void parse (Node n)
       break;
 
     case "string":
-      push ("\"" + (replace (n->value_of_node (), ([ "\\" : "\\\\" ]))) + "\"");
+      string val = replace (n->value_of_node (), 
+                            ([ "\\"    : "\\\\",
+                               "&lt;"  : "<",
+                               "&gt;"  : ">",
+                               "&amp;" : "&" ]));
+      push ("\"" + (val) + "\"");
+
       if (!is_struct_end (n))
         push (",");
 

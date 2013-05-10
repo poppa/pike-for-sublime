@@ -1,8 +1,16 @@
 #!/usr/bin/env pike
 // comment
 
+import Parser.XML.Tree;
+
 string multi = #"multi1
 multi2";
+
+#ifndef TEST
+# define tag(TYPE,VAL) add(tag1(TYPE), rep((VAL)), tag2(TYPE))
+#else
+# define tag(TYPE,VAL) 0
+#endif
 
 #line 9
 #10
@@ -12,7 +20,7 @@ multi2";
 constant my_line = __LINE__;
 constant compile_time = __DATE__ "T" __TIME__;
 
-#if 0
+#if 1
 string apa = "mixed";
 
 int do_some_stuff ()
@@ -20,6 +28,14 @@ int do_some_stuff ()
 	for (int i; i < 10; i++)
 		write ("i: %d\n", i);
 }
+#else
+int do_some_stuff ();
+#endif
+
+#if constant(DEBUG)
+constant DO_DEBUG = 1;	
+#else
+constant DO_DEBUG = 0;
 #endif
 
 #define DEBUG
@@ -62,7 +78,7 @@ void some_prototype(multiset m,         mapping m2,             array a, string 
 void another_prototype(multiset(int) m, mapping(string:int) m2, array a, string s, float f, int i);
 array(array(int)) diff_compare_table(array a, array b);
 
-void löksoppa (multiset lök, int soppa);
+void|int(0..1) löksoppa (multiset lök, int soppa);
 
 class SöndagsStek {}
 
@@ -71,7 +87,8 @@ array(SöndagsStek) get_roast ()
 	return ({ SöndagsStek() });
 }
 
-class classFoo {
+class classFoo 
+{
 	inherit SöndagsStek;
 
 	static mapping m4 = ([]);
@@ -84,9 +101,44 @@ class classFoo {
 
 	mixed `()(function fun) {     // Now the parantheses are geting tricky...
 	}
+	mixed `->(string key) {
+	}
+	mixed `=(object other) {
+	}
+	mixed `!=(object other) {
+	}
+	mixed `%(){
+	}
+	mixed `+(){
+		::`+();
+		odd(UNDEFINED);
+	}
+	mixed `*(){
+	}
+	mixed `-(){
+	}
+	mixed `<(){
+	}
+	mixed `/(){
+	}
+	mixed `~(){
+	}
+	mixed `&(){
+	}
+	mixed `|(){
+	}
+	mixed `^(){
+	}
+	mixed `[..](){
+	}
 
 	int(0..1) odd(mixed in) { // Hm, doens't work correctly as class method
 		catch { return in % 2; };
+	}
+
+	SöndagsStek get_steak()
+	{
+		return SöndagsStek();
 	}
 
 	string|int one() { return "1"||1; };

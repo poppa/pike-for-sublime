@@ -32,6 +32,8 @@ JSON addition
 
   * **Comments**: The JSON file can be commented with the prefix `//-`.<br>
     NOTE! There can not be anything else but the comment on a line.
+
+    Now, we also support block comments /* The comment */
 	
   * **Multiline strings**: Some regexp are seriously long which makes them
     difficult to read. A string can be split by ending the line with a 
@@ -62,5 +64,18 @@ Example
 Todo
 ----------------
 
-Alot!
+- `#define MACRO(A1,A1) func_call(A1, fun(A2))` doesn't get parsed properly
+- Class methods with parenthesis in the return type doesn't get parsed properly
+  
+      class Test {
+        int(0..1) method() { return 1; }
+      }
+
+  Here `method` is colorized as a function call. This only happens to methods
+  within a class definition.
+
+- There's something fishy going on with `#define macro func()`. It gets 
+  scrambled after that.
+  
+- Calls to special Pike methods like `\`[]()` does not get the correct color.
 
