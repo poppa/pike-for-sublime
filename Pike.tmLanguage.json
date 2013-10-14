@@ -242,7 +242,7 @@
                    object|int|float|function|mapping|array|multiset|
                    lambda|program|mixed|class)\\s*)
         (
-          (?: 
+          (?:
             `\\(\\)|
             `[-<.>^|&*~/+%=!\\[\\]]+|
             `[[:alpha:]_][[:alnum:]_]*+|
@@ -327,10 +327,10 @@
         },
 
         { "begin":"//!(.*?)",
+          "end":"^\\s*(?!//!)", /* Line not starting with //! */
           "captures": {
             "0": { "name":"punctuation.definition.comment.pike" }
           },
-          "end":"^\\s*(?!//!)", /* Line not starting with //! */
           "name":"comment.block.documentation.pikedoc.pike",
           "patterns":[
             { "include":"#pike_doc" }
@@ -352,7 +352,7 @@
       "comment":"eat nested preprocessor if(def)s",
       "end":"^\\s*#\\s*endif\\b.*$",
       "patterns":[
-        { "include":"#disabled" }, 
+        { "include":"#disabled" },
         { "include":"#pragma-mark" }
       ]
     },
@@ -461,7 +461,7 @@
           "contentName":"comment.block.preprocessor.else-branch",
           "end":"(?=^\\s*#\\s*endif\\b.*$)",
           "patterns":[
-            { "include":"#disabled" }, 
+            { "include":"#disabled" },
             { "include":"#pragma-mark" }
           ]
         },{
@@ -570,14 +570,15 @@
 
     //- Pike doc
     "pike_doc" : {
-      "patterns":[ 
-        { "match":"(@decl)\\s+(.+)$",
+      "patterns":[
+        { "match":"(@decl)\\s+(.+?)$",
           "captures": {
             "1": { "name":"keyword.other.pikedoc.pike" },
             "2": { "name":"meta.function.pike" }
           },
           "patterns":[
-            { "include":"$base"}
+            { "include":"$base" },
+            { "include":"#block_innards"}
           ]
         },
         { "captures": {
@@ -586,9 +587,12 @@
           "match":#"(?x)
             (@
               (
-                \\[.*?\\]|              # @[word]
-                [[:alnum:]]+\\{.*@\\}   # @word{something@}
+                \\[.*?\\]|               # @[word]
+                [[:alnum:]]+\\{.*?@\\}|   # @word{something@}
+                [[:alnum:]]+\\{.*?
               )
+              |
+              (@)\\}
             )
           ",
           "name":"meta.tag.inline.pikedoc.pike"
@@ -607,7 +611,8 @@
                    \\@(
                       param|mapping|endmapping|returns|seealso|item|dl|enddl|
                       note|module|endmodule|member|example|see|throws|pre|xml|
-                      i|b|ref
+                      i|b|ref|ul|endul|code|endcode|int|endint|value|
+                      string|endstring|array|endarray
                    )\\b",
           "name":"keyword.other.pikedoc.pike"
         }

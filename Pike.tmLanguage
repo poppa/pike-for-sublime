@@ -347,7 +347,7 @@
                    object|int|float|function|mapping|array|multiset|
                    lambda|program|mixed|class)\s*)
         (
-          (?: 
+          (?:
             `\(\)|
             `[-&lt;.&gt;^|&amp;*~/+%=!\[\]]+|
             `[[:alpha:]_][[:alnum:]_]*+|
@@ -583,12 +583,16 @@
               </dict>
             </dict>
 						<key>match</key>
-						<string>(@decl)\s+(.+)$</string>
+						<string>(@decl)\s+(.+?)$</string>
 						<key>patterns</key>
 						<array>
 							<dict>
 								<key>include</key>
 								<string>$base</string>
+              </dict>
+							<dict>
+								<key>include</key>
+								<string>#block_innards</string>
               </dict>
             </array>
           </dict>
@@ -605,9 +609,12 @@
 						<string>(?x)
             (@
               (
-                \[.*?\]|              # @[word]
-                [[:alnum:]]+\{.*@\}   # @word{something@}
+                \[.*?\]|               # @[word]
+                [[:alnum:]]+\{.*?@\}|   # @word{something@}
+                [[:alnum:]]+\{.*?
               )
+              |
+              (@)\}
             )
           </string>
 						<key>name</key>
@@ -642,7 +649,8 @@
                    \@(
                       param|mapping|endmapping|returns|seealso|item|dl|enddl|
                       note|module|endmodule|member|example|see|throws|pre|xml|
-                      i|b|ref
+                      i|b|ref|ul|endul|code|endcode|int|endint|value|
+                      string|endstring|array|endarray
                    )\b</string>
 						<key>name</key>
 						<string>keyword.other.pikedoc.pike</string>

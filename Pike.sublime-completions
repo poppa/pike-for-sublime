@@ -1,0 +1,18 @@
+{
+  "scope": "source.pike - variable.other.pike",
+  "completions":
+  [
+    "pike",
+    {"trigger":"abs","contents":"abs(${1:float|int|object arg})"},
+    {"trigger":"acos","contents":"acos(${1:float arg})"},
+    {"trigger":"acosh","contents":"acosh(${1:float arg})"},
+    {"trigger":"basename","contents":"basename(${1:string path})"},
+    {"trigger":"call_out","contents":"call_out(${1:function f}, ${2:float|int delay}, ${3:mixed ... args});"},
+    {"trigger":"copy_value","contents":"copy_value(${1:mixed value})"},
+    {"trigger":"create","contents":"void create(${1:mixed ... arg})\n{\n\t${2:}\n}"},
+    {"trigger":"error","contents":"error(\"${1:message\\n}\", ${2:mixed ... args});"},
+    {"trigger":"stringp","contents":"stringp(${1:mixed arg})"},
+    {"trigger":"werror","contents":"werror(\"${1:format\\n}\", ${2:mixed ... args});"},
+    {"trigger":"write","contents":"write(\"${1:format\\n}\", ${2:mixed ... args});"}
+  ]
+}
