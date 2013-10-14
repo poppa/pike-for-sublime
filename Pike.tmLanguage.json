@@ -326,7 +326,7 @@
           "end" : "\\*/"
         },
 
-        { "begin":"//!(.*)",
+        { "begin":"//!(.*?)",
           "captures": {
             "0": { "name":"punctuation.definition.comment.pike" }
           },
@@ -606,7 +606,8 @@
         { "match":#"(?x)
                    \\@(
                       param|mapping|endmapping|returns|seealso|item|dl|enddl|
-                      note|module|endmodule|member|example|see
+                      note|module|endmodule|member|example|see|throws|pre|xml|
+                      i|b|ref
                    )\\b",
           "name":"keyword.other.pikedoc.pike"
         }

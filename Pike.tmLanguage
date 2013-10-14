@@ -491,7 +491,7 @@
           </dict>
 					<dict>
 						<key>begin</key>
-						<string>//!(.*)</string>
+						<string>//!(.*?)</string>
 						<key>captures</key>
 						<dict>
 							<key>0</key>
@@ -641,7 +641,8 @@
 						<string>(?x)
                    \@(
                       param|mapping|endmapping|returns|seealso|item|dl|enddl|
-                      note|module|endmodule|member|example|see
+                      note|module|endmodule|member|example|see|throws|pre|xml|
+                      i|b|ref
                    )\b</string>
 						<key>name</key>
 						<string>keyword.other.pikedoc.pike</string>
