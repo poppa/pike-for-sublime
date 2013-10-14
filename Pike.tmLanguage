@@ -337,10 +337,10 @@
 			<dict>
 				<key>begin</key>
 				<string>(?x)
-        (?:  ^                                 # begin-of-line
+        (?:  ^                                                    # begin-of-line
             |
              (?: (?= \s )           (?&lt;!else|return) (?&lt;=\w)    #  or word + space before name
-               | (?= \s*[[:alnum:]_.] )        (?&lt;=[.|\(\)])     #  or type modifier before name
+               | (?= \s*[[:alnum:]_.] )        (?&lt;=[.|\(\)])   #  or type modifier before name
              )
         )
         (\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|
@@ -352,7 +352,7 @@
             `[-&lt;.&gt;^|&amp;*~/+%=!\[\]]+|
             `[[:alpha:]_][[:alnum:]_]*+|
             [[:alpha:]_][[:alnum:]_]*+
-          )++                    # actual name
+          )++                                                     # actual name
         )
          \s*(?=\()</string>
 				<key>beginCaptures</key>
@@ -609,12 +609,12 @@
 						<string>(?x)
             (@
               (
-                \[.*?\]|               # @[word]
+                \[.*?\]|                # @[word]
                 [[:alnum:]]+\{.*?@\}|   # @word{something@}
-                [[:alnum:]]+\{.*?
+                [[:alnum:]]+\{.*?        # @pre{Multiline content
               )
               |
-              (@)\}
+              (@)\}                      # @} closes multiline content
             )
           </string>
 						<key>name</key>

@@ -232,10 +232,10 @@
 
     { "name" : "meta.function.pike",
       "begin" : #"(?x)
-        (?:  ^                                 # begin-of-line
+        (?:  ^                                                    # begin-of-line
             |
              (?: (?= \\s )           (?<!else|return) (?<=\\w)    #  or word + space before name
-               | (?= \\s*[[:alnum:]_.] )        (?<=[.|\\(\\)])     #  or type modifier before name
+               | (?= \\s*[[:alnum:]_.] )        (?<=[.|\\(\\)])   #  or type modifier before name
              )
         )
         (\\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|
@@ -247,7 +247,7 @@
             `[-<.>^|&*~/+%=!\\[\\]]+|
             `[[:alpha:]_][[:alnum:]_]*+|
             [[:alpha:]_][[:alnum:]_]*+
-          )++                    # actual name
+          )++                                                     # actual name
         )
          \\s*(?=\\()",
       "beginCaptures" : {
@@ -587,12 +587,12 @@
           "match":#"(?x)
             (@
               (
-                \\[.*?\\]|               # @[word]
+                \\[.*?\\]|                # @[word]
                 [[:alnum:]]+\\{.*?@\\}|   # @word{something@}
-                [[:alnum:]]+\\{.*?
+                [[:alnum:]]+\\{.*?        # @word{Multiline content
               )
               |
-              (@)\\}
+              (@)\\}                      # @} closes multiline content
             )
           ",
           "name":"meta.tag.inline.pikedoc.pike"
