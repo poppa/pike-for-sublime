@@ -62,7 +62,7 @@
 
     //- Modifiers
 
-    { "match" : "\\b(public|protected|private|static|constant|local|final)\\b",
+    { "match" : "\\b(public|protected|private|static|constant|local|final|optional)\\b",
       "name" : "storage.modifier.pike",
       "comment" : "Modifiers"
     },

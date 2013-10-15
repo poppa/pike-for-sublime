@@ -4,6 +4,37 @@
 
 // Index is the trigger, value the expansion
 mapping completions = ([
+  /* Language constants */
+  "UNDEFINED"         : "UNDEFINED${1}",
+  "__MAJOR__"         : "__MAJOR__${1}",
+  "__MINOR__"         : "__MINOR__${1}",
+  "__BUILD__"         : "__BUILD__${1}",
+  "__REAL_VERSION__"  : "__REAL_VERSION__${1}",
+  "__REAL_MAJOR__"    : "__REAL_MAJOR__${1}",
+  "__REAL_MINOR__"    : "__REAL_MINOR__${1}",
+  "__REAL_BUILD__"    : "__REAL_BUILD__${1}",
+  "__DATE__"          : "__DATE__${1}",
+  "__TIME__"          : "__TIME__${1}",
+  "__AUTO_BIGNUM__"   : "__AUTO_BIGNUM__${1}",
+  "__NT__"            : "__NT__${1}",
+  "__PIKE__"          : "__PIKE__${1}",
+  "__amigaos__"       : "__amigaos__${1}",
+  "__VERSION__"       : "__VERSION__${1}",
+  "__DIR__"           : "__DIR__${1}",
+  "__FILE__"          : "__FILE__${1}",
+  "__LINE__"          : "__LINE__${1}",
+
+  /* Storage modifiers */
+  "public"            : "public${1}",
+  "protected"         : "protected${1}",
+  "private"           : "private${1}",
+  "static"            : "static${1}",
+  "constant"          : "constant${1}",
+  "local"             : "local${1}",
+  "final"             : "final${1}",
+  "optional"          : "optional${1}",
+
+  /* Built-in functions */
   "abs"        : "abs(${1:float|int|object arg})",
   "acos"       : "acos(${1:float arg})",
   "acosh"      : "acosh(${1:float arg})",

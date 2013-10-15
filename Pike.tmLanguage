@@ -56,7 +56,7 @@
 				<key>comment</key>
 				<string>Modifiers</string>
 				<key>match</key>
-				<string>\b(public|protected|private|static|constant|local|final)\b</string>
+				<string>\b(public|protected|private|static|constant|local|final|optional)\b</string>
 				<key>name</key>
 				<string>storage.modifier.pike</string>
       </dict>
@@ -611,7 +611,7 @@
               (
                 \[.*?\]|                # @[word]
                 [[:alnum:]]+\{.*?@\}|   # @word{something@}
-                [[:alnum:]]+\{.*?        # @pre{Multiline content
+                [[:alnum:]]+\{.*?        # @word{Multiline content
               )
               |
               (@)\}                      # @} closes multiline content
