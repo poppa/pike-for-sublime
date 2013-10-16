@@ -23,6 +23,8 @@ mapping completions = ([
   "__DIR__"           : "__DIR__${1}",
   "__FILE__"          : "__FILE__${1}",
   "__LINE__"          : "__LINE__${1}",
+  "__func__"          : "__func__${1}",
+  "this_program"      : "this_program${1}",
 
   /* Storage modifiers */
   "public"            : "public${1}",
@@ -35,19 +37,24 @@ mapping completions = ([
   "optional"          : "optional${1}",
 
   /* Built-in functions */
-  "abs"        : "abs(${1:float|int|object arg})",
-  "acos"       : "acos(${1:float arg})",
-  "acosh"      : "acosh(${1:float arg})",
-  "basename"   : "basename(${1:string path})",
-  "call_out"   : "call_out(${1:function f}, ${2:float|int delay}, ${3:mixed ... args});",
-  "copy_value" : "copy_value(${1:mixed value})",
-  "create"     : "void create(${1:mixed ... arg})\\n{\\n\\t${2:}\\n}",
+  "abs"            : "abs(${1:float|int|object arg})",
+  "acos"           : "acos(${1:float arg})",
+  "acosh"          : "acosh(${1:float arg})",
 
-  "error"      : "error(\\\"${1:message\\\\n}\\\", ${2:mixed ... args});",
-  "stringp"    : "stringp(${1:mixed arg})",
+  "basename"       : "basename(${1:string path})",
 
-  "write"      : "write(\\\"${1:format\\\\n}\\\", ${2:mixed ... args});",
-  "werror"     : "werror(\\\"${1:format\\\\n}\\\", ${2:mixed ... args});",
+  "call_out"       : "call_out(${1:function f}, ${2:float|int delay}, ${3:mixed ... args});",
+  "copy_value"     : "copy_value(${1:mixed value})",
+  "create"         : "void create(${1:mixed ... arg})\\n{\\n\\t${2:}\\n}",
+
+  "error"          : "error(\\\"${1:message\\\\n}\\\", ${2:mixed ... args});",
+
+  "object_program" : "object_program(${1:this})",
+
+  "stringp"        : "stringp(${1:mixed arg})",
+
+  "write"          : "write(\\\"${1:format\\\\n}\\\", ${2:mixed ... args});",
+  "werror"         : "werror(\\\"${1:format\\\\n}\\\", ${2:mixed ... args});",
 
   // Parser.XML.Tree
   /*

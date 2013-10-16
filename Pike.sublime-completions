@@ -21,6 +21,7 @@
     {"trigger":"__TIME__","contents":"__TIME__${1}"},
     {"trigger":"__VERSION__","contents":"__VERSION__${1}"},
     {"trigger":"__amigaos__","contents":"__amigaos__${1}"},
+    {"trigger":"__func__","contents":"__func__${1}"},
     {"trigger":"abs","contents":"abs(${1:float|int|object arg})"},
     {"trigger":"acos","contents":"acos(${1:float arg})"},
     {"trigger":"acosh","contents":"acosh(${1:float arg})"},
@@ -32,12 +33,14 @@
     {"trigger":"error","contents":"error(\"${1:message\\n}\", ${2:mixed ... args});"},
     {"trigger":"final","contents":"final${1}"},
     {"trigger":"local","contents":"local${1}"},
+    {"trigger":"object_program","contents":"object_program(${1:this})"},
     {"trigger":"optional","contents":"optional${1}"},
     {"trigger":"private","contents":"private${1}"},
     {"trigger":"protected","contents":"protected${1}"},
     {"trigger":"public","contents":"public${1}"},
     {"trigger":"static","contents":"static${1}"},
     {"trigger":"stringp","contents":"stringp(${1:mixed arg})"},
+    {"trigger":"this_program","contents":"this_program${1}"},
     {"trigger":"werror","contents":"werror(\"${1:format\\n}\", ${2:mixed ... args});"},
     {"trigger":"write","contents":"write(\"${1:format\\n}\", ${2:mixed ... args});"}
   ]
