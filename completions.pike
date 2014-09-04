@@ -50,11 +50,24 @@ mapping completions = ([
   "error"          : "error(\\\"${1:message\\\\n}\\\", ${2:mixed ... args});",
 
   "object_program" : "object_program(${1:this})",
+  "basename"       : "basename(${1:string path})",
+  "dirname"        : "dirname(${1:string path})",
 
+  "arrayp"         : "arrayp(${1:mixed arg})",
+  "mappingp"       : "mappingp(${1:mixed arg})",
+  "floatp"         : "floatp(${1:mixed arg})",
+  "intp"           : "intp(${1:mixed arg})",
+  "objectp"        : "objectp(${1:mixed arg})",
+  "functionp"      : "functionp(${1:mixed arg})",
+  "callablep"      : "callablep(${1:mixed arg})",
   "stringp"        : "stringp(${1:mixed arg})",
+  "sprintf"        : "sprintf(\"$1:format\", ${2:mixed arg})",
 
   "write"          : "write(\\\"${1:format\\\\n}\\\", ${2:mixed ... args});",
   "werror"         : "werror(\\\"${1:format\\\\n}\\\", ${2:mixed ... args});",
+
+  // Common user defined
+  "TRACE"          : "TRACE(\\\"${1:format\\\\n}\\\", ${2:mixed ... args});",
 
   // Parser.XML.Tree
   /*
@@ -365,8 +378,9 @@ int main(int argc, array(string) argv)
 
   array(string) buf = ({});
 
-  foreach (sort (indices (completions)), string k) {
-    buf += ({ sprintf ("    {\"trigger\":\"%s\",\"contents\":\"%s\"}", k, completions[k]) });
+  foreach (sort(indices(completions)), string k) {
+    buf += ({ sprintf("    {\"trigger\":\"%s\",\"contents\":\"%s\"}",
+                      k, completions[k]) });
   }
 
   string macro = #"{
@@ -378,7 +392,7 @@ int main(int argc, array(string) argv)
   ]
 }";
 
-  Stdio.write_file ("Pike.sublime-completions", sprintf (macro, buf*",\n"));
+  Stdio.write_file("Pike.sublime-completions", sprintf(macro, buf*",\n"));
 
   return 0;
 }

@@ -135,6 +135,9 @@ int main(int argc, array(string) argv)
   Stdio.write_file(path, data);
 
 #ifdef DEVMODE
+  string config_path = combine_path(getenv("HOME"),
+                        ".config/sublime-text-2/Packages/User/Pike");
+  write("Copying tmLanguage to %O\n", config_path);
   Stdio.write_file(combine_path(config_path, fname), data);
 #endif
 
@@ -168,7 +171,7 @@ string fix_multiline(string s)
     if (s[pos] == '\\' && s[pos+1] == '\n') {
       // Remove beginning whitespace on next line
       sscanf (reverse(ns), "%*[ \t]%s", ns);
-      ns = reverse( ns[1..] );
+      ns = reverse(ns[1..]);
       pos += 2;
 
       // Skip whitespaces

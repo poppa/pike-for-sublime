@@ -48,7 +48,7 @@
       </dict>
 			<dict>
 				<key>match</key>
-				<string>\b(enum|float|int|typedef|void|object|class|mapping|string|array|multiset|mixed|function|program)\b</string>
+				<string>\b(enum|float|int|typedef|void|object|class|mapping|string|array|multiset|mixed|function|program|bool)\b</string>
 				<key>name</key>
 				<string>storage.type.pike</string>
       </dict>
@@ -448,7 +448,7 @@
                       (?!(while|for|do|if|else|foreach|lambda|switch|
                           catch|enumerate|return|
                           mapping|multiset|mixed|int|float|class|function|array|
-                          string|program|object)\s*\()
+                          string|program|object|bool)\s*\()
                         (?: `\(\)|
                             `[-&lt;.&gt;^|&amp;*~/+%=!\[\]]+|
                             `[[:alnum:]_]|

@@ -56,7 +56,7 @@
     },
 
     { "match" : "\\b(enum|float|int|typedef|void|object|class|mapping|string" \
-                "|array|multiset|mixed|function|program)\\b",
+                "|array|multiset|mixed|function|program|bool)\\b",
       "name" : "storage.type.pike"
     },
 
@@ -296,7 +296,7 @@
                       (?!(while|for|do|if|else|foreach|lambda|switch|
                           catch|enumerate|return|
                           mapping|multiset|mixed|int|float|class|function|array|
-                          string|program|object)\\s*\\()
+                          string|program|object|bool)\\s*\\()
                         (?: `\\(\\)|
                             `[-<.>^|&*~/+%=!\\[\\]]+|
                             `[[:alnum:]_]|
