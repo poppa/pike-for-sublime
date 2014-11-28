@@ -27,14 +27,14 @@ mapping completions = ([
   "this_program"      : "this_program${1}",
 
   /* Storage modifiers */
-  "public"            : "public${1}",
-  "protected"         : "protected${1}",
-  "private"           : "private${1}",
-  "static"            : "static${1}",
-  "constant"          : "constant${1}",
-  "local"             : "local${1}",
-  "final"             : "final${1}",
-  "optional"          : "optional${1}",
+  "public"            : "public ${1}",
+  "protected"         : "protected ${1}",
+  "private"           : "private ${1}",
+  "static"            : "static ${1}",
+  "constant"          : "constant ${1}",
+  "local"             : "local ${1}",
+  "final"             : "final ${1}",
+  "optional"          : "optional ${1}",
 
   /* Built-in functions */
   "abs"            : "abs(${1:float|int|object arg})",
@@ -42,16 +42,15 @@ mapping completions = ([
   "acosh"          : "acosh(${1:float arg})",
 
   "basename"       : "basename(${1:string path})",
+  "dirname"        : "dirname(${1:string path})",
 
-  "call_out"       : "call_out(${1:function f}, ${2:float|int delay}, ${3:mixed ... args});",
+  "call_out"       : "call_out(${1:function f}, ${2:float|int delay}, ${3:void|mixed ... args});",
   "copy_value"     : "copy_value(${1:mixed value})",
   "create"         : "void create(${1:mixed ... arg})\\n{\\n\\t${2:}\\n}",
 
-  "error"          : "error(\\\"${1:message\\\\n}\\\", ${2:mixed ... args});",
+  "error"          : "error(\\\"${1:message}\\\\n\\\", ${2:mixed ... args});",
 
   "object_program" : "object_program(${1:this})",
-  "basename"       : "basename(${1:string path})",
-  "dirname"        : "dirname(${1:string path})",
 
   "arrayp"         : "arrayp(${1:mixed arg})",
   "mappingp"       : "mappingp(${1:mixed arg})",
@@ -61,13 +60,18 @@ mapping completions = ([
   "functionp"      : "functionp(${1:mixed arg})",
   "callablep"      : "callablep(${1:mixed arg})",
   "stringp"        : "stringp(${1:mixed arg})",
-  "sprintf"        : "sprintf(\"$1:format\", ${2:mixed arg})",
 
-  "write"          : "write(\\\"${1:format\\\\n}\\\", ${2:mixed ... args});",
-  "werror"         : "werror(\\\"${1:format\\\\n}\\\", ${2:mixed ... args});",
+  "sprintf"        : "sprintf(\\\"$1:format\\\", ${2:mixed arg})",
+  "_sprintf"       : "_sprintf(\\\"$1:format\\\", ${2:mixed arg})",
+  "write"          : "write(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
+  "werror"         : "werror(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
+
+  "m_delete"       : "m_delete(${1:mapping}, ${2:mixed key})",
+  "utf8_to_string" : "utf8_to_string(${1:string str})",
+  "string_to_utf8" : "string_to_utf8(${1:string str})",
 
   // Common user defined
-  "TRACE"          : "TRACE(\\\"${1:format\\\\n}\\\", ${2:mixed ... args});",
+  "TRACE"          : "TRACE(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
 
   // Parser.XML.Tree
   /*
@@ -379,7 +383,7 @@ int main(int argc, array(string) argv)
   array(string) buf = ({});
 
   foreach (sort(indices(completions)), string k) {
-    buf += ({ sprintf("    {\"trigger\":\"%s\",\"contents\":\"%s\"}",
+    buf += ({ sprintf("    {\"trigger\": \"%s\", \"contents\": \"%s\"}",
                       k, completions[k]) });
   }
 
