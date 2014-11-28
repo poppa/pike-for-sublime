@@ -73,18 +73,25 @@ mapping completions = ([
   "sscanf"         : "sscanf(${1:string data}, ${2:string format}, ${3:mixed ... lvalues})",
   "replace"        : "replace(${1:string data}, ${2:string from}, ${3:string to})",
 
+  "Roxen.http_encode_url"  : "Roxen.http_encode_url(${1:string url})",
+
+  "Stdio.write_file"     : "Stdio.write_file(${1:string filename}, ${2:string content})",
+  "Stdio.read_file"      : "Stdio.write_file(${1:string filename})",
+  "Stdio.exist"          : "Stdio.exist(${1:string filename})",
+  "Protocols.HTTP.Query" : "Protocols.HTTP.Query",
+
   // Common user defined
   "TRACE"          : "TRACE(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
 
   // Parser.XML.Tree
   /*
-  "->get_attributes"    : "->get_attributes()${1:}",
-  "->get_children"      : "->get_children()${1:}",
-  "->get_first_element" : "->get_first_element()${1:}",
-  "->get_full_name"     : "->get_full_name()${1:}",
-  "->get_node_type"     : "->get_node_type()${1:}",
-  "->get_tag_name"      : "->get_tag_name()${1:}",
-  "->value_of_node"     : "->value_of_node()${1:}"
+  "->get_attributes"    : "->get_attributes()",
+  "->get_children"      : "->get_children()",
+  "->get_first_element" : "->get_first_element()",
+  "->get_full_name"     : "->get_full_name()",
+  "->get_node_type"     : "->get_node_type()",
+  "->get_tag_name"      : "->get_tag_name()",
+  "->value_of_node"     : "->value_of_node()"
   */
 ]);
 
