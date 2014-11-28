@@ -69,6 +69,9 @@ mapping completions = ([
   "m_delete"       : "m_delete(${1:mapping}, ${2:mixed key})",
   "utf8_to_string" : "utf8_to_string(${1:string str})",
   "string_to_utf8" : "string_to_utf8(${1:string str})",
+  "search"         : "search(${1:mixed haystack}, ${2:mixed needle}${3:, mixed|void start})",
+  "sscanf"         : "sscanf(${1:string data}, ${2:string format}, ${3:mixed ... lvalues})",
+  "replace"        : "replace(${1:string data}, ${2:string from}, ${3:string to})",
 
   // Common user defined
   "TRACE"          : "TRACE(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
