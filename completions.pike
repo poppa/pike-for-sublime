@@ -112,8 +112,61 @@ mapping builtins = ([
   "exp":"exp(${1:float|int f})",
   "explode_path":"explode_path(${1:string p})",
 
+  "file_stat":"file_stat(${1:string path}${2:, void|bool symlink})",
+  "file_truncate":"file_truncate(${1:string file}, ${2:int length})",
+  "filesystem_stat":"filesystem_stat(${1:string path})",
+  "filter":"filter(${1:mixed arr}${2:, void|mixed fun}${3:, mixed ... extra})",
+  "find_call_out":"find_call_out(${1:mixed|function(:void) id_or_func})",
+  "floatp":"floatp(${1:mixed val})",
+  "floor":"floor(${1:float|int f})",
+  "fork":"fork()",
+  "function_name":"function_name(${1:function(:void)|program f})",
+  "function_object":"function_object(${1:function(:void) f})",
+  "function_program":"function_program(${1:function(:void) f})",
+  "functionp":"functionp(${1:mixed val})",
 
-  "create"         : "void create(${1:mixed ... arg})\\n{\\n\\t${2:}\\n}",
+  "gc":"gc()",
+  "get_active_compilation_handler":"get_active_compilation_handler()",
+  "get_active_error_handler":"get_active_error_handler()",
+  "get_all_groups":"get_all_groups()",
+  "get_all_users":"get_all_users()",
+  "get_backtrace":"get_backtrace(${1:object|array err})",
+  "get_dir":"get_dir(${1:void|string dirname})",
+  "get_groups_for_user":"get_groups_for_user(${1:int|string user})",
+  "get_iterator":"get_iterator(${1:object|array|mapping|multiset|string data})",
+  "get_profiling_info":"get_profiling_info(${1:program prog})",
+  "get_weak_flag":"get_weak_flag(${1:array|mapping|multiset m})",
+  "getcwd":"getcwd()",
+  "getegid":"getegid(${1:int gid})",
+  "getenv":"getenv(${1:string|void} env})",
+  "geteuid":"geteuid()",
+  "getgid":"getgid()",
+  "getgrgid":"getgrgid(${1:int gid})",
+  "getgrnam":"getgrnam(${1:string str})",
+  "getgroups":"getgroups()",
+  "gethostbyaddr":"gethostbyaddr(${1:string addr})",
+  "gethostbyname":"gethostbyname(${1:string hostname})",
+  "gethostname":"gethostname()",
+  "gethrtime":"gethrtime(${1:void|int nsec})",
+  "gethrvtime":"gethrvtime(${1:void|int nsec})",
+  "getpgrp":"getpgrp(${1:int|void pid})",
+  "getpid":"getpid()",
+  "getppid":"getppid()",
+  "getpwnam":"getpwnam(${1:string str})",
+  "getpwuid":"getpwuid(${1:int uid})",
+  "getsid":"getsid(${1:int|void pid})",
+  "getuid":"getuid()",
+  "getxattr":"getxattr(${1:string file}, ${2:string attr}${3:, void|bool symlink})",
+  "glob":"glob(${1:string|array(string) glob}, ${2:string|array(string) str})",
+  "gmtime":"gmtime(${1:int timestamp})",
+
+  "hardlink":"hardlink(${1:string from}, ${2:string to})",
+  "has_index":"has_index(${1:mixed haystack}, ${2:mixed needle})",
+  "has_prefix":"has_prefix(${1:string|object s}, ${2:string prefix})",
+  "has_suffix":"has_suffix(${1:string s}, ${2:string prefix})",
+  "has_value":"has_value(${1:mixed haystack}, ${2:mixed needle})",
+  "hash":"hash(${1:string s}${2:, void|int max})",
+  "hash_value":"hash_value(${1:mixed value})",
 
   "object_program" : "object_program(${1:this})",
 
@@ -154,21 +207,17 @@ mapping builtins = ([
 
 mapping classes = ([
   "Roxen.http_encode_url"  : "Roxen.http_encode_url(${1:string url})",
-
-  "Stdio.write_file"     : "Stdio.write_file(${1:string filename}, ${2:string content})",
-  "Stdio.read_file"      : "Stdio.write_file(${1:string filename})",
-  "Stdio.exist"          : "Stdio.exist(${1:string filename})",
-  "Protocols.HTTP.Query" : "Protocols.HTTP.Query",
+  "Stdio.write_file"       : "Stdio.write_file(${1:string filename}, ${2:string content})",
+  "Stdio.read_file"        : "Stdio.write_file(${1:string filename})",
+  "Stdio.exist"            : "Stdio.exist(${1:string filename})",
+  "Protocols.HTTP.Query"   : "Protocols.HTTP.Query",
 ]);
 
 mapping macros = ([
   "define" : "#define ${1:WHAT}",
-  "ifdef" : "#ifdef ${1:WHAT}\\n  ${2:// Code}\\n#endif",
-  "ifconstant" : "#if constant(${1:WHAT})\\n  ${2:// Code}\\n#endif",
 ]);
 
 mapping userdef = ([
-  "TRACE"          : "TRACE(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
 ]);
 
 #if 0

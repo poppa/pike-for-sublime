@@ -269,8 +269,3 @@ mixed encode_xml(mixed in)
       break;
   }
 }
-
-void|int(0..1) create (mixed one)
-{
-
-}

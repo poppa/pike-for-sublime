@@ -1,0 +1,12 @@
+<snippet>
+  <content><![CDATA[
+#if constant(${1:NAME})
+  ${2:// Code}
+#endif
+]]></content>
+  <description>#if constant</description>
+  <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+  <tabTrigger>ifcons</tabTrigger>
+  <!-- Optional: Set a scope to limit where the snippet will trigger -->
+  <scope>source.pike</scope>
+</snippet>
