@@ -3,28 +3,29 @@
 */
 
 // Index is the trigger, value the expansion
-mapping completions = ([
+mapping builtins = ([
+
   /* Language constants */
-  "UNDEFINED"         : "UNDEFINED${1}",
-  "__MAJOR__"         : "__MAJOR__${1}",
-  "__MINOR__"         : "__MINOR__${1}",
-  "__BUILD__"         : "__BUILD__${1}",
-  "__REAL_VERSION__"  : "__REAL_VERSION__${1}",
-  "__REAL_MAJOR__"    : "__REAL_MAJOR__${1}",
-  "__REAL_MINOR__"    : "__REAL_MINOR__${1}",
-  "__REAL_BUILD__"    : "__REAL_BUILD__${1}",
-  "__DATE__"          : "__DATE__${1}",
-  "__TIME__"          : "__TIME__${1}",
-  "__AUTO_BIGNUM__"   : "__AUTO_BIGNUM__${1}",
-  "__NT__"            : "__NT__${1}",
-  "__PIKE__"          : "__PIKE__${1}",
-  "__amigaos__"       : "__amigaos__${1}",
-  "__VERSION__"       : "__VERSION__${1}",
-  "__DIR__"           : "__DIR__${1}",
-  "__FILE__"          : "__FILE__${1}",
-  "__LINE__"          : "__LINE__${1}",
-  "__func__"          : "__func__${1}",
-  "this_program"      : "this_program${1}",
+  "UNDEFINED"         : "UNDEFINED",
+  "__MAJOR__"         : "__MAJOR__",
+  "__MINOR__"         : "__MINOR__",
+  "__BUILD__"         : "__BUILD__",
+  "__REAL_VERSION__"  : "__REAL_VERSION__",
+  "__REAL_MAJOR__"    : "__REAL_MAJOR__",
+  "__REAL_MINOR__"    : "__REAL_MINOR__",
+  "__REAL_BUILD__"    : "__REAL_BUILD__",
+  "__DATE__"          : "__DATE__",
+  "__TIME__"          : "__TIME__",
+  "__AUTO_BIGNUM__"   : "__AUTO_BIGNUM__",
+  "__NT__"            : "__NT__",
+  "__PIKE__"          : "__PIKE__",
+  "__amigaos__"       : "__amigaos__",
+  "__VERSION__"       : "__VERSION__",
+  "__DIR__"           : "__DIR__",
+  "__FILE__"          : "__FILE__",
+  "__LINE__"          : "__LINE__",
+  "__func__"          : "__func__",
+  "this_program"      : "this_program",
 
   /* Storage modifiers */
   "public"            : "public ${1}",
@@ -37,28 +38,91 @@ mapping completions = ([
   "optional"          : "optional ${1}",
 
   /* Built-in functions */
-  "abs"            : "abs(${1:float|int|object arg})",
-  "acos"           : "acos(${1:float arg})",
-  "acosh"          : "acosh(${1:float arg})",
+  "abs": "abs(${1:float|int|object arg})",
+  "access": "access(${1:string path}, ${2:string|void mode})",
+  "acos": "acos(${1:float arg})",
+  "acosh": "acosh(${1:float arg})",
+  "add_constant":"add_constant(${1:string name}, ${2:mixed value})",
+  "add_include_path":"add_include_path(${1:string tmp})",
+  "add_module_path":"add_module_path(${1:string tmp})",
+  "add_program_path":"add_program_path(${1:string tmp})",
+  "aggregate":"aggregate(${1:mixed ... elements})",
+  "aggregate_mapping":"aggregate_mapping(${1:mixed ... elements})",
+  "aggregate_multiset":"aggregate_multiset(${1:mixed ... elements})",
+  "alarm":"alarm(${1:int seconds})",
+  "all_constants":"all_constants()",
+  "all_threads":"all_threads()",
+  "allocate":"allocate(${1:int size}${2:, mixed init})",
+  "array_sscanf":"array_sscanf(${1:string data}, ${2:string format})",
+  "arrayp":"arrayp(${1:mixed ... arg})",
+  "asin":"asin(${1:int|float f})",
+  "asinh":"asinh(${1:int|float f})",
+  "atan":"atan(${1:int|float f1}, ${2:int|float f2})",
+  "atan2":"atan2(${1:int|float f1}, ${2:int|float f2})",
+  "atanh":"atanh(${1:int|float f})",
+  "atexit":"atexit(${1:function(:void) callback})",
 
-  "basename"       : "basename(${1:string path})",
-  "dirname"        : "dirname(${1:string path})",
+  "backtrace":"backtrace()",
+  "basename":"basename(${1:string path})",
+  "basetype":"basetype(${1:mixed value})",
+  "bool":"bool",
 
-  "call_out"       : "call_out(${1:function f}, ${2:float|int delay}, ${3:void|mixed ... args});",
-  "copy_value"     : "copy_value(${1:mixed value})",
+  "call_function":"call_function(${1:function(:void) fun}, ${2:mixed ... args})",
+  "call_out": "call_out(${1:function f}, ${2:float|int delay}, ${3:void|mixed ... args});",
+  "call_out_info":"call_out_info()",
+  "callablep": "callablep(${1:mixed arg})",
+  "cd":"cd(${1:string path})",
+  "ceil":"ceil(${1:float f})",
+  "chmod":"chmod(${1:string path}, ${2:int mode})",
+  "chown":"chown",
+  "chroot":"chroot",
+  "cleargroups":"cleargroups",
+  "closelog":"closelog",
+  "column":"column(${1:array data}, ${2:mixed index})",
+  "combine_path":"combine_path(${1:string path}, ${2:string ... paths})",
+  "combine_path_amigaos":"combine_path_amigaos(${1:string path}, ${2:string ... paths})",
+  "combine_path_nt":"combine_path_nt(${1:string path}, ${2:string ... paths})",
+  "combine_path_unix":"combine_path_unix(${1:string path}, ${2:string ... paths})",
+  "compile":"compile(${1:string source}, ${2:CompilationHandler|void handler}, ${3:int|void major}, ${4:int|void minor}, ${5:program|void target}, ${6:object|void placeholder})",
+  "compile_file":"compile_file(${1:string filename}, ${2:object|void handler}, ${3:void|program p}, ${4:void|object o})",
+  "compile_string":"compile_string(${1:string source}, ${2:void|string filename}, ${3:object|void handler}, ${4:void|program p}, ${5:void|object o}, ${6:void|int _show_if_constant_errors})",
+  "copy_value": "copy_value(${1:mixed value})",
+  "cos":"cos(${1:int|float f})",
+  "cosh":"cosh(${1:int|float f})",
+  "cpp":"cpp(${1:string data}, ${2:mapping|string|void current_file}, ${3:int|string|void charset}, ${4:object|void handler}, ${5:void|int compat_major}, ${6:void|int compat_minor}, ${7:void|int picky_cpp})",
+  "crypt":"crypt(${1:string password_or_typed_password}${2:, string crypted_password})",
+  "ctime":"ctime(${1:int timestamp})",
+
+  "decode_value":"decode_value(${1:string coded_value}${2:, void|Codec codec})",
+  "delay":"delay(${1:int|float s})",
+  "describe_backtrace":"describe_backtrace(${1:mixed trace}${2:, void|int linewidth})",
+  "describe_error":"describe_error(${1:mixed err})",
+  "destruct":"destruct(${1:void|object o})",
+  "destructedp":"destructedp(${1:mixed arg})",
+  "dirname":"dirname(${1:string path})",
+
+  "encode_value":"encode_value(${1:mixed value}${2:, Codec|void codec})",
+  "encode_value_canonic":"encode_value_canonic(${1:mixed value}${2:, Codec|void codec})",
+  "enumerate":"enumerate(${1:int n}${2:, void|mixed step}${3:, void|mixed start}${4:, void|function(:void) operator})",
+  "equal":"equal(${1:mixed a}, ${2:mixed b})",
+  "errno":"errno()",
+  "error":"error(${1:sprintf_format f}, ${2:sprintf_args ... args})",
+  "exece":"exece(${1:string file}, ${2:array(string) args}${3:, void|mapping(string:string) env})",
+  "exit":"exit(${1:int returncode}${2:, void|string fmt}${3:, mixed ... extra})",
+  "exp":"exp(${1:float|int f})",
+  "explode_path":"explode_path(${1:string p})",
+
+
   "create"         : "void create(${1:mixed ... arg})\\n{\\n\\t${2:}\\n}",
-
-  "error"          : "error(\\\"${1:message}\\\\n\\\", ${2:mixed ... args});",
 
   "object_program" : "object_program(${1:this})",
 
-  "arrayp"         : "arrayp(${1:mixed arg})",
   "mappingp"       : "mappingp(${1:mixed arg})",
   "floatp"         : "floatp(${1:mixed arg})",
   "intp"           : "intp(${1:mixed arg})",
   "objectp"        : "objectp(${1:mixed arg})",
   "functionp"      : "functionp(${1:mixed arg})",
-  "callablep"      : "callablep(${1:mixed arg})",
+
   "stringp"        : "stringp(${1:mixed arg})",
 
   "sprintf"        : "sprintf(\\\"$1:format\\\", ${2:mixed arg})",
@@ -73,15 +137,7 @@ mapping completions = ([
   "sscanf"         : "sscanf(${1:string data}, ${2:string format}, ${3:mixed ... lvalues})",
   "replace"        : "replace(${1:string data}, ${2:string from}, ${3:string to})",
 
-  "Roxen.http_encode_url"  : "Roxen.http_encode_url(${1:string url})",
 
-  "Stdio.write_file"     : "Stdio.write_file(${1:string filename}, ${2:string content})",
-  "Stdio.read_file"      : "Stdio.write_file(${1:string filename})",
-  "Stdio.exist"          : "Stdio.exist(${1:string filename})",
-  "Protocols.HTTP.Query" : "Protocols.HTTP.Query",
-
-  // Common user defined
-  "TRACE"          : "TRACE(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
 
   // Parser.XML.Tree
   /*
@@ -93,6 +149,26 @@ mapping completions = ([
   "->get_tag_name"      : "->get_tag_name()",
   "->value_of_node"     : "->value_of_node()"
   */
+]);
+
+
+mapping classes = ([
+  "Roxen.http_encode_url"  : "Roxen.http_encode_url(${1:string url})",
+
+  "Stdio.write_file"     : "Stdio.write_file(${1:string filename}, ${2:string content})",
+  "Stdio.read_file"      : "Stdio.write_file(${1:string filename})",
+  "Stdio.exist"          : "Stdio.exist(${1:string filename})",
+  "Protocols.HTTP.Query" : "Protocols.HTTP.Query",
+]);
+
+mapping macros = ([
+  "define" : "#define ${1:WHAT}",
+  "ifdef" : "#ifdef ${1:WHAT}\\n  ${2:// Code}\\n#endif",
+  "ifconstant" : "#if constant(${1:WHAT})\\n  ${2:// Code}\\n#endif",
+]);
+
+mapping userdef = ([
+  "TRACE"          : "TRACE(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
 ]);
 
 #if 0
@@ -392,9 +468,11 @@ int main(int argc, array(string) argv)
 
   array(string) buf = ({});
 
-  foreach (sort(indices(completions)), string k) {
-    buf += ({ sprintf("    {\"trigger\": \"%s\", \"contents\": \"%s\"}",
-                      k, completions[k]) });
+  mapping all = builtins + macros + userdef + classes;
+
+  foreach (sort(indices(all)), string k) {
+    buf += ({ sprintf("    {\"trigger\":\"%s\",\"contents\":\"%s\"}",
+                      k, all[k]) });
   }
 
   string macro = #"{
@@ -407,6 +485,8 @@ int main(int argc, array(string) argv)
 }";
 
   Stdio.write_file("Pike.sublime-completions", sprintf(macro, buf*",\n"));
+
+  werror("%O\n", builtins);
 
   return 0;
 }

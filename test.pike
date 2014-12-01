@@ -33,7 +33,7 @@ int do_some_stuff ();
 #endif
 
 #if constant(DEBUG)
-constant DO_DEBUG = 1;	
+constant DO_DEBUG = 1;
 #else
 constant DO_DEBUG = 0;
 #endif
@@ -87,7 +87,7 @@ array(SöndagsStek) get_roast ()
 	return ({ SöndagsStek() });
 }
 
-class classFoo 
+class classFoo
 {
 	inherit SöndagsStek;
 
@@ -136,6 +136,14 @@ class classFoo
 		catch { return in % 2; };
 	}
 
+	mixed even(array(mapping) a, int(0..1) b) {
+
+	}
+
+	array(SöndagsStek) get_array_of_steak() {
+		return ({ SöndagsStek() });
+	}
+
 	SöndagsStek get_steak()
 	{
 		return SöndagsStek();
@@ -152,7 +160,7 @@ constant animal = (program)"to-tmlanguage";
 //! Lets add a docblock here and see if we eventually will
 //! parse doc comments. Ref an argument @[argc] and say that it needs to be
 //! something like @tt{1@}.
-//! 
+//!
 //! @decl void main(int argc, array(string) argv)
 //!
 //! @link http://pike.lysator.liu.se
@@ -167,11 +175,11 @@ constant animal = (program)"to-tmlanguage";
 //!  Absoluteley nothing
 //!
 //! @mapping
-//!  @member int "depth" 
+//!  @member int "depth"
 //!  @member mapping "map"
 //! @endmapping
 //!
-//! @note 
+//! @note
 //!  to self! Don't do anything stupid!
 //!
 //! @example
@@ -181,7 +189,7 @@ constant animal = (program)"to-tmlanguage";
 //!	 Well, well, not quite there yet
 //!  so to speak!
 //! @}
-}
+
 void main(int argc, array(string) argv) {
 	// data types
 	int one = 1;
@@ -248,7 +256,9 @@ void main(int argc, array(string) argv) {
 		"Hello \167orld"
 		"Hello \d119orld"
 		"Hello \world"
-		"90% correct %*ö %{%d%} " // Only a few functions treat strings as format strings, and they have different features
+		// Only a few functions treat strings as format strings, and they have
+		// different features
+		"90% correct %*ö %{%d%} "
 		"but %*s works"
 		"90%% is %d% so to speak"
 		;

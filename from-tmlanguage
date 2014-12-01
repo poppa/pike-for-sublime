@@ -47,7 +47,7 @@ void parse (Node n)
 
     case "dict":
       if (is_struct_start (n)) {
-        //push ("\n");
+        push ("\n");
         indent ();
       }
 
@@ -74,7 +74,7 @@ void parse (Node n)
     case "array":
       depth++;
       push ("[\n");
-
+      indent();
       foreach (n->get_children (), Node cn) {
         if (cn->get_node_type () == XML_ELEMENT)
           parse (cn);
@@ -96,7 +96,7 @@ void parse (Node n)
       break;
 
     case "string":
-      string val = replace (n->value_of_node (), 
+      string val = replace (n->value_of_node (),
                             ([ "\\"    : "\\\\",
                                "&lt;"  : "<",
                                "&gt;"  : ">",

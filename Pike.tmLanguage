@@ -583,16 +583,12 @@
               </dict>
             </dict>
 						<key>match</key>
-						<string>(@decl)\s+(.+?)$</string>
+						<string>(@decl)\s+(.*?)$</string>
 						<key>patterns</key>
 						<array>
 							<dict>
 								<key>include</key>
-								<string>$base</string>
-              </dict>
-							<dict>
-								<key>include</key>
-								<string>#block_innards</string>
+								<string>$self</string>
               </dict>
             </array>
           </dict>

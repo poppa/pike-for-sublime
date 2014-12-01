@@ -266,13 +266,14 @@
     }
 
     //- Includes
-
-//-    { "include" : "#block" },
-//-    { "include" : "#pragma.mark" },
-//-    { "include" : "#builtinTypes" },
-//-    { "include" : "#doubleQuotedStringLiteral" },
-//-    { "include" : "#doubleQuotedString" },
-//-    { "include" : "#singleQuotedString" }
+/*
+    ,{ "include" : "#block" },
+    { "include" : "#pragma.mark" },
+    { "include" : "#builtinTypes" },
+    { "include" : "#doubleQuotedStringLiteral" },
+    { "include" : "#doubleQuotedString" },
+    { "include" : "#singleQuotedString" }
+*/
   ],
 
   "repository" : {
@@ -571,14 +572,13 @@
     //- Pike doc
     "pike_doc" : {
       "patterns":[
-        { "match":"(@decl)\\s+(.+?)$",
+        { "match":"(@decl)\\s+(.*?)$",
           "captures": {
             "1": { "name":"keyword.other.pikedoc.pike" },
             "2": { "name":"meta.function.pike" }
           },
           "patterns":[
-            { "include":"$base" },
-            { "include":"#block_innards"}
+            { "include":"$self" }
           ]
         },
         { "captures": {
