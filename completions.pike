@@ -178,8 +178,7 @@ mapping builtins = ([
 
   "stringp"        : "stringp(${1:mixed arg})",
 
-  "sprintf"        : "sprintf(\\\"$1:format\\\", ${2:mixed arg})",
-  "_sprintf"       : "_sprintf(\\\"$1:format\\\", ${2:mixed arg})",
+  "sprintf"        : "sprintf(\\\"${1:format}\\\", ${2:mixed arg})",
   "write"          : "write(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
   "werror"         : "werror(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
 
@@ -189,8 +188,6 @@ mapping builtins = ([
   "search"         : "search(${1:mixed haystack}, ${2:mixed needle}${3:, mixed|void start})",
   "sscanf"         : "sscanf(${1:string data}, ${2:string format}, ${3:mixed ... lvalues})",
   "replace"        : "replace(${1:string data}, ${2:string from}, ${3:string to})",
-
-
 
   // Parser.XML.Tree
   /*
