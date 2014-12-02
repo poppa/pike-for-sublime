@@ -168,13 +168,30 @@ mapping builtins = ([
   "hash":"hash(${1:string s}${2:, void|int max})",
   "hash_value":"hash_value(${1:mixed value})",
 
+  "indices":"indices(${1:string|array|mapping|multiset|object x})",
+  "initgroups":"initgroups",
+  "innetgr":"innetgr(${1:string netgroup}${2:, string|void machine}${3:, string|void user}${4:, string|void domain})",
+  "int2char":"int2char(${1:int n})",
+  "int2hex":"int2hex(${1:int n})",
+  "intp":"intp(${1:mixed arg})",
+  "is_absolute_path":"is_absolute_path(${1:string p})",
+
+  "m_delete":"m_delete(${1:mapping}, ${2:mixed key})",
+  "map":"map(${1:mixed arr}, ${2:void|mixed fun}${3:, mixed ... extra})",
+  "mappingp":"mappingp(${1:mixed val})",
+  "master":"master()",
+  "max":"max(${1:mixed args}${2:, mixed more})",
+  "min":"min(${1:mixed args}${2:, mixed more})",
+  "mkdir":"mkdir(${1:string dirname}${2:, void|int mode})",
+  "mkmapping":"mkmapping(${1:array ind}, ${2:array val})",
+  "mkmultiset":"mkmultiset(${1:array a})",
+  "mktime":"mktime(${1:mapping(string:int)|int tm_or_sec}, ${2:int min}, ${3:int hour}, ${4:int mday}, ${5:int mon}, ${6:int year}${7:, int|void isdst}${8:, int|void tz})",
+  "multisetp":"multisetp(${1:mixed val})",
+  "mv":"mv(${1:string from}, ${2:string to})",
+
   "object_program" : "object_program(${1:this})",
 
-  "mappingp"       : "mappingp(${1:mixed arg})",
-  "floatp"         : "floatp(${1:mixed arg})",
-  "intp"           : "intp(${1:mixed arg})",
   "objectp"        : "objectp(${1:mixed arg})",
-  "functionp"      : "functionp(${1:mixed arg})",
 
   "stringp"        : "stringp(${1:mixed arg})",
 
@@ -182,7 +199,6 @@ mapping builtins = ([
   "write"          : "write(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
   "werror"         : "werror(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
 
-  "m_delete"       : "m_delete(${1:mapping}, ${2:mixed key})",
   "utf8_to_string" : "utf8_to_string(${1:string str})",
   "string_to_utf8" : "string_to_utf8(${1:string str})",
   "search"         : "search(${1:mixed haystack}, ${2:mixed needle}${3:, mixed|void start})",

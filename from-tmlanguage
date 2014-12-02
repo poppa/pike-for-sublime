@@ -15,96 +15,102 @@ int depth = 0;
 int main(int argc, array(string) argv)
 {
   if (argc < 2) {
-    werror ("Missing argument!\n");
+    werror("Missing argument!\n");
     return 1;
   }
 
-  string data = Stdio.read_file (argv[1]);
+  string data = Stdio.read_file(argv[1]);
 
   if (!data) {
-    werror ("Failed reading file: %s\n", argv[1]);
+    werror("Failed reading file: %s\n", argv[1]);
     return 1;
   }
 
-  Node n = get_root (parse_input (data));
+  Node n = get_root(parse_input(data));
 
-  parse (n);
+  parse(n);
 
-  write ("\n%s\n", string_to_utf8(out));
+  write("\n%s\n", string_to_utf8(out));
 
   return 0;
 }
 
-void parse (Node n)
+void parse(Node n)
 {
-  switch (n->get_tag_name ())
+  switch (n->get_tag_name())
   {
     case "plist":
-      foreach (n->get_children (), Node cn) {
-        parse (cn);
+      foreach (n->get_children(), Node cn) {
+        parse(cn);
       }
       break;
 
     case "dict":
-      if (is_struct_start (n)) {
-        push ("\n");
-        indent ();
+      if (is_struct_start(n)) {
+        push("\n");
+        indent();
       }
 
       depth++;
 
-      push ("{");
+      push("{");
 
-      foreach (n->get_children (), Node cn) {
-        if (cn->get_node_type () == XML_ELEMENT)
-          parse (cn);
+      foreach (n->get_children(), Node cn) {
+        if (cn->get_node_type() == XML_ELEMENT)
+          parse(cn);
       }
 
       depth--;
-      push ("\n");
-      indent ();
-      push ("}");
+      push("\n");
+      indent();
+      push("}");
 
-      if (!is_struct_end (n)) {
-        push (",");
+      if (!is_struct_end(n)) {
+        push(",");
       }
 
       break;
 
     case "array":
       depth++;
-      push ("[\n");
+      push("[\n");
       indent();
-      foreach (n->get_children (), Node cn) {
-        if (cn->get_node_type () == XML_ELEMENT)
-          parse (cn);
+      foreach (n->get_children(), Node cn) {
+        if (cn->get_node_type() == XML_ELEMENT)
+          parse(cn);
       }
 
       depth--;
-      push ("\n");
-      indent ();
-      push ("]");
+      push("\n");
+      indent();
+      push("]");
 
-      if (!is_struct_end (n))
-        push (",");
+      if (!is_struct_end(n))
+        push(",");
       break;
 
     case "key":
-      push ("\n");
-      indent ();
-      push ("\"" + n->value_of_node () + "\":");
+      push("\n");
+      indent();
+      push("\"" + n->value_of_node() + "\":");
       break;
 
     case "string":
-      string val = replace (n->value_of_node (),
-                            ([ "\\"    : "\\\\",
-                               "&lt;"  : "<",
-                               "&gt;"  : ">",
-                               "&amp;" : "&" ]));
-      push ("\"" + (val) + "\"");
+      string val = replace(n->value_of_node(),
+                           ([ "\\"    : "\\\\",
+                              "&lt;"  : "<",
+                              "&gt;"  : ">",
+                              "&amp;" : "&" ]));
 
-      if (!is_struct_end (n))
-        push (",");
+      if (search(val, "\n") > 10000) {
+        push("#\"" + (val) + "\"");
+      }
+      else {
+        push("\"" + (val) + "\"");
+      }
+
+      if (!is_struct_end(n))
+        push(",");
 
       break;
 
@@ -114,29 +120,28 @@ void parse (Node n)
   }
 }
 
-int(0..1) is_struct_end (Node n)
+int(0..1) is_struct_end(Node n)
 {
-  array(int) sib = n->get_following_siblings ()->get_node_type ();
-  int size = sizeof (sib);
+  array(int) sib = n->get_following_siblings()->get_node_type();
+  int size = sizeof(sib);
   return !size || size == 1 && sib[0] == XML_TEXT;
 }
 
-int(0..1) is_struct_start (Node n)
+int(0..1) is_struct_start(Node n)
 {
-  array(int) sib = n->get_preceding_siblings ()->get_node_type ();
-  int size = sib && sizeof (sib);
+  array(int) sib = n->get_preceding_siblings()->get_node_type();
+  int size = sib && sizeof(sib);
   return !size || sib[0] == XML_TEXT;
 }
 
-
-Node get_root (Node n)
+Node get_root(Node n)
 {
-  if (n->get_node_type () == XML_ELEMENT)
+  if (n->get_node_type() == XML_ELEMENT)
     return n;
 
-  if (n->get_node_type () == XML_ROOT)
-    foreach (n->get_children (), Node nn)
-      if (nn->get_node_type () == XML_ELEMENT)
+  if (n->get_node_type() == XML_ROOT)
+    foreach (n->get_children(), Node nn)
+      if (nn->get_node_type() == XML_ELEMENT)
         return nn;
 
   return 0;
