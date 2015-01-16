@@ -646,7 +646,8 @@
                       param|mapping|endmapping|returns|seealso|item|dl|enddl|
                       note|module|endmodule|member|example|see|throws|pre|xml|
                       i|b|ref|ul|endul|code|endcode|int|endint|value|
-                      string|endstring|array|endarray|fixme
+                      string|endstring|array|endarray|fixme|ignore|endignore|
+                      image|p|link
                    )\b</string>
 						<key>name</key>
 						<string>keyword.other.pikedoc.pike</string>
