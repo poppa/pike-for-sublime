@@ -9,7 +9,7 @@
 int main(int argc, array(string) argv)
 {
   string config_path = combine_path(getenv("HOME"),
-                                    ".config/sublime-text-2/"
+                                    ".config/sublime-text-3/"
                                     "Packages/User/Pike");
 
   COPY("Pike.tmLanguage");
