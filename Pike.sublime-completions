@@ -6,7 +6,7 @@
     {"trigger":"Protocols.HTTP.Query","contents":"Protocols.HTTP.Query"},
     {"trigger":"Roxen.http_encode_url","contents":"Roxen.http_encode_url(${1:string url})"},
     {"trigger":"Stdio.exist","contents":"Stdio.exist(${1:string filename})"},
-    {"trigger":"Stdio.read_file","contents":"Stdio.write_file(${1:string filename})"},
+    {"trigger":"Stdio.read_file","contents":"Stdio.read_file(${1:string filename})"},
     {"trigger":"Stdio.write_file","contents":"Stdio.write_file(${1:string filename}, ${2:string content})"},
     {"trigger":"UNDEFINED","contents":"UNDEFINED"},
     {"trigger":"__AUTO_BIGNUM__","contents":"__AUTO_BIGNUM__"},
