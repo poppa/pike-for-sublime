@@ -1,5 +1,4 @@
 #!/usr/bin/env pike
-/* -*- Mode: Pike; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 8 -*- */
 
 import Parser.XML.Tree;
 
@@ -106,7 +105,7 @@ void parse(Node n)
         push("#\"" + (val) + "\"");
       }
       else {
-        push("\"" + (val) + "\"");
+        push("\"" + escape_quote(val) + "\"");
       }
 
       if (!is_struct_end(n))
@@ -118,6 +117,18 @@ void parse(Node n)
       /* Do nothing */
       break;
   }
+}
+
+Regexp.PCRE.Widestring quote_re =
+  Regexp.PCRE.Widestring("((?!\\\\)\")");
+
+string escape_quote(string s)
+{
+  if (quote_re->match(s)) {
+    werror("Found unescaped quote: %s\n", s);
+    s = quote_re->replace(s, "\\\"");
+  }
+  return s;
 }
 
 int(0..1) is_struct_end(Node n)
