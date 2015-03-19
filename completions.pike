@@ -221,7 +221,7 @@ mapping builtins = ([
 mapping classes = ([
   "Roxen.http_encode_url"  : "Roxen.http_encode_url(${1:string url})",
   "Stdio.write_file"       : "Stdio.write_file(${1:string filename}, ${2:string content})",
-  "Stdio.read_file"        : "Stdio.write_file(${1:string filename})",
+  "Stdio.read_file"        : "Stdio.read_file(${1:string filename})",
   "Stdio.exist"            : "Stdio.exist(${1:string filename})",
   "Protocols.HTTP.Query"   : "Protocols.HTTP.Query",
 ]);
