@@ -205,6 +205,10 @@
 						<key>include</key>
 						<string>$base</string>
           </dict>
+					<dict>
+						<key>include</key>
+						<string>#block</string>
+          </dict>
         </array>
       </dict>
 			<dict>
@@ -335,69 +339,12 @@
 				<string>#block</string>
       </dict>
 			<dict>
-				<key>begin</key>
-				<string>(?x)
-        (?:  ^                                                    # begin-of-line
-            |
-             (?: (?= \s )           (?&lt;!else|return) (?&lt;=\w)    #  or word + space before name
-               | (?= \s*[[:alnum:]_.] )        (?&lt;=[.|\(\)])   #  or type modifier before name
-             )
-        )
-        (\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|
-                   object|int|float|function|mapping|array|multiset|
-                   lambda|program|mixed|class)\s*)
-        (
-          (?:
-            `\(\)|
-            `[-&lt;.&gt;^|&amp;*~/+%=!\[\]]+|
-            `[[:alpha:]_][[:alnum:]_]*+|
-            [[:alpha:]_][[:alnum:]_]*+
-          )++                                                     # actual name
-        )
-         \s*(?=\()</string>
-				<key>beginCaptures</key>
-				<dict>
-					<key>1</key>
-					<dict>
-						<key>name</key>
-						<string>punctuation.whitespace.function.leading.pike</string>
-          </dict>
-					<key>3</key>
-					<dict>
-						<key>name</key>
-						<string>entity.name.function.pike</string>
-          </dict>
-					<key>4</key>
-					<dict>
-						<key>name</key>
-						<string>punctuation.definition.parameters.pike</string>
-          </dict>
-        </dict>
-				<key>end</key>
-				<string>(?&lt;=\})|(?=#)|(;)</string>
-				<key>name</key>
-				<string>meta.function.pike</string>
-				<key>patterns</key>
-				<array>
-					<dict>
-						<key>include</key>
-						<string>#comments</string>
-          </dict>
-					<dict>
-						<key>include</key>
-						<string>#parens</string>
-          </dict>
-					<dict>
-						<key>match</key>
-						<string>\bconstant\b</string>
-						<key>name</key>
-						<string>storage.modifier.pike</string>
-          </dict>
-					<dict>
-						<key>include</key>
-						<string>#block</string>
-          </dict>
-        </array>
+				<key>include</key>
+				<string>#parens</string>
+      </dict>
+			<dict>
+				<key>include</key>
+				<string>#function-declaration</string>
       </dict>
     </array>
 		<key>repository</key>
@@ -415,6 +362,10 @@
 					<dict>
 						<key>include</key>
 						<string>#block_innards</string>
+          </dict>
+					<dict>
+						<key>include</key>
+						<string>#function-declaration</string>
           </dict>
         </array>
       </dict>
@@ -443,19 +394,34 @@
             </dict>
 						<key>match</key>
 						<string>(?x)
-                     (?: (?= \s )  (?:(?&lt;=else|new|return) | (?&lt;!\w)) (\s+))?
-                     (\b
-                      (?!(while|for|do|if|else|foreach|lambda|switch|
-                          catch|enumerate|return|
-                          mapping|multiset|mixed|int|float|class|function|array|
-                          string|program|object|bool)\s*\()
-                        (?: `\(\)|
-                            `[-&lt;.&gt;^|&amp;*~/+%=!\[\]]+|
-                            `[[:alnum:]_]|
-                            [[:alpha:]_][[:alnum:]_]*+\b
-                        )++    # actual name
-                     )
-                     \s*(\()</string>
+                    (?:
+                      (?= \s )
+                      (?:
+                        (?&lt;=else|new|return)
+                        |
+                        (?&lt;!\w)
+                      )
+                      (\s+)
+                    )?
+                    (\b
+                      (?!
+                        (while|for|do|if|else|foreach|lambda|switch|
+                         catch|enumerate|return|
+                         mapping|multiset|mixed|int|float|class|function|array|
+                         string|program|object|bool)\s*\(
+                      )
+                      (?:
+                        `\(\)
+                        |
+                        `[-&lt;.&gt;^|&amp;*~/+%=!\[\]]+
+                        |
+                        `[[:alnum:]_]
+                        |
+                        [[:alpha:]_][[:alnum:]_]*+\b
+                      )++    # actual name
+                    )
+                    \s*
+                    (\()</string>
 						<key>name</key>
 						<string>meta.function-call.pike</string>
           </dict>
@@ -548,6 +514,89 @@
           </dict>
         </array>
       </dict>
+			<key>function-declaration</key>
+			<dict>
+				<key>begin</key>
+				<string>(?x)
+        (?:
+          ^                                                      # begin-of-line
+          |
+          (?:
+            (?= \s )
+            (?&lt;!else|return)
+            (?&lt;=\w)                              # or word + space before name
+            |
+            (?= \s*[[:alnum:]_.])
+            (?&lt;=[.|()])                           # or type modifier before name
+          )
+        )
+        (\s*)
+        (?!
+          (while|for|do|if|else|switch|catch|return|foreach|
+           object|int|float|function|mapping|array|multiset|
+           lambda|program|mixed|class)\s*\(
+        )
+        (
+          (?:
+            `\(\)
+            |
+            `[-&lt;.&gt;^|&amp;*~/+%=!\[\]]+
+            |
+            `[[:alpha:]_][[:alnum:]_]*+
+            |
+            [[:alpha:]_][[:alnum:]_]*+
+          )++                                                     # actual name
+        )
+        \s*
+        (?=\()</string>
+				<key>beginCaptures</key>
+				<dict>
+					<key>1</key>
+					<dict>
+						<key>name</key>
+						<string>punctuation.whitespace.function.leading.pike</string>
+          </dict>
+					<key>3</key>
+					<dict>
+						<key>name</key>
+						<string>entity.name.function.pike</string>
+          </dict>
+					<key>4</key>
+					<dict>
+						<key>name</key>
+						<string>punctuation.definition.parameters.pike</string>
+          </dict>
+        </dict>
+				<key>end</key>
+				<string>(?&lt;=\})|(?=#)|(;)</string>
+				<key>name</key>
+				<string>meta.function.pike</string>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>include</key>
+						<string>#comments</string>
+          </dict>
+					<dict>
+						<key>include</key>
+						<string>#parens</string>
+          </dict>
+					<dict>
+						<key>match</key>
+						<string>\bconstant\b</string>
+						<key>name</key>
+						<string>storage.modifier.pike</string>
+          </dict>
+					<dict>
+						<key>include</key>
+						<string>#block_innards</string>
+          </dict>
+					<dict>
+						<key>include</key>
+						<string>#function-declaration</string>
+          </dict>
+        </array>
+      </dict>
 			<key>parens</key>
 			<dict>
 				<key>begin</key>
@@ -558,6 +607,10 @@
 				<string>meta.parens.pike</string>
 				<key>patterns</key>
 				<array>
+					<dict>
+						<key>include</key>
+						<string>#parens</string>
+          </dict>
 					<dict>
 						<key>include</key>
 						<string>$base</string>

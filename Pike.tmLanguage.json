@@ -97,16 +97,12 @@
       ],
       "begin" : "\"",
       "beginCaptures" : {
-        "0" : {
-          "name" : "punctuation.definition.string.begin.pike"
-        }
+        "0" : { "name" : "punctuation.definition.string.begin.pike" }
       },
       /* "end" : "(?:(?<=\\\\\\\\)|(?<!\\\\))\\\"", */
       "end" : "\"",
       "endCaptures" : {
-        "0" : {
-          "name" : "punctuation.definition.string.end.pike"
-        }
+        "0" : { "name" : "punctuation.definition.string.end.pike" }
       }
     },
 
@@ -118,15 +114,11 @@
       ],
       "begin" : "'",
       "beginCaptures" : {
-        "0" : {
-          "name" : "punctuation.definition.string.begin.pike"
-        }
+        "0" : { "name" : "punctuation.definition.string.begin.pike" }
       },
       "end" : "'",
       "endCaptures" : {
-        "0" : {
-          "name" : "punctuation.definition.string.end.pike"
-        }
+        "0" : { "name" : "punctuation.definition.string.end.pike" }
       }
     },
 
@@ -158,7 +150,8 @@
         { "match" : "(?>\\\\\\s*\\n)",
           "name" : "punctuation.separator.continuation.pike"
         },
-        { "include" : "$base" }
+        { "include" : "$base" },
+        { "include" : "#block" }
       ]
     },
 
@@ -227,29 +220,56 @@
     },
 
     { "include" : "#block" },
+    { "include" : "#parens" },
+    { "include" : "#function-declaration" }
+  ],
 
-    //- Function declaration and body
+  "repository" : {
 
-    { "name" : "meta.function.pike",
+    "block" : {
+      "name" : "meta.block.pike",
+      "begin" : "\\{",
+      "end" : "\\}",
+      "patterns" : [
+        { "include" : "#block_innards" },
+        { "include" : "#function-declaration" }
+      ]
+    },
+
+    "function-declaration" : {
+      "name" : "meta.function.pike",
       "begin" : #"(?x)
-        (?:  ^                                                    # begin-of-line
+        (?:
+          ^                                                      # begin-of-line
+          |
+          (?:
+            (?= \\s )
+            (?<!else|return)
+            (?<=\\w)                              # or word + space before name
             |
-             (?: (?= \\s )           (?<!else|return) (?<=\\w)    #  or word + space before name
-               | (?= \\s*[[:alnum:]_.] )        (?<=[.|\\(\\)])   #  or type modifier before name
-             )
+            (?= \\s*[[:alnum:]_.])
+            (?<=[.|()])                           # or type modifier before name
+          )
         )
-        (\\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|
-                   object|int|float|function|mapping|array|multiset|
-                   lambda|program|mixed|class)\\s*)
+        (\\s*)
+        (?!
+          (while|for|do|if|else|switch|catch|return|foreach|
+           object|int|float|function|mapping|array|multiset|
+           lambda|program|mixed|class)\\s*\\(
+        )
         (
           (?:
-            `\\(\\)|
-            `[-<.>^|&*~/+%=!\\[\\]]+|
-            `[[:alpha:]_][[:alnum:]_]*+|
+            `\\(\\)
+            |
+            `[-<.>^|&*~/+%=!\\[\\]]+
+            |
+            `[[:alpha:]_][[:alnum:]_]*+
+            |
             [[:alpha:]_][[:alnum:]_]*+
           )++                                                     # actual name
         )
-         \\s*(?=\\()",
+        \\s*
+        (?=\\()",
       "beginCaptures" : {
         "1" : { "name" : "punctuation.whitespace.function.leading.pike" },
         "3" : { "name" : "entity.name.function.pike" },
@@ -261,29 +281,8 @@
         { "include" : "#parens" },
         { "match" : "\\bconstant\\b",
           "name" : "storage.modifier.pike" },
-        { "include" : "#block" }
-      ]
-    }
-
-    //- Includes
-/*
-    ,{ "include" : "#block" },
-    { "include" : "#pragma.mark" },
-    { "include" : "#builtinTypes" },
-    { "include" : "#doubleQuotedStringLiteral" },
-    { "include" : "#doubleQuotedString" },
-    { "include" : "#singleQuotedString" }
-*/
-  ],
-
-  "repository" : {
-
-    "block" : {
-      "name" : "meta.block.pike",
-      "begin" : "\\{",
-      "end" : "\\}",
-      "patterns" : [
-        { "include" : "#block_innards" }
+        { "include" : "#block_innards" },
+        { "include" : "#function-declaration" }
       ]
     },
 
@@ -292,19 +291,34 @@
         {
           "name" : "meta.function-call.pike",
           "match" : #"(?x)
-                     (?: (?= \\s )  (?:(?<=else|new|return) | (?<!\\w)) (\\s+))?
-                     (\\b
-                      (?!(while|for|do|if|else|foreach|lambda|switch|
-                          catch|enumerate|return|
-                          mapping|multiset|mixed|int|float|class|function|array|
-                          string|program|object|bool)\\s*\\()
-                        (?: `\\(\\)|
-                            `[-<.>^|&*~/+%=!\\[\\]]+|
-                            `[[:alnum:]_]|
-                            [[:alpha:]_][[:alnum:]_]*+\\b
-                        )++    # actual name
-                     )
-                     \\s*(\\()",
+                    (?:
+                      (?= \\s )
+                      (?:
+                        (?<=else|new|return)
+                        |
+                        (?<!\\w)
+                      )
+                      (\\s+)
+                    )?
+                    (\\b
+                      (?!
+                        (while|for|do|if|else|foreach|lambda|switch|
+                         catch|enumerate|return|
+                         mapping|multiset|mixed|int|float|class|function|array|
+                         string|program|object|bool)\\s*\\(
+                      )
+                      (?:
+                        `\\(\\)
+                        |
+                        `[-<.>^|&*~/+%=!\\[\\]]+
+                        |
+                        `[[:alnum:]_]
+                        |
+                        [[:alpha:]_][[:alnum:]_]*+\\b
+                      )++    # actual name
+                    )
+                    \\s*
+                    (\\()",
           "captures" : {
             "1" : { "name" : "punctuation.whitespace.function-call.leading.pike" },
             "2" : { "name" : "support.function.any-method.pike" },
@@ -364,6 +378,7 @@
       "end":"\\)",
       "name":"meta.parens.pike",
       "patterns":[
+        { "include":"#parens" },
         { "include":"$base" }
       ]
     },

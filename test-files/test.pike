@@ -23,13 +23,13 @@ constant compile_time = __DATE__ "T" __TIME__;
 #if 1
 string apa = "mixed";
 
-int do_some_stuff ()
+int do_some_stuff()
 {
 	for (int i; i < 10; i++)
 		write ("i: %d\n", i);
 }
 #else
-int do_some_stuff ();
+int do_some_stuff();
 #endif
 
 #if constant(DEBUG)
@@ -55,8 +55,14 @@ constant DO_DEBUG = 0;
 #ifdef TEST
 # ifdef TWO
   array one = ({ 1 });
+  int(0..1) do_some_stuff() {
+
+  }
 # else
-  array one = ({ 1.0 });
+  array(0..1) one = ({ 1.0 });
+  int(0..1) do_some_stuff(array one, int(0..1) two) {
+
+  }
 # endif
 #elif defined(TEST_2)
 array one = ({ "uno"});
@@ -78,11 +84,11 @@ void some_prototype(multiset m,         mapping m2,             array a, string 
 void another_prototype(multiset(int) m, mapping(string:int) m2, array a, string s, float f, int i);
 array(array(int)) diff_compare_table(array a, array b);
 
-void|int(0..1) löksoppa (multiset lök, int soppa);
+void|int(0..1) löksoppa(multiset lök, int soppa);
 
 class SöndagsStek {}
 
-array(SöndagsStek) get_roast ()
+array(SöndagsStek) get_roast()
 {
 	return ({ SöndagsStek() });
 }
