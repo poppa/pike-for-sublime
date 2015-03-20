@@ -34,7 +34,7 @@
     },
 
 
-    "builtinTypes" : {
+    "builtin-types" : {
       "patterns" : [
         { "match" : "\\b(enum|float|int|typedef|void|object|class|mapping|string|array|multiset|mixed|function|program|bool)\\b",
           "name":"storage.type.source.pike"
@@ -95,7 +95,7 @@
         { "include":"#keywords" },
         { "include":"#preprocessor" },
         { "include":"#method-call" },
-        { "include":"#builtinTypes" },
+        { "include":"#builtin-types" },
         { "include":"#pike_doc" },
         { "include":"#string_escaped_char" },
         { "include":"#string_placeholder" }
@@ -136,7 +136,11 @@
 
     "constants": {
       "patterns":[
-        { "match" : "\\b(UNDEFINED|__LINE__|__FILE__|__DIR__|__func__|__VERSION__|__MAJOR__|__MINOR__|__BUILD__|__REAL_VERSION__|__REAL_MAJOR__|__REAL_MINOR__|__REAL_BUILD__|__DATE__|__TIME__|__AUTO_BIGNUM__|__NT__|__PIKE__|__amigaos__|true|false|this|this_program)\\b",
+        { "match" : "\\b(UNDEFINED|__LINE__|__FILE__|__DIR__|__func__|"           \
+                    "__VERSION__|__MAJOR__|__MINOR__|__BUILD__|__REAL_VERSION__|" \
+                    "__REAL_MAJOR__|__REAL_MINOR__|__REAL_BUILD__|__DATE__|"      \
+                    "__TIME__|__AUTO_BIGNUM__|__NT__|__PIKE__|__amigaos__|"       \
+                    "true|false|this|this_program)\\b",
           "name" : "constant.language.source.pike"
         },
         { "match" : "(?:\\b|(?<!\\.)(?=\\.))" \
@@ -203,7 +207,7 @@
           "patterns":[
             { "include":"#constants" },
             { "include":"#preprocessor" },
-            { "include":"#builtinTypes" }
+            { "include":"#builtin-types" }
           ]
         },
         { "begin":"(?=\\bnew\\s+)(?=[\\w<].*\\s+)(?=[^=]+\\()",
@@ -235,7 +239,7 @@
               "end":"(?=[\\w.]+\\s*\\()",
               "name":"meta.method.return-type.source.pike",
               "patterns":[
-                { "include":"#builtinTypes" }
+                { "include":"#builtin-types" }
               ]
             },
             { "begin":":\\s*(this|base)\\s*\\(",
@@ -245,7 +249,7 @@
               "end":"\\)",
               "name":"meta.method.base-call.source.pike",
               "patterns":[
-                { "include":"#builtinTypes" }
+                { "include":"#builtin-types" }
               ]
             },
             { "begin":"{",
@@ -280,7 +284,7 @@
               "end":"(?=[\\w.]+\\s*\\{)",
               "name":"meta.method.return-type.source.pike",
               "patterns":[
-                { "include":"#builtinTypes" }
+                { "include":"#builtin-types" }
               ]
             },
             { "begin":"{",
@@ -340,14 +344,108 @@
 
     "preprocessor" : {
       "patterns" : [
-        { "include" : "#disabled" },
-        { "include" : "#pragma-mark" },
-        { "include" : "#preprocessor-rule-disabled" },
-        { "include" : "#preprocessor-rule-enabled" },
+        { "name" : "meta.preprocessor.macro.source.pike",
+          "begin" : #"(?x)
+                     ^\\s*\\#\\s*(define)\\s+           # define
+                     ((?<id>[a-zA-Z_][a-zA-Z0-9_]*))    # macro name
+                     (?:                                # and optionally:
+                       (\\()                            # an open parenthesis
+                         (
+                           \\s* \\g<id> \\s*            # first argument
+                           ((,) \\s* \\g<id> \\s*)*     # additional arguments
+                           (?:\\.\\.\\.)?               # varargs ellipsis?
+                         )
+                       (\\))                             # a close parenthesis
+                     )?",
+          "beginCaptures" : {
+            "1" : { "name" : "keyword.control.import.define.source.pike" },
+            "2" : { "name" : "entity.name.function.preprocessor.source.pike" },
+            "4" : { "name" : "punctuation.definition.parameters.source.pike" },
+            "5" : { "name" : "variable.parameter.preprocessor.source.pike" },
+            "7" : { "name" : "punctuation.separator.parameters.source.pike" },
+            "8" : { "name" : "punctuation.definition.parameters.source.pike" }
+          },
+          "end" : "(?=(?://|/\\*))|$",
+          "patterns" : [
+            { "match" : "(?>\\\\\\s*\\n)",
+              "name" : "punctuation.separator.continuation.source.pike"
+            },
+            { "include" : "#code" }
+          ]
+        },
+
+        //- error, warning macro
+
+        { "name" : "meta.preprocessor.diagnostic.source.pike",
+          "begin" : "^\\s*#\\s*(error|warning)\\b",
+          "captures" : {
+            "1" : { "name" : "keyword.control.import.error.source.pike" }
+          },
+          "end" : "$",
+          "patterns" : [
+            { "match" : "(?>\\\\\\s*\\n)",
+              "name" : "punctuation.separator.continuation.source.pike"
+            }
+          ]
+        },
+
+        //- include
+
+        { "name" : "meta.preprocessor.include.source.pike",
+          "begin" : "^\\s*#\\s*(include|string)\\b",
+          "captures" : {
+            "1" : { "name" : "keyword.control.import.include.source.pike" }
+          },
+          "end" : "(?=(?://|/\\*))|$",
+          "patterns" : [
+            { "match" : "(?>\\\\\\s*\\n)",
+              "name" : "punctuation.separator.continuation.source.pike"
+            },
+            { "name" : "string.quoted.double.include.source.pike",
+              "begin" : "\\\"",
+              "beginCaptures" : {
+                "0" : { "name" : "punctuation.definition.string.begin.source.pike" }
+              },
+              "end" : "\\\"",
+              "endCaptures" : {
+                "0" : { "name" : "punctuation.definition.string.end.source.pike" }
+              }
+            },
+            { "name" : "string.quoted.other.lt-gt.include.source.pike",
+              "begin" : "<",
+              "beginCaptures" : {
+                "0" : { "name" : "punctuation.definition.string.begin.source.pike" }
+              },
+              "end" : ">",
+              "endCaptures" : {
+                "0" : { "name" : "punctuation.definition.string.end.source.pike" }
+              }
+            }
+          ]
+        },
+
+        { "begin" : "^\\s*#\\s*(define|defined|elif|elseif|else|if|ifdef|ifndef|" \
+                    "(line|[0-9]+)|pragma|undef|undefine|endif|charset|pike|string)\\b",
+          "captures" :  {
+            "1" : { "name" : "keyword.control.import.source.pike" }
+          },
+          "end" : "(?=(?://|/\\*))|$",
+          "name" : "meta.preprocessor.source.pike",
+          "patterns" : [
+            { "match" : "(?>\\\\\\s*\\n)",
+              "name" : "punctuation.separator.continuation.source.pike"
+            }
+          ]
+        },
+
+        { "include" : "#disabled"                         },
+        { "include" : "#pragma-mark"                      },
+        { "include" : "#preprocessor-rule-disabled"       },
+        { "include" : "#preprocessor-rule-enabled"        },
         { "include" : "#preprocessor-rule-disabled-block" },
-        { "include" : "#preprocessor-rule-enabled-block" },
-        { "include" : "#preprocessor-rule-other" },
-        { "include" : "#preprocessor-rule-other-block" }
+        { "include" : "#preprocessor-rule-enabled-block"  },
+        { "include" : "#preprocessor-rule-other"          },
+        { "include" : "#preprocessor-rule-other-block"    }
       ]
     },
 
@@ -366,7 +464,7 @@
     "parens": {
       "begin":"\\(",
       "end":"\\)",
-      "name":"meta.parens.pike",
+      "name":"meta.parens.source.pike",
       "patterns":[
         { "include":"$base" }
       ]
@@ -375,9 +473,9 @@
     //-
     "pragma-mark": {
       "captures": {
-        "1": { "name":"meta.preprocessor.pike" },
-        "2": { "name":"keyword.control.import.pragma.pike" },
-        "3": { "name":"meta.toc-list.pragma-mark.pike" }
+        "1": { "name":"meta.preprocessor.source.pike" },
+        "2": { "name":"keyword.control.import.pragma.source.pike" },
+        "3": { "name":"meta.toc-list.pragma-mark.source.pike" }
       },
       "match":"^\\s*(#\\s*(pragma\\s+mark)\\s+(.*))",
       "name":"meta.section.source.pike"
@@ -387,17 +485,17 @@
     "preprocessor-rule-disabled": {
       "begin":"^\\s*(#(if)\\s+(0)\\b).*",
       "captures": {
-        "1": { "name":"meta.preprocessor.pike" },
-        "2": { "name":"keyword.control.import.if.pike" },
-        "3": { "name":"constant.numeric.preprocessor.pike" }
+        "1": { "name":"meta.preprocessor.source.pike" },
+        "2": { "name":"keyword.control.import.if.source.pike" },
+        "3": { "name":"constant.numeric.preprocessor.source.pike" }
       },
       "end":"^\\s*(#\\s*(endif)\\b)",
       "patterns":[
         {
           "begin":"^\\s*(#\\s*(else)\\b)",
           "captures": {
-            "1": { "name":"meta.preprocessor.pike" },
-            "2": { "name":"keyword.control.import.else.pike" }
+            "1": { "name":"meta.preprocessor.source.pike" },
+            "2": { "name":"keyword.control.import.else.source.pike" }
           },
           "end":"(?=^\\s*#\\s*endif\\b.*$)",
           "patterns":[
@@ -406,7 +504,7 @@
         },{
           "begin":"",
           "end":"(?=^\\s*#\\s*(else|endif)\\b.*$)",
-          "name":"comment.block.preprocessor.if-branch",
+          "name":"comment.block.preprocessor.if-branch.source.pike",
           "patterns":[
             { "include":"#disabled" },
             { "include":"#pragma-mark" }
@@ -419,17 +517,17 @@
     "preprocessor-rule-disabled-block": {
       "begin":"^\\s*(#(if)\\s+(0)\\b).*",
       "captures": {
-        "1": { "name":"meta.preprocessor.pike" },
-        "2": { "name":"keyword.control.import.if.pike" },
-        "3": { "name":"constant.numeric.preprocessor.pike" }
+        "1": { "name":"meta.preprocessor.source.pike" },
+        "2": { "name":"keyword.control.import.if.source.pike" },
+        "3": { "name":"constant.numeric.preprocessor.source.pike" }
       },
       "end":"^\\s*(#\\s*(endif)\\b)",
       "patterns":[
         {
           "begin":"^\\s*(#\\s*(else)\\b)",
           "captures": {
-            "1": { "name":"meta.preprocessor.pike" },
-            "2": { "name":"keyword.control.import.else.pike" }
+            "1": { "name":"meta.preprocessor.source.pike" },
+            "2": { "name":"keyword.control.import.else.source.pike" }
           },
           "end":"(?=^\\s*#\\s*endif\\b.*$)",
           "patterns":[
@@ -439,7 +537,7 @@
         {
           "begin":"",
           "end":"(?=^\\s*#\\s*(else|endif)\\b.*$)",
-          "name":"comment.block.preprocessor.if-branch.in-block",
+          "name":"comment.block.preprocessor.if-branch.in-block.source.pike",
           "patterns":[
             { "include":"#disabled" },
             { "include":"#pragma-mark" }
@@ -452,17 +550,17 @@
     "preprocessor-rule-enabled": {
       "begin":"^\\s*(#(if)\\s+(0*1)\\b)",
       "captures": {
-        "1": { "name":"meta.preprocessor.pike" },
-        "2": { "name":"keyword.control.import.if.pike" },
-        "3": { "name":"constant.numeric.preprocessor.pike" }
+        "1": { "name":"meta.preprocessor.source.pike" },
+        "2": { "name":"keyword.control.import.if.source.pike" },
+        "3": { "name":"constant.numeric.preprocessor.source.pike" }
       },
       "end":"^\\s*(#\\s*(endif)\\b)",
       "patterns":[
         {
           "begin":"^\\s*(#\\s*(else)\\b).*",
           "captures": {
-            "1": { "name":"meta.preprocessor.pike" },
-            "2": { "name":"keyword.control.import.else.pike" }
+            "1": { "name":"meta.preprocessor.source.pike" },
+            "2": { "name":"keyword.control.import.else.source.pike" }
           },
           "contentName":"comment.block.preprocessor.else-branch",
           "end":"(?=^\\s*#\\s*endif\\b.*$)",
@@ -484,17 +582,17 @@
     "preprocessor-rule-enabled-block": {
       "begin":"^\\s*(#(if)\\s+(0*1)\\b)",
       "captures": {
-        "1": { "name":"meta.preprocessor.pike" },
-        "2": { "name":"keyword.control.import.if.pike" },
-        "3": { "name":"constant.numeric.preprocessor.pike" }
+        "1": { "name":"meta.preprocessor.source.pike" },
+        "2": { "name":"keyword.control.import.if.source.pike" },
+        "3": { "name":"constant.numeric.preprocessor.source.pike" }
       },
       "end":"^\\s*(#\\s*(endif)\\b)",
       "patterns":[
         {
           "begin":"^\\s*(#\\s*(else)\\b).*",
           "captures": {
-            "1": { "name":"meta.preprocessor.pike" },
-            "2": { "name":"keyword.control.import.else.pike" }
+            "1": { "name":"meta.preprocessor.source.pike" },
+            "2": { "name":"keyword.control.import.else.source.pike" }
           },
           "contentName":"comment.block.preprocessor.else-branch.in-block",
           "end":"(?=^\\s*#\\s*endif\\b.*$)",
@@ -517,12 +615,12 @@
     "preprocessor-rule-other": {
       "begin":"^\\s*(#\\s*(if(n?def)?)\\b.*?(?:(?=(?://|/\\*))|$))",
       "captures": {
-        "1": { "name":"meta.preprocessor.pike" },
-        "2": { "name":"keyword.control.import.pike" }
+        "1": { "name":"meta.preprocessor.source.pike" },
+        "2": { "name":"keyword.control.import.source.pike" }
       },
       "end":"^\\s*(#\\s*(endif)\\b).*$",
       "patterns":[
-        { "include":"$base" }
+        { "include":"#code" }
       ]
     },
 
@@ -530,8 +628,8 @@
     "preprocessor-rule-other-block":    {
       "begin":"^\\s*(#\\s*(if(n?def)?)\\b.*?(?:(?=(?://|/\\*))|$))",
       "captures": {
-        "1": { "name":"meta.preprocessor.pike" },
-        "2": { "name":"keyword.control.import.pike" }
+        "1": { "name":"meta.preprocessor.source.pike" },
+        "2": { "name":"keyword.control.import.source.pike" }
       },
       "end":"^\\s*(#\\s*(endif)\\b).*$",
       "patterns":[
@@ -542,15 +640,16 @@
     //- String escape i.e "My \"string\" with newline\n"
     //-                       ^       ^              ^^
     "string_escaped_char" : {
-      "patterns" : [{
-        "match" : "\\\\(\\\\|[0-3]\\d{,2}|[4-7]\\d?|" \
+      "patterns" : [
+        { "match" : "\\\\(\\\\|[0-3]\\d{,2}|[4-7]\\d?|" \
                   "x[a-fA-F0-9]{,2}|u[a-fA-F0-9]{,4}|U[a-fA-F0-9]{,8}|" \
                   "d[0-9]+|[[:alnum:]'\"?])",
-        "name" : "constant.character.escape.pike"
-      },
-      { "match" : "\\\\.",
-        "name" : "invalid.illegal.unknown-escape.pike"
-      }]
+          "name" : "constant.character.escape.source.pike"
+        },
+        { "match" : "\\\\.",
+          "name" : "invalid.illegal.unknown-escape.source.pike"
+        }
+      ]
     },
 
     //- String placeholder i.e sscanf (var, "%4d-%2d-%2d", int y, int m, int d)
@@ -567,10 +666,10 @@
                   (\\.((-?\\d+)|\\*(-?\\d+\\$)?)?)?    # precision
                   (hh|h|ll|l|j|t|z|q|L|vh|vl|v|hv|hl)? # length modifier
                   [diouxXDOUeEfFgGaACcSspn%{}]         # conversion type",
-        "name" : "constant.other.placeholder.pike"
+        "name" : "constant.other.placeholder.source.pike"
       },
       { "match" : "%(?!\\s|%)(!<%)", /* Not followed by space or % and not preceded by % */
-        "name" : "invalid.illegal.placeholder.pike"
+        "name" : "invalid.illegal.placeholder.source.pike"
       }]
     },
 

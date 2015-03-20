@@ -1,13 +1,29 @@
 #!/usr/bin/env pike
 // comment
 
+//! This is a @tt{doc comment@} with some XML in it
+//!
+//! @xml{
+//!  <root attr="Attribute">
+//!    <child>Content</child>
+//!  </root>
+//! @}
+//!
+//! @code{
+//!	 int num = 12;
+//!  array(string) strings = ({ "one", "two", "three" });
+//!  string sstring = map(strings, lambda(string s){return s;})*"\n";
+//! @}
+
+
 import Parser.XML.Tree;
 
 string multi = #"multi1
 multi2";
 
 #ifndef TEST
-# define tag(TYPE,VAL) add(tag1(TYPE), rep((VAL)), tag2(TYPE))
+# define tag(TYPE,VAL) \
+	add(tag1(TYPE), rep((VAL)), tag2(TYPE))
 #else
 # define tag(TYPE,VAL) 0
 #endif
@@ -78,19 +94,43 @@ enum MyStuff {
 	N_STUFF
 }
 
-#define roxen roxenp() // Missing semicolon affecting next statement
-void some_prototype(multiset m,         mapping m2,             array a, string s, float f, int i);
+#define roxen roxenp() // Missing semicolon affecting next statement : Solved
+void some_prototype(multiset m, mapping m2, array a, string s, float f, int i);
 
-void another_prototype(multiset(int) m, mapping(string:int) m2, array a, string s, float f, int i);
-array(array(int)) diff_compare_table(array a, array b);
+void another_prototype(multiset(int)       m,
+	                     mapping(string:int) m2,
+	                     array               a,
+	                     string              s,
+	                     float               f,
+	                     int                 i); // This semicolon messes up the next statement
+
+array(int) diff_compare_table(array a, array b) {
+
+}
+
+if (search(one, "two") || Stdio.exist(apa)) {
+	call_out(löksoppa);
+}
+else if (Stdio.exist(apa) || search(one, "two")) {
+
+}
 
 void|int(0..1) löksoppa(multiset lök, int soppa);
 
 class SöndagsStek {}
 
-array(SöndagsStek) get_roast()
+array(SöndagsStek) get_roast(int apa, array(int) monkey)
 {
 	return ({ SöndagsStek() });
+}
+
+array(int(0..1)) outer_func()
+{
+	array(int(0..1)) inner_func() {
+		return ({ 1, 2, 3 });
+	}
+
+	return inner_func();
 }
 
 class classFoo
@@ -116,7 +156,7 @@ class classFoo
 	mixed `%(){
 	}
 	mixed `+(){
-		::`+();
+		::`+(); // This function call doesn't get the correct color
 		odd(UNDEFINED);
 	}
 	mixed `*(){
@@ -163,6 +203,10 @@ class classFoo
 
 constant animal = (program)"to-tmlanguage";
 
+constant void func() {
+
+}
+
 //! Lets add a docblock here and see if we eventually will
 //! parse doc comments. Ref an argument @[argc] and say that it needs to be
 //! something like @tt{1@}.
@@ -195,7 +239,6 @@ constant animal = (program)"to-tmlanguage";
 //!	 Well, well, not quite there yet
 //!  so to speak!
 //! @}
-
 void main(int argc, array(string) argv) {
 	// data types
 	int one = 1;
