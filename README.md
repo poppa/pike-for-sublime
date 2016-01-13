@@ -1,8 +1,10 @@
 Pike syntax bundle for Sublime Text
 ===================================
 
-This is an attempt to add syntax definition, snipets and some other
+This is an attempt to add syntax definition, snippets and some other
 functionality for Pike to [Sublime Text](http://www.sublimetext.com/).
+
+![Pike mode in Sublime](https://raw.githubusercontent.com/poppa/pike-for-sublime/master/Sublime-Pike.png)
 
 Installation
 ------------
