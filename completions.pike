@@ -176,6 +176,11 @@ mapping builtins = ([
   "intp":"intp(${1:mixed arg})",
   "is_absolute_path":"is_absolute_path(${1:string p})",
 
+  "kill":"kill(${1:int pid}, ${2:int signal})",
+
+  "limit":"limit(${1:int|float|object minval}, ${2:int|float|object x}, ${3:int|float|object maxval})",
+  "listxattr":"listxattr(${1:string file}${2:, ${3:void|bool symlink}})",
+
   "m_delete":"m_delete(${1:mapping}, ${2:mixed key})",
   "map":"map(${1:mixed arr}, ${2:void|mixed fun}${3:, mixed ... extra})",
   "mappingp":"mappingp(${1:mixed val})",
@@ -195,9 +200,9 @@ mapping builtins = ([
 
   "stringp"        : "stringp(${1:mixed arg})",
 
-  "sprintf"        : "sprintf(\\\"${1:format}\\\", ${2:mixed arg})",
-  "write"          : "write(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
-  "werror"         : "werror(\\\"${1:format}\\\\n\\\", ${2:mixed ... args});",
+  "sprintf"        : "sprintf(\\\"${1:format}\\\"${2:, ${3:mixed ... args}})",
+  "write"          : "write(\\\"${1:format}\\\\n\\\"${2:, ${3:mixed ... args}});",
+  "werror"         : "werror(\\\"${1:format}\\\\n\\\"${2:, ${3:mixed ... args}};",
 
   "utf8_to_string" : "utf8_to_string(${1:string str})",
   "string_to_utf8" : "string_to_utf8(${1:string str})",

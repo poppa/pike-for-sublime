@@ -159,6 +159,9 @@
     {"trigger":"int2hex","contents":"int2hex(${1:int n})"},
     {"trigger":"intp","contents":"intp(${1:mixed arg})"},
     {"trigger":"is_absolute_path","contents":"is_absolute_path(${1:string p})"},
+    {"trigger":"kill","contents":"kill(${1:int pid}, ${2:int signal})"},
+    {"trigger":"limit","contents":"limit(${1:int|float|object minval}, ${2:int|float|object x}, ${3:int|float|object maxval})"},
+    {"trigger":"listxattr","contents":"listxattr(${1:string file}${2:, ${3:void|bool symlink}})"},
     {"trigger":"local","contents":"local ${1}"},
     {"trigger":"m_delete","contents":"m_delete(${1:mapping}, ${2:mixed key})"},
     {"trigger":"map","contents":"map(${1:mixed arr}, ${2:void|mixed fun}${3:, mixed ... extra})"},
@@ -180,14 +183,14 @@
     {"trigger":"public","contents":"public ${1}"},
     {"trigger":"replace","contents":"replace(${1:string data}, ${2:string from}, ${3:string to})"},
     {"trigger":"search","contents":"search(${1:mixed haystack}, ${2:mixed needle}${3:, mixed|void start})"},
-    {"trigger":"sprintf","contents":"sprintf(\"${1:format}\", ${2:mixed arg})"},
+    {"trigger":"sprintf","contents":"sprintf(\"${1:format}\"${2:, ${3:mixed ... args}})"},
     {"trigger":"sscanf","contents":"sscanf(${1:string data}, ${2:string format}, ${3:mixed ... lvalues})"},
     {"trigger":"static","contents":"static ${1}"},
     {"trigger":"string_to_utf8","contents":"string_to_utf8(${1:string str})"},
     {"trigger":"stringp","contents":"stringp(${1:mixed arg})"},
     {"trigger":"this_program","contents":"this_program"},
     {"trigger":"utf8_to_string","contents":"utf8_to_string(${1:string str})"},
-    {"trigger":"werror","contents":"werror(\"${1:format}\\n\", ${2:mixed ... args});"},
-    {"trigger":"write","contents":"write(\"${1:format}\\n\", ${2:mixed ... args});"}
+    {"trigger":"werror","contents":"werror(\"${1:format}\\n\"${2:, ${3:mixed ... args}};"},
+    {"trigger":"write","contents":"write(\"${1:format}\\n\"${2:, ${3:mixed ... args}});"}
   ]
 }

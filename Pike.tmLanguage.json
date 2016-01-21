@@ -613,7 +613,7 @@
                       note|module|endmodule|member|example|see|throws|pre|xml|
                       i|b|ref|ul|endul|code|endcode|int|endint|value|
                       string|endstring|array|endarray|fixme|ignore|endignore|
-                      image|p|link
+                      image|p|link|deprecated|bugs|copyright|thanks|text
                    )\\b",
           "name":"keyword.other.pikedoc.pike"
         }
