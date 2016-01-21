@@ -180,35 +180,52 @@ mapping builtins = ([
 
   "limit":"limit(${1:int|float|object minval}, ${2:int|float|object x}, ${3:int|float|object maxval})",
   "listxattr":"listxattr(${1:string file}${2:, ${3:void|bool symlink}})",
+  "load_module":"load_module(${1:string module_name})",
+  "localtime":"localtime(${1:int timestamp})",
+  "log":"log(${1:int|float f})",
+  "lower_case":"lower_case(${1:string|int string_or_char})",
 
   "m_delete":"m_delete(${1:mapping}, ${2:mixed key})",
-  "map":"map(${1:mixed arr}, ${2:void|mixed fun}${3:, mixed ... extra})",
+  "map":"map(${1:mixed arr}, ${2:void|mixed fun}${3:, ${4:mixed ... extra}})",
   "mappingp":"mappingp(${1:mixed val})",
   "master":"master()",
-  "max":"max(${1:mixed args}${2:, mixed more})",
-  "min":"min(${1:mixed args}${2:, mixed more})",
-  "mkdir":"mkdir(${1:string dirname}${2:, void|int mode})",
+  "max":"max(${1:mixed args}${2:, ${3:mixed more}})",
+  "min":"min(${1:mixed args}${2:, ${3:mixed more}})",
+  "mkdir":"mkdir(${1:string dirname}${2:, ${3:void|int mode}})",
   "mkmapping":"mkmapping(${1:array ind}, ${2:array val})",
   "mkmultiset":"mkmultiset(${1:array a})",
   "mktime":"mktime(${1:mapping(string:int)|int tm_or_sec}, ${2:int min}, ${3:int hour}, ${4:int mday}, ${5:int mon}, ${6:int year}${7:, int|void isdst}${8:, int|void tz})",
   "multisetp":"multisetp(${1:mixed val})",
   "mv":"mv(${1:string from}, ${2:string to})",
 
-  "object_program" : "object_program(${1:this})",
+  "normalize_path":"normalize_path(${1:string path})",
 
+  "object_program" : "object_program(${1:this})",
+  "object_variablep" :"object_variablep(${1:object o}, ${2:string var})",
   "objectp"        : "objectp(${1:mixed arg})",
+
+  "pow"            : "pow(${1:float|int|object n}, ${2:float|int|object x})",
+  "programp"       : "programp(${1:mixed arg})",
+
+  "query_num_arg"  : "query_num_arg()",
+
+  "random"         : "random(${1:int max})",
+  "random_seed"    : "random_seed(${1:int seed})",
+  "random_string"  : "random_string(${1:int length})",
+  "remove_call_out" : "remove_call_out(${1:function(:void) f}, ${2:float|int delay}${3:, ${4:mixed ... args}})",
+  "removexattr"     : "removexattr(${1:string file}, ${2:string attr}${3:, ${4:void|bool symlink}})",
+  "replace"        : "replace(${1:string data}, ${2:string from}, ${3:string to})",
 
   "stringp"        : "stringp(${1:mixed arg})",
 
   "sprintf"        : "sprintf(\\\"${1:format}\\\"${2:, ${3:mixed ... args}})",
   "write"          : "write(\\\"${1:format}\\\\n\\\"${2:, ${3:mixed ... args}});",
-  "werror"         : "werror(\\\"${1:format}\\\\n\\\"${2:, ${3:mixed ... args}};",
+  "werror"         : "werror(\\\"${1:format}\\\\n\\\"${2:, ${3:mixed ... args}});",
 
   "utf8_to_string" : "utf8_to_string(${1:string str})",
   "string_to_utf8" : "string_to_utf8(${1:string str})",
   "search"         : "search(${1:mixed haystack}, ${2:mixed needle}${3:, mixed|void start})",
   "sscanf"         : "sscanf(${1:string data}, ${2:string format}, ${3:mixed ... lvalues})",
-  "replace"        : "replace(${1:string data}, ${2:string from}, ${3:string to})",
 
   // Parser.XML.Tree
   /*
@@ -221,7 +238,6 @@ mapping builtins = ([
   "->value_of_node"     : "->value_of_node()"
   */
 ]);
-
 
 mapping classes = ([
   "Roxen.http_encode_url"  : "Roxen.http_encode_url(${1:string url})",
