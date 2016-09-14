@@ -48,7 +48,7 @@
       </dict>
 			<dict>
 				<key>match</key>
-				<string>\b(enum|float|int|typedef|void|object|class|mapping|string|array|multiset|mixed|function|program|bool)\b</string>
+				<string>\b(enum|float|int|typedef|void|object|class|mapping|string|array|multiset|mixed|function|program|bool|auto)\b</string>
 				<key>name</key>
 				<string>storage.type.pike</string>
       </dict>
@@ -56,7 +56,7 @@
 				<key>comment</key>
 				<string>Modifiers</string>
 				<key>match</key>
-				<string>\b(public|protected|private|static|constant|local|final|optional)\b</string>
+				<string>\b(public|protected|private|static|constant|local|final|optional|variant)\b</string>
 				<key>name</key>
 				<string>storage.modifier.pike</string>
       </dict>
@@ -307,7 +307,7 @@
       </dict>
 			<dict>
 				<key>begin</key>
-				<string>^\s*#\s*(define|defined|elif|elseif|else|if|ifdef|ifndef|(line|[0-9]+)|pragma|undef|undefine|endif|charset|pike|string)\b</string>
+				<string>^\s*#\s*(define|defined|elif|elseif|else|if|ifdef|ifndef|(line|[0-9]+)|pragma|undef|undefine|endif|charset|pike|string|require|COUNTER|warning|error)\b</string>
 				<key>captures</key>
 				<dict>
 					<key>1</key>
@@ -343,9 +343,9 @@
                | (?= \s*[[:alnum:]_.] )        (?&lt;=[.|\(\)])   #  or type modifier before name
              )
         )
-        (\s*) (?!(while|for|do|if|else|switch|catch|return|foreach|
+        (\s*) (?!\b(while|for|do|if|else|switch|catch|return|foreach|
                    object|int|float|function|mapping|array|multiset|
-                   lambda|program|mixed|class)\s*)
+                   lambda|program|mixed|class)\b\s*)
         (
           (?:
             `\(\)|
@@ -448,7 +448,7 @@
                       (?!(while|for|do|if|else|foreach|lambda|switch|
                           catch|enumerate|return|
                           mapping|multiset|mixed|int|float|class|function|array|
-                          string|program|object|bool)\s*\()
+                          string|program|object|bool|auto|variant)\s*\()
                         (?: `\(\)|
                             `[-&lt;.&gt;^|&amp;*~/+%=!\[\]]+|
                             `[[:alnum:]_]|
@@ -647,7 +647,8 @@
                       note|module|endmodule|member|example|see|throws|pre|xml|
                       i|b|ref|ul|endul|code|endcode|int|endint|value|
                       string|endstring|array|endarray|fixme|ignore|endignore|
-                      image|p|link|deprecated|bugs|copyright|thanks|text
+                      image|p|link|deprecated|bugs|copyright|thanks|text|
+                      mixed|endmixed|type
                    )\b</string>
 						<key>name</key>
 						<string>keyword.other.pikedoc.pike</string>
