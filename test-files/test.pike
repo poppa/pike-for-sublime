@@ -94,7 +94,8 @@ enum MyStuff {
 	N_STUFF
 }
 
-#define roxen roxenp() // Missing semicolon affecting next statement : Solved
+#define roxen roxenp() // Missing semicolon affecting next statement : Not Solved
+
 void some_prototype(multiset m, mapping m2, array a, string s, float f, int i);
 
 void another_prototype(multiset(int)       m,
@@ -102,7 +103,7 @@ void another_prototype(multiset(int)       m,
 	                     array               a,
 	                     string              s,
 	                     float               f,
-	                     int                 i); // This semicolon messes up the next statement
+	                     int                 i); // Lack of semicolon messes up the next statement
 
 array(int) diff_compare_table(array a, array b) {
 
@@ -115,7 +116,9 @@ else if (Stdio.exist(apa) || search(one, "two")) {
 
 }
 
-void|int(0..1) löksoppa(multiset lök, int soppa);
+void|int(0..1) löksoppa(multiset lök, int soppa) {
+
+}
 
 class SöndagsStek {}
 
@@ -180,6 +183,10 @@ class classFoo
 
 	int(0..1) odd(mixed in) { // Hm, doens't work correctly as class method
 		catch { return in % 2; };
+	}
+
+	int(0..1)|string apa() {
+
 	}
 
 	mixed even(array(mapping) a, int(0..1) b) {

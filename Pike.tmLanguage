@@ -13,9 +13,10 @@
 		<string>(?x)
      /\*\*(?!\*)
     |^(?![^{]*?//|[^{]*?/\*(?!.*?\*/.*?\{)).*?
-    \{\s*($|//|/\*(?!.*?\*/.*\S))</string>
+    \{\s*($|//|/\*(?!.*?\*/.*\S))
+    |(^\s*//\s*(\{\{\{))</string>
 		<key>foldingStopMarker</key>
-		<string>(?&lt;!\*)\n\*\*/|^\s*\}</string>
+		<string>(?&lt;!\*)\n\*\*/|^\s*\}|//\s*\}\}\}$</string>
 		<key>keyEquivalent</key>
 		<string>^~C</string>
 		<key>name</key>
@@ -28,7 +29,15 @@
       </dict>
 			<dict>
 				<key>include</key>
+				<string>#preprocessor-rule-enabled-block</string>
+      </dict>
+			<dict>
+				<key>include</key>
 				<string>#preprocessor-rule-disabled</string>
+      </dict>
+			<dict>
+				<key>include</key>
+				<string>#preprocessor-rule-disabled-block</string>
       </dict>
 			<dict>
 				<key>include</key>
@@ -36,7 +45,31 @@
       </dict>
 			<dict>
 				<key>include</key>
+				<string>#preprocessor-rule-other-block</string>
+      </dict>
+			<dict>
+				<key>include</key>
+				<string>#disabled</string>
+      </dict>
+			<dict>
+				<key>include</key>
+				<string>#parens</string>
+      </dict>
+			<dict>
+				<key>include</key>
 				<string>#comments</string>
+      </dict>
+			<dict>
+				<key>include</key>
+				<string>#pragma-mark</string>
+      </dict>
+			<dict>
+				<key>include</key>
+				<string>#fncall</string>
+      </dict>
+			<dict>
+				<key>include</key>
+				<string>#block</string>
       </dict>
 			<dict>
 				<key>comment</key>
@@ -56,7 +89,7 @@
 				<key>comment</key>
 				<string>Modifiers</string>
 				<key>match</key>
-				<string>\b(public|protected|private|static|constant|local|final|optional|variant)\b</string>
+				<string>\b(public|protected|private|constant|inline|local|final|optional|variant)\b</string>
 				<key>name</key>
 				<string>storage.modifier.pike</string>
       </dict>
@@ -190,7 +223,7 @@
           </dict>
         </dict>
 				<key>end</key>
-				<string>(?=(?://|/\*))|$</string>
+				<string>(?=(?://|/\*))|$|\n</string>
 				<key>name</key>
 				<string>meta.preprocessor.macro.pike</string>
 				<key>patterns</key>
@@ -331,16 +364,12 @@
         </array>
       </dict>
 			<dict>
-				<key>include</key>
-				<string>#block</string>
-      </dict>
-			<dict>
 				<key>begin</key>
 				<string>(?x)
         (?:  ^                                                    # begin-of-line
             |
              (?: (?= \s )           (?&lt;!else|return) (?&lt;=\w)    #  or word + space before name
-               | (?= \s*[[:alnum:]_.] )        (?&lt;=[.|\(\)])   #  or type modifier before name
+               | (?= \s*[[:alnum:]_.|\(\)] )    #  or type modifier before name
              )
         )
         (\s*) (?!\b(while|for|do|if|else|switch|catch|return|foreach|
@@ -423,41 +452,8 @@
 				<key>patterns</key>
 				<array>
 					<dict>
-						<key>captures</key>
-						<dict>
-							<key>1</key>
-							<dict>
-								<key>name</key>
-								<string>punctuation.whitespace.function-call.leading.pike</string>
-              </dict>
-							<key>2</key>
-							<dict>
-								<key>name</key>
-								<string>support.function.any-method.pike</string>
-              </dict>
-							<key>3</key>
-							<dict>
-								<key>name</key>
-								<string>punctuation.definition.parameters.pike</string>
-              </dict>
-            </dict>
-						<key>match</key>
-						<string>(?x)
-                     (?: (?= \s )  (?:(?&lt;=else|new|return) | (?&lt;!\w)) (\s+))?
-                     (\b
-                      (?!(while|for|do|if|else|foreach|lambda|switch|
-                          catch|enumerate|return|
-                          mapping|multiset|mixed|int|float|class|function|array|
-                          string|program|object|bool|auto|variant)\s*\()
-                        (?: `\(\)|
-                            `[-&lt;.&gt;^|&amp;*~/+%=!\[\]]+|
-                            `[[:alnum:]_]|
-                            [[:alpha:]_][[:alnum:]_]*+\b
-                        )++    # actual name
-                     )
-                     \s*(\()</string>
-						<key>name</key>
-						<string>meta.function-call.pike</string>
+						<key>include</key>
+						<string>#fncall</string>
           </dict>
 					<dict>
 						<key>include</key>
@@ -545,6 +541,53 @@
 					<dict>
 						<key>include</key>
 						<string>#pragma-mark</string>
+          </dict>
+        </array>
+      </dict>
+			<key>fncall</key>
+			<dict>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>captures</key>
+						<dict>
+							<key>1</key>
+							<dict>
+								<key>name</key>
+								<string>punctuation.whitespace.function-call.leading.pike</string>
+              </dict>
+							<key>2</key>
+							<dict>
+								<key>name</key>
+								<string>support.function.any-method.pike</string>
+              </dict>
+							<key>3</key>
+							<dict>
+								<key>name</key>
+								<string>punctuation.definition.parameters.pike</string>
+              </dict>
+            </dict>
+						<key>match</key>
+						<string>(?x)
+                     (?: (?= \s )  (?:(?&lt;=else|new|return) | (?&lt;!\w)) (\s+))?
+                     (\b
+                      (?!(while|for|do|if|else|foreach|lambda|switch|
+                          catch|enumerate|return|
+                          mapping|multiset|mixed|int|float|class|function|array|
+                          string|program|object|bool|auto|variant)\s*\()
+                        (?: `\(\)                  |
+                            `[-&lt;.&gt;^|&amp;*~/+%=!\[\]]+ |
+                            `[[:alnum:]_]            |
+                            [[:alpha:]_][[:alnum:]_]*+\b
+                        )++    # actual name
+                     )
+                     \s*(\()</string>
+						<key>name</key>
+						<string>meta.function-call.pike</string>
+          </dict>
+					<dict>
+						<key>include</key>
+						<string>#block</string>
           </dict>
         </array>
       </dict>
@@ -1059,7 +1102,7 @@
                   ((-?\d+)|\*(-?\d+\$)?)?          # minimum field width
                   (\.((-?\d+)|\*(-?\d+\$)?)?)?    # precision
                   (hh|h|ll|l|j|t|z|q|L|vh|vl|v|hv|hl)? # length modifier
-                  [diouxXDOUeEfFgGaACcSspn%{}]         # conversion type</string>
+                  [diouxXDOUeEfFgGaACcSspnYyMmDdHhWtzp%{}]         # conversion type</string>
 						<key>name</key>
 						<string>constant.other.placeholder.pike</string>
           </dict>

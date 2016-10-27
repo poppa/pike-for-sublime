@@ -29,6 +29,8 @@
 //-               or more" }
 //-
 //-    Whitespaces will be kept in the end result.
+//-
+/* jshint ignore:start */
 
 { "name": "Pike",
   "scopeName" : "source.pike",
@@ -37,15 +39,24 @@
   "foldingStartMarker" : #"(?x)
      /\\*\\*(?!\\*)
     |^(?![^{]*?//|[^{]*?/\\*(?!.*?\\*/.*?\\{)).*?
-    \\{\\s*($|//|/\\*(?!.*?\\*/.*\\S))",
-  "foldingStopMarker" : "(?<!\\*)\\n\\*\\*/|^\\s*\\}",
+    \\{\\s*($|//|/\\*(?!.*?\\*/.*\\S))
+    |(^\\s*//\\s*(\\{\\{\\{))",
+  "foldingStopMarker" : "(?<!\\*)\\n\\*\\*/|^\\s*\\}|//\\s*\\}\\}\\}$",
   "keyEquivalent" : "^~C",
   "patterns" : [
 
     { "include" : "#preprocessor-rule-enabled" },
+    { "include" : "#preprocessor-rule-enabled-block" },
     { "include" : "#preprocessor-rule-disabled" },
+    { "include" : "#preprocessor-rule-disabled-block" },
     { "include" : "#preprocessor-rule-other" },
+    { "include" : "#preprocessor-rule-other-block" },
+    { "include" : "#disabled" },
+    { "include" : "#parens" },
     { "include" : "#comments" },
+    { "include" : "#pragma-mark" },
+    { "include" : "#fncall" },
+    { "include" : "#block" },
 
     //- Control flow
 
@@ -62,7 +73,7 @@
 
     //- Modifiers
 
-    { "match" : "\\b(public|protected|private|static|constant|local|final|optional|variant)\\b",
+    { "match" : "\\b(public|protected|private|constant|inline|local|final|optional|variant)\\b",
       "name" : "storage.modifier.pike",
       "comment" : "Modifiers"
     },
@@ -153,7 +164,7 @@
         "7" : { "name" : "punctuation.separator.parameters.pike" },
         "8" : { "name" : "punctuation.definition.parameters.pike" }
       },
-      "end" : "(?=(?://|/\\*))|$",
+      "end" : "(?=(?://|/\\*))|$|\\n",
       "patterns" : [
         { "match" : "(?>\\\\\\s*\\n)",
           "name" : "punctuation.separator.continuation.pike"
@@ -227,8 +238,6 @@
       ]
     },
 
-    { "include" : "#block" },
-
     //- Function declaration and body
 
     { "name" : "meta.function.pike",
@@ -236,7 +245,7 @@
         (?:  ^                                                    # begin-of-line
             |
              (?: (?= \\s )           (?<!else|return) (?<=\\w)    #  or word + space before name
-               | (?= \\s*[[:alnum:]_.] )        (?<=[.|\\(\\)])   #  or type modifier before name
+               | (?= \\s*[[:alnum:]_.|\\(\\)] )    #  or type modifier before name
              )
         )
         (\\s*) (?!\\b(while|for|do|if|else|switch|catch|return|foreach|
@@ -265,16 +274,6 @@
         { "include" : "#block" }
       ]
     }
-
-    //- Includes
-/*
-    ,{ "include" : "#block" },
-    { "include" : "#pragma.mark" },
-    { "include" : "#builtinTypes" },
-    { "include" : "#doubleQuotedStringLiteral" },
-    { "include" : "#doubleQuotedString" },
-    { "include" : "#singleQuotedString" }
-*/
   ],
 
   "repository" : {
@@ -288,7 +287,7 @@
       ]
     },
 
-    "block_innards" : {
+    "fncall" : {
       "patterns" : [
         {
           "name" : "meta.function-call.pike",
@@ -299,9 +298,9 @@
                           catch|enumerate|return|
                           mapping|multiset|mixed|int|float|class|function|array|
                           string|program|object|bool|auto|variant)\\s*\\()
-                        (?: `\\(\\)|
-                            `[-<.>^|&*~/+%=!\\[\\]]+|
-                            `[[:alnum:]_]|
+                        (?: `\\(\\)                  |
+                            `[-<.>^|&*~/+%=!\\[\\]]+ |
+                            `[[:alnum:]_]            |
                             [[:alpha:]_][[:alnum:]_]*+\\b
                         )++    # actual name
                      )
@@ -312,6 +311,13 @@
             "3" : { "name" : "punctuation.definition.parameters.pike" }
           }
         },
+        { "include" : "#block"}
+      ]
+    },
+
+    "block_innards" : {
+      "patterns" : [
+        { "include" : "#fncall" },
         { "include" : "#block" },
         { "include" : "$base" }
       ]
@@ -562,7 +568,7 @@
                   ((-?\\d+)|\\*(-?\\d+\\$)?)?          # minimum field width
                   (\\.((-?\\d+)|\\*(-?\\d+\\$)?)?)?    # precision
                   (hh|h|ll|l|j|t|z|q|L|vh|vl|v|hv|hl)? # length modifier
-                  [diouxXDOUeEfFgGaACcSspn%{}]         # conversion type",
+                  [diouxXDOUeEfFgGaACcSspnYyMmDdHhWtzp%{}]         # conversion type",
         "name" : "constant.other.placeholder.pike"
       },
       { "match" : "%(?!\\s|%)(!<%)", /* Not followed by space or % and not preceded by % */
