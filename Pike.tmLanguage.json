@@ -250,14 +250,14 @@
         )
         (\\s*) (?!\\b(while|for|do|if|else|switch|catch|return|foreach|
                    object|int|float|function|mapping|array|multiset|
-                   lambda|program|mixed|class)\\b\\s*)
+                   string|lambda|program|mixed|class)\\b\\s*)
         (
           (?:
-            `\\(\\)|
-            `[-<.>^|&*~/+%=!\\[\\]]+|
-            `[[:alpha:]_][[:alnum:]_]*+|
-            [[:alpha:]_][[:alnum:]_]*+
-          )++                                                     # actual name
+            `\\(\\)|                                              # Function call
+            `[-<.>^|&*~/+%=!\\[\\]]+|                             # Operator overloading
+            `[[:alpha:]_][[:alnum:]_]*+|                          # Getter/setter
+            [[:alpha:]_][[:alnum:]_]*+                            # function name
+          )++                                                     # Complete actual name
         )
          \\s*(?=\\()",
       "beginCaptures" : {
@@ -621,7 +621,7 @@
                       i|b|ref|ul|endul|code|endcode|int|endint|value|
                       string|endstring|array|endarray|fixme|ignore|endignore|
                       image|p|link|deprecated|bugs|copyright|thanks|text|
-                      mixed|endmixed|type
+                      mixed|endmixed|type|ol|endol
                    )\\b",
           "name":"keyword.other.pikedoc.pike"
         }

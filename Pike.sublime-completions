@@ -3,6 +3,8 @@
   "completions":
   [
     "pike",
+    {"trigger":"Parser.HTML","contents":"Parser.HTML"},
+    {"trigger":"Parser.XML.Tree","contents":"Parser.XML.Tree"},
     {"trigger":"Protocols.HTTP.Query","contents":"Protocols.HTTP.Query"},
     {"trigger":"Roxen.http_encode_url","contents":"Roxen.http_encode_url(${1:string url})"},
     {"trigger":"Stdio.exist","contents":"Stdio.exist(${1:string filename})"},
@@ -50,6 +52,7 @@
     {"trigger":"atan2","contents":"atan2(${1:int|float f1}, ${2:int|float f2})"},
     {"trigger":"atanh","contents":"atanh(${1:int|float f})"},
     {"trigger":"atexit","contents":"atexit(${1:function(:void) callback})"},
+    {"trigger":"auto","contents":"auto ${1}"},
     {"trigger":"backtrace","contents":"backtrace()"},
     {"trigger":"basename","contents":"basename(${1:string path})"},
     {"trigger":"basetype","contents":"basetype(${1:mixed value})"},
@@ -203,8 +206,12 @@
     {"trigger":"string_to_utf8","contents":"string_to_utf8(${1:string str})"},
     {"trigger":"stringp","contents":"stringp(${1:mixed arg})"},
     {"trigger":"this_program","contents":"this_program"},
+    {"trigger":"trim_all_whites","contents":"String.trim_all_whites(${1:mixed val})"},
+    {"trigger":"undefinedp","contents":"undefinedp(${1:mixed val})"},
     {"trigger":"utf8_to_string","contents":"utf8_to_string(${1:string str})"},
+    {"trigger":"variant","contents":"variant ${1}"},
     {"trigger":"werror","contents":"werror(\"${1:format}\\n\"${2:, ${3:mixed ... args}});"},
-    {"trigger":"write","contents":"write(\"${1:format}\\n\"${2:, ${3:mixed ... args}});"}
+    {"trigger":"write","contents":"write(\"${1:format}\\n\"${2:, ${3:mixed ... args}});"},
+    {"trigger":"zero_type","contents":"zero_type(${1:mixed val})"}
   ]
 }

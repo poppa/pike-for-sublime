@@ -35,6 +35,8 @@ mapping builtins = ([
   "constant"          : "constant ${1}",
   "local"             : "local ${1}",
   "final"             : "final ${1}",
+  "variant"           : "variant ${1}",
+  "auto"              : "auto ${1}",
   "optional"          : "optional ${1}",
 
   /* Built-in functions */
@@ -227,6 +229,13 @@ mapping builtins = ([
   "search"         : "search(${1:mixed haystack}, ${2:mixed needle}${3:, mixed|void start})",
   "sscanf"         : "sscanf(${1:string data}, ${2:string format}, ${3:mixed ... lvalues})",
 
+  "trim_all_whites": "String.trim_all_whites(${1:mixed val})",
+
+  "undefinedp"     : "undefinedp(${1:mixed val})",
+
+  "zero_type"      : "zero_type(${1:mixed val})",
+
+
   // Parser.XML.Tree
   /*
   "->get_attributes"    : "->get_attributes()",
@@ -245,6 +254,8 @@ mapping classes = ([
   "Stdio.read_file"        : "Stdio.read_file(${1:string filename})",
   "Stdio.exist"            : "Stdio.exist(${1:string filename})",
   "Protocols.HTTP.Query"   : "Protocols.HTTP.Query",
+  "Parser.XML.Tree"        : "Parser.XML.Tree",
+  "Parser.HTML"            : "Parser.HTML"
 ]);
 
 mapping macros = ([
