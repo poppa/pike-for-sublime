@@ -6,6 +6,7 @@
 		<array>
 			<string>pike</string>
 			<string>pmod</string>
+			<string>cmod</string>
     </array>
 		<key>firstLineMatch</key>
 		<string>(-[*]-( [Mm]ode:)? [Pp]ike -[*]-|^#!/.*\bpike\b)</string>

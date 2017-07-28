@@ -140,7 +140,7 @@ mapping builtins = ([
   "get_weak_flag":"get_weak_flag(${1:array|mapping|multiset m})",
   "getcwd":"getcwd()",
   "getegid":"getegid(${1:int gid})",
-  "getenv":"getenv(${1:string|void} env})",
+  "getenv":"getenv(${1:string|void env})",
   "geteuid":"geteuid()",
   "getgid":"getgid()",
   "getgrgid":"getgrgid(${1:int gid})",
@@ -232,6 +232,7 @@ mapping builtins = ([
   "trim_all_whites": "String.trim_all_whites(${1:mixed val})",
 
   "undefinedp"     : "undefinedp(${1:mixed val})",
+  "upper_case"     : "upper_case(${1:string s})",
 
   "zero_type"      : "zero_type(${1:mixed val})",
 

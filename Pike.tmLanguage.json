@@ -34,7 +34,7 @@
 
 { "name": "Pike",
   "scopeName" : "source.pike",
-  "fileTypes" : ["pike", "pmod"],
+  "fileTypes" : ["pike", "pmod", "cmod"],
   "firstLineMatch" : "(-[*]-( [Mm]ode:)? [Pp]ike -[*]-|^#!/.*\\bpike\\b)",
   "foldingStartMarker" : #"(?x)
      /\\*\\*(?!\\*)
