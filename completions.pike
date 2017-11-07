@@ -218,6 +218,7 @@ mapping builtins = ([
   "removexattr"     : "removexattr(${1:string file}, ${2:string attr}${3:, ${4:void|bool symlink}})",
   "replace"        : "replace(${1:string data}, ${2:string from}, ${3:string to})",
 
+  "sizeof"         : "sizeof(${1:mixed args})",
   "stringp"        : "stringp(${1:mixed arg})",
 
   "sprintf"        : "sprintf(\\\"${1:format}\\\"${2:, ${3:mixed ... args}})",
@@ -228,8 +229,6 @@ mapping builtins = ([
   "string_to_utf8" : "string_to_utf8(${1:string str})",
   "search"         : "search(${1:mixed haystack}, ${2:mixed needle}${3:, mixed|void start})",
   "sscanf"         : "sscanf(${1:string data}, ${2:string format}, ${3:mixed ... lvalues})",
-
-  "trim_all_whites": "String.trim_all_whites(${1:mixed val})",
 
   "undefinedp"     : "undefinedp(${1:mixed val})",
   "upper_case"     : "upper_case(${1:string s})",
@@ -256,11 +255,15 @@ mapping classes = ([
   "Stdio.exist"            : "Stdio.exist(${1:string filename})",
   "Protocols.HTTP.Query"   : "Protocols.HTTP.Query",
   "Parser.XML.Tree"        : "Parser.XML.Tree",
-  "Parser.HTML"            : "Parser.HTML"
+  "Parser.HTML"            : "Parser.HTML",
+  "trim_all_whites"        : "String.trim_all_whites(${1:mixed val})",
+  "Standards.JSON.decode"  : "Standards.JSON.decode(${1:string data})",
+  "Standards.JSON.encode"  : "Standards.JSON.encode(${1:mixed data})"
 ]);
 
 mapping macros = ([
-  "define" : "#define ${1:WHAT}",
+  "define"  : "#define ${1:WHAT}",
+  "include" : "#include <${1:WHAT}>"
 ]);
 
 mapping userdef = ([
